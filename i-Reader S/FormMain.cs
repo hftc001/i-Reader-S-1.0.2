@@ -70,7 +70,7 @@ namespace i_Reader_S
         public string UserType = "";//2017-2-24
 
         //每日液路自检状态判断信息{ 液路测试状态，液路自检次数 }
-        public int[] LiquidCheck = { 3, 0 };
+        public int[] LiquidCheck = { 5, 5 };
         
         //触摸屏美观要求，需要隐藏鼠标
         [DllImport("user32.dll", EntryPoint = "ShowCursor", CharSet = CharSet.Auto)]
@@ -90,6 +90,7 @@ namespace i_Reader_S
         /// <param name="newValue">配置值</param>
         private static void UpdateAppConfig(string newKey, string newValue)
         {
+            var ccc = 1;
             var isModified = ConfigurationManager.AppSettings.Cast<string>().Any(key => key == newKey);
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (isModified)
@@ -7317,6 +7318,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         private void textBoxOpenState_TextChanged(object sender, EventArgs e)
         {
             textBox1.Focus();
+            var a = 1;
         }
         int Click_num = 0;
         private void textBoxOpenState_MouseClick(object sender, MouseEventArgs e)
