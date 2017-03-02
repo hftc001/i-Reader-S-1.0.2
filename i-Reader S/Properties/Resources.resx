@@ -1,0 +1,842 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Home_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Home_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3101" xml:space="preserve">
+    <value>提示按下吸样按钮</value>
+  </data>
+  <data name="BottleFull5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_Black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="C3051" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="I3162" xml:space="preserve">
+    <value>手动灌注稀释液完成</value>
+  </data>
+  <data name="I1101" xml:space="preserve">
+    <value>机械部件准备就绪</value>
+  </data>
+  <data name="E2905" xml:space="preserve">
+    <value>清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新调试清洗液传感器（1号液路传感器）后重新运行液路自检程序</value>
+  </data>
+  <data name="C3053_1" xml:space="preserve">
+    <value>禁用取样开关</value>
+  </data>
+  <data name="NewSampleText" xml:space="preserve">
+    <value>样本[1]进入测试,测试项目为[2],批号为[3],反应时间为[4]</value>
+  </data>
+  <data name="ResultError1" xml:space="preserve">
+    <value>测试中断</value>
+    <comment>-1</comment>
+  </data>
+  <data name="C3004" xml:space="preserve">
+    <value>设置读取时间1为[n]秒</value>
+  </data>
+  <data name="I3160" xml:space="preserve">
+    <value>手动灌注稀释液开始</value>
+  </data>
+  <data name="I3114" xml:space="preserve">
+    <value>测试结束</value>
+  </data>
+  <data name="I3163" xml:space="preserve">
+    <value>手动灌注清洗液完成</value>
+  </data>
+  <data name="I3153" xml:space="preserve">
+    <value>取样功能关闭</value>
+  </data>
+  <data name="ReagentEmpty1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReagentEmpty1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Background.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I0199" xml:space="preserve">
+    <value>重启</value>
+  </data>
+  <data name="background2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CC02" xml:space="preserve">
+    <value>seq为[1]的样本被删除，操作用户ID为[2]</value>
+  </data>
+  <data name="C3054" xml:space="preserve">
+    <value>重新测试</value>
+  </data>
+  <data name="E3527" xml:space="preserve">
+    <value>取片小车从片仓提取试剂片完成离开时, 片仓异常打开, 请关闭好片仓</value>
+  </data>
+  <data name="C0005_0" xml:space="preserve">
+    <value>恢复仪器</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="Button_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Message_Normal2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Message_Normal2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I0105" xml:space="preserve">
+    <value>仪器暂停</value>
+  </data>
+  <data name="D0003_3" xml:space="preserve">
+    <value>除湿端口错误</value>
+  </data>
+  <data name="I3116" xml:space="preserve">
+    <value>卡片移出</value>
+  </data>
+  <data name="C3003" xml:space="preserve">
+    <value>设置稀释比例为1：[n]</value>
+    <comment>特殊类型</comment>
+  </data>
+  <data name="Message_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Message_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="E3902" xml:space="preserve">
+    <value>自动灌注清洗液失败, 请检查清洗液供给后按开始键继续</value>
+  </data>
+  <data name="E3520" xml:space="preserve">
+    <value>片仓#[n]已空, 请添加测试卡后再继续测试</value>
+  </data>
+  <data name="BottleFull3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResultError8" xml:space="preserve">
+    <value>Fluo禁用</value>
+  </data>
+  <data name="Button_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="E3525" xml:space="preserve">
+    <value>取片小车向片仓方向移动时, 片仓异常打开, 请关闭好片仓</value>
+  </data>
+  <data name="I2100" xml:space="preserve">
+    <value>开始液路检查</value>
+  </data>
+  <data name="D0003_6" xml:space="preserve">
+    <value>CMOS连接错误</value>
+  </data>
+  <data name="I3161" xml:space="preserve">
+    <value>手动灌注清洗液开始</value>
+  </data>
+  <data name="D0003_5" xml:space="preserve">
+    <value>荧光电机端口错误</value>
+  </data>
+  <data name="C3020_0" xml:space="preserve">
+    <value>正常模式</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="C3014" xml:space="preserve">
+    <value>关闭#[n]检测头光源</value>
+  </data>
+  <data name="BottleFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResultError11" xml:space="preserve">
+    <value>质控线异常</value>
+  </data>
+  <data name="C3052" xml:space="preserve">
+    <value>设置休眠时间为[n]秒</value>
+  </data>
+  <data name="ReagentFull3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReagentFull3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3111" xml:space="preserve">
+    <value>反应中</value>
+  </data>
+  <data name="Message_Normal1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Message_Normal1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="E2906" xml:space="preserve">
+    <value>在进行稀释液灌注时，液面探测自检出现异常</value>
+  </data>
+  <data name="I3139" xml:space="preserve">
+    <value>当前读取时间2为[n]秒</value>
+  </data>
+  <data name="I2101" xml:space="preserve">
+    <value>清洗液灌注完成</value>
+  </data>
+  <data name="D0003_4" xml:space="preserve">
+    <value>荧光端口错误</value>
+  </data>
+  <data name="M0001" xml:space="preserve">
+    <value>样本[1]结果为：</value>
+  </data>
+  <data name="button_Black2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_Black21.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResultError3" xml:space="preserve">
+    <value>清洗液不足</value>
+    <comment>-3</comment>
+  </data>
+  <data name="I3115" xml:space="preserve">
+    <value>测试结束</value>
+  </data>
+  <data name="E2910" xml:space="preserve">
+    <value>稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新调试稀释液传感器（0号液路传感器）后重新运行液路自检程序</value>
+  </data>
+  <data name="E3903" xml:space="preserve">
+    <value>稀释液不足</value>
+  </data>
+  <data name="MeachineStatus4" xml:space="preserve">
+    <value>维护</value>
+  </data>
+  <data name="I3110" xml:space="preserve">
+    <value>开始滴样</value>
+  </data>
+  <data name="background3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="C3050" xml:space="preserve">
+    <value>进入休眠</value>
+  </data>
+  <data name="CommError" xml:space="preserve">
+    <value>通讯端口被占用</value>
+  </data>
+  <data name="E2534" xml:space="preserve">
+    <value>在稀释液流量定标液面高度测量时，液面探测功能自检出现错误</value>
+  </data>
+  <data name="C3001" xml:space="preserve">
+    <value>设置稀释比例：[1] 卡仓号：[2] 检测头：[3] 读取时间1：[4] 读取时间2：[5]</value>
+    <comment>特殊类型</comment>
+  </data>
+  <data name="E2512" xml:space="preserve">
+    <value>清洗液泵流量检查时，未检测到清洗液注入，请检查清洗液泵后重新运行液路自检程序</value>
+  </data>
+  <data name="Log_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Log_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="E3501" xml:space="preserve">
+    <value>稀释过程中液体容量异常, 请重试一次, 如果故障还在需要进行液路维护</value>
+  </data>
+  <data name="E3540" xml:space="preserve">
+    <value>取片失败</value>
+  </data>
+  <data name="I3138" xml:space="preserve">
+    <value>当前读取时间1为[n]秒</value>
+  </data>
+  <data name="C0099" xml:space="preserve">
+    <value>重启仪器</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="switch_on" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\switch_on.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StopTip1" xml:space="preserve">
+    <value>紧急停止确认</value>
+  </data>
+  <data name="background1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReagentFull2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReagentFull2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I0112" xml:space="preserve">
+    <value>片仓忙</value>
+  </data>
+  <data name="E2513" xml:space="preserve">
+    <value>清洗液泵流量检查时，液面探测功能自检出现错误</value>
+  </data>
+  <data name="D0003_2" xml:space="preserve">
+    <value>二维码端口错误</value>
+  </data>
+  <data name="I3152_1" xml:space="preserve">
+    <value>休眠模式关闭</value>
+    <comment>当休眠时间为0时</comment>
+  </data>
+  <data name="I3136" xml:space="preserve">
+    <value>当前稀释比例为1:[n]</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="C3053_0" xml:space="preserve">
+    <value>开启取样开关</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="QC_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\QC_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReagentFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReagentFull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="E2901" xml:space="preserve">
+    <value>液体探测电极未连接, 请检查液体探测电极连接是否完好</value>
+  </data>
+  <data name="Search_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Search_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3112" xml:space="preserve">
+    <value>开始测试</value>
+  </data>
+  <data name="ColumnText" xml:space="preserve">
+    <value>[Doing]状态^[Done]结果^[Exception]备注^</value>
+    <comment>主菜单左侧datagridview最后一列列名</comment>
+  </data>
+  <data name="E2907" xml:space="preserve">
+    <value>清洗液灌注过程中检测到混匀池中液体水位超高，请检查废液泵排液状态</value>
+  </data>
+  <data name="QC_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\QC_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="D0004" xml:space="preserve">
+    <value>除湿数据错误</value>
+  </data>
+  <data name="C0002" xml:space="preserve">
+    <value>切换状态：[1]→[2]</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="E2532" xml:space="preserve">
+    <value>在稀释液流量定标起始液面高度测量时，未探测到液面，请检查稀释液泵后重新运行液路自检程序</value>
+  </data>
+  <data name="labelQRText" xml:space="preserve">
+    <value>识别到定标二维码信息；产品：[n]  批号：[m]</value>
+  </data>
+  <data name="E3522" xml:space="preserve">
+    <value>片仓#[n]状态异常不能继续工作, 需要重新维护调试</value>
+  </data>
+  <data name="QCBG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\QCBG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShowPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ShowPassword.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Log_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Log_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoadingStep1" xml:space="preserve">
+    <value>系统正在初始化</value>
+  </data>
+  <data name="I3120" xml:space="preserve">
+    <value>[0]当前空闲^[1]当前忙^</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="E2530" xml:space="preserve">
+    <value>开始准备稀释液流量定标时，液面探测功能自检出现错误</value>
+  </data>
+  <data name="C3060" xml:space="preserve">
+    <value>手动灌注稀释液</value>
+  </data>
+  <data name="labelReagentInfoText" xml:space="preserve">
+    <value>产品名称：[n]  批号：[m]</value>
+  </data>
+  <data name="E2521" xml:space="preserve">
+    <value>在废液泵流量检测时，取样针未探测到液体，请检查液面探测功能后重新运行液路自检程序</value>
+  </data>
+  <data name="I2102" xml:space="preserve">
+    <value>稀释液灌注完成</value>
+  </data>
+  <data name="ResultError5" xml:space="preserve">
+    <value>取片失败</value>
+    <comment>-5</comment>
+  </data>
+  <data name="button_Black1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_Black1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3191" xml:space="preserve">
+    <value>取样进入休眠状态</value>
+  </data>
+  <data name="D0002" xml:space="preserve">
+    <value>已执行测试数据清理，清理将不会删除测试结果;</value>
+  </data>
+  <data name="C3061" xml:space="preserve">
+    <value>手动灌注清洗液</value>
+  </data>
+  <data name="ResultMsg" xml:space="preserve">
+    <value>样本[seq] 的结果为：[result]</value>
+  </data>
+  <data name="I3133" xml:space="preserve">
+    <value>片仓#[n]少量</value>
+  </data>
+  <data name="I0110" xml:space="preserve">
+    <value>当前状态：</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="CC06" xml:space="preserve">
+    <value>用户[1]登录成功</value>
+  </data>
+  <data name="Reagentclose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Reagentclose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="topbg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\topbg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReagentEmpty" xml:space="preserve">
+    <value>所有可用仓已用完，请添加</value>
+  </data>
+  <data name="C3011" xml:space="preserve">
+    <value>查询#[n]卡仓状态</value>
+  </data>
+  <data name="C0003" xml:space="preserve">
+    <value>查询工作状态</value>
+  </data>
+  <data name="D0003_1" xml:space="preserve">
+    <value>主控端口错误</value>
+  </data>
+  <data name="MeachineStatus255" xml:space="preserve">
+    <value>异常</value>
+  </data>
+  <data name="I3137" xml:space="preserve">
+    <value>当前工作仓为#[n]</value>
+  </data>
+  <data name="labelReagentOperationText" xml:space="preserve">
+    <value>片仓#[n]打开，请在关闭仓门前扫描二维码</value>
+  </data>
+  <data name="StopTip2" xml:space="preserve">
+    <value>恢复正常状态</value>
+  </data>
+  <data name="E2902" xml:space="preserve">
+    <value>液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物</value>
+  </data>
+  <data name="I0111" xml:space="preserve">
+    <value>片仓湿度：[n]% 片仓温度：[m]℃ 仪器内部温度：[s]℃</value>
+  </data>
+  <data name="C3015" xml:space="preserve">
+    <value>获取当前工作仓</value>
+  </data>
+  <data name="ReagentFull4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ReagentFull4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3102" xml:space="preserve">
+    <value>提示准备好吸样</value>
+  </data>
+  <data name="E2533" xml:space="preserve">
+    <value>在稀释液流量定标时，稀释液供应中断，请检查和更换稀释液后重新运行液路自检程序</value>
+  </data>
+  <data name="C3013" xml:space="preserve">
+    <value>开启#[n]检测头光源</value>
+  </data>
+  <data name="ResultError6" xml:space="preserve">
+    <value>卡片移出</value>
+    <comment>-6</comment>
+  </data>
+  <data name="MeachineStatus3" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="I3135" xml:space="preserve">
+    <value>请关闭片仓</value>
+  </data>
+  <data name="E2550" xml:space="preserve">
+    <value>液路自检失败退出</value>
+  </data>
+  <data name="LoadingStep2" xml:space="preserve">
+    <value>测试前机械部件准备</value>
+  </data>
+  <data name="I3104" xml:space="preserve">
+    <value>吸样完成</value>
+  </data>
+  <data name="I3130" xml:space="preserve">
+    <value>片仓#[n]打开</value>
+  </data>
+  <data name="Setting_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Setting_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I2120" xml:space="preserve">
+    <value>液路检测完成</value>
+  </data>
+  <data name="I3132" xml:space="preserve">
+    <value>片仓#[n]充足</value>
+  </data>
+  <data name="C3005" xml:space="preserve">
+    <value>设置读取时间2为[n]秒</value>
+  </data>
+  <data name="CC07" xml:space="preserve">
+    <value>项目切换为：</value>
+  </data>
+  <data name="E2531" xml:space="preserve">
+    <value>在稀释液流量定标起始液面高度测量时，检测出液面高度超高，请检重新调整取样针高度后重新运行液路自检程序</value>
+  </data>
+  <data name="E3904" xml:space="preserve">
+    <value>自动灌注稀释液失败, 请检查稀释液供给后按开始键继续</value>
+  </data>
+  <data name="E3521" xml:space="preserve">
+    <value>片仓#[n]打开, 请关闭后再继续测试</value>
+  </data>
+  <data name="I3141" xml:space="preserve">
+    <value>当前滴样量为[n]ul</value>
+  </data>
+  <data name="MeachineStatus1" xml:space="preserve">
+    <value>机械自检</value>
+  </data>
+  <data name="E2511" xml:space="preserve">
+    <value>清洗液泵流量检查时，出现清洗液供应中断，请更换清洗液后重新运行液路自检程序</value>
+  </data>
+  <data name="E2514" xml:space="preserve">
+    <value>清洗液泵流量检查在检测流量时，未检测到液体注入，请检查稀释液泵后重新运行液路自检程序</value>
+  </data>
+  <data name="E2502" xml:space="preserve">
+    <value>开始液路自检，在检查混匀池时发现混匀池中有残留水，请检查废液泵以及排液管道</value>
+  </data>
+  <data name="Home_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Home_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SoftWareLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SoftWareLogo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SearchResultHearder" xml:space="preserve">
+    <value>样本号|测试项目|结果|测试时间</value>
+  </data>
+  <data name="I3105" xml:space="preserve">
+    <value>提取卡片</value>
+  </data>
+  <data name="C3011_0" xml:space="preserve">
+    <value>查看所有仓状态</value>
+  </data>
+  <data name="ResultError10" xml:space="preserve">
+    <value>计算异常2</value>
+  </data>
+  <data name="LoginError" xml:space="preserve">
+    <value>用户名密码错误，请重试</value>
+  </data>
+  <data name="Search_Press" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Search_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="C0005_1" xml:space="preserve">
+    <value>暂停仪器</value>
+  </data>
+  <data name="E2510" xml:space="preserve">
+    <value>开始准备清洗液泵流量检查时，液面探测功能自检出现错误</value>
+  </data>
+  <data name="BottleFull6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CC05" xml:space="preserve">
+    <value>下一样本号设置为：</value>
+  </data>
+  <data name="I3140" xml:space="preserve">
+    <value>当前检测头为#[n]</value>
+  </data>
+  <data name="I3154" xml:space="preserve">
+    <value>取样功能开启</value>
+  </data>
+  <data name="MeachineStatus0" xml:space="preserve">
+    <value>空闲</value>
+  </data>
+  <data name="D0001" xml:space="preserve">
+    <value>当前剩余空间不足10GB，系统将会在下次启动时执行清理;</value>
+  </data>
+  <data name="I0200" xml:space="preserve">
+    <value>[2]废片仓打开^[253]废片仓关闭^</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="I3134" xml:space="preserve">
+    <value>片仓#[n]用完</value>
+  </data>
+  <data name="QRError" xml:space="preserve">
+    <value>定标二维码信息不正确</value>
+  </data>
+  <data name="I3107" xml:space="preserve">
+    <value>开始混匀</value>
+  </data>
+  <data name="countdown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\countdown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoadingStep4" xml:space="preserve">
+    <value>准备就绪</value>
+  </data>
+  <data name="textBoxQRAlertText" xml:space="preserve">
+    <value>您已关闭片仓，但是未检测到定标二维码信号，系统将会采用产品[n]、批号[m]的历史定标信息。如需扫描二维码请点击确定后重新操作。</value>
+  </data>
+  <data name="I3190" xml:space="preserve">
+    <value>仪器进入休眠状态</value>
+  </data>
+  <data name="I3113" xml:space="preserve">
+    <value>开始测试</value>
+  </data>
+  <data name="BottleFull4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResultError13" xml:space="preserve">
+    <value>穿刺失败</value>
+  </data>
+  <data name="DelSampleButton" xml:space="preserve">
+    <value>删除样本</value>
+  </data>
+  <data name="I3103" xml:space="preserve">
+    <value>开始吸样</value>
+  </data>
+  <data name="switch_off" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\switch_off.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="C0010" xml:space="preserve">
+    <value>打开#[n]片仓</value>
+  </data>
+  <data name="C3007" xml:space="preserve">
+    <value>设置滴样量为[n]ul</value>
+  </data>
+  <data name="MeachineStatus2" xml:space="preserve">
+    <value>液路自检</value>
+  </data>
+  <data name="ResultError2" xml:space="preserve">
+    <value>稀释液不足</value>
+    <comment>-2</comment>
+  </data>
+  <data name="E2501" xml:space="preserve">
+    <value>开始液路自检，在进行液面探测功能检验时发生错误</value>
+  </data>
+  <data name="MenuText" xml:space="preserve">
+    <value>[Home]主菜单^[Search]查  询^[QC]质  控^[Setting]设  置^[Message]日  志^[Stop]紧急停止^</value>
+    <comment>点击菜单按钮所显示的当前菜单名称</comment>
+  </data>
+  <data name="I0106" xml:space="preserve">
+    <value>仪器恢复</value>
+  </data>
+  <data name="LoadingStep3" xml:space="preserve">
+    <value>测试前液路部件准备</value>
+  </data>
+  <data name="C3020_1" xml:space="preserve">
+    <value>混匀液测量模式</value>
+  </data>
+  <data name="I3152" xml:space="preserve">
+    <value>当前休眠时间为[n]秒</value>
+  </data>
+  <data name="C0004" xml:space="preserve">
+    <value>退出[n]</value>
+    <comment>特殊情形</comment>
+  </data>
+  <data name="E2535" xml:space="preserve">
+    <value>在稀释液流量定标液面高度测量时，未探测到液面，请检查稀释液泵后重新运行液路自检程序</value>
+  </data>
+  <data name="E2912" xml:space="preserve">
+    <value>稀释液灌注过程中检测到混匀池中液体水位超高，请检查废液泵排液状态</value>
+  </data>
+  <data name="E3901" xml:space="preserve">
+    <value>清洗液不足</value>
+  </data>
+  <data name="C3006" xml:space="preserve">
+    <value>选择#[n]检测头</value>
+  </data>
+  <data name="CC03" xml:space="preserve">
+    <value>#[n]卡仓关闭未扫码，启用上一批号条码</value>
+  </data>
+  <data name="ButtonText" xml:space="preserve">
+    <value>[Doing]切换项目|上一页|下一页|下一样本^[Done]|上一页|下一页|^[Exception]|上一页|下一页|^[Search]发送记录|上一页|下一页|导出记录^[Message]清空记录|上一页|下一页|保存记录^[QC]选择项目|上一月|下一月|导出数据^[Setting]基础设置|项目设置|质控设置|其他^</value>
+    <comment>下方功能按钮的不同情形</comment>
+  </data>
+  <data name="E3526" xml:space="preserve">
+    <value>取片小车从片仓提取试剂片时, 片仓异常打开, 请关闭好片仓</value>
+  </data>
+  <data name="DilutionRatio" xml:space="preserve">
+    <value>[1]1^[2]2^[3]3^[4]10^[5]20^[6]50^[7]100^[8]200^[9]500^[10]1000^[11]2000^[12]5000^[13]10000^</value>
+  </data>
+  <data name="Message_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Message_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResultError7" xml:space="preserve">
+    <value>CMOS禁用</value>
+  </data>
+  <data name="I3106" xml:space="preserve">
+    <value>卡片就绪</value>
+  </data>
+  <data name="E2911" xml:space="preserve">
+    <value>在进行稀释液灌注时，液面探测自检出现异常</value>
+  </data>
+  <data name="E2520" xml:space="preserve">
+    <value>开始废液泵流量检查时，液面探测功能自检出现错误</value>
+  </data>
+  <data name="BottleEmpty" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleEmpty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3131" xml:space="preserve">
+    <value>片仓#[n]关闭</value>
+  </data>
+  <data name="C3002" xml:space="preserve">
+    <value>设置#[n]卡仓为工作仓</value>
+  </data>
+  <data name="Setting_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Setting_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CC04" xml:space="preserve">
+    <value>识别到条码扫描器信号：</value>
+  </data>
+  <data name="ResultError12" xml:space="preserve">
+    <value>未检测试管</value>
+  </data>
+  <data name="BottleFull2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottleFull2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CC01" xml:space="preserve">
+    <value>seq为[1]的样本号修改为[2]，操作用户ID为[3]</value>
+  </data>
+  <data name="ResultError9" xml:space="preserve">
+    <value>计算异常1</value>
+  </data>
+  <data name="ResultError4" xml:space="preserve">
+    <value>位置错误</value>
+    <comment>-4</comment>
+  </data>
+  <data name="SwitchTestItemError" xml:space="preserve">
+    <value>无可切换项目，请检查片仓</value>
+  </data>
+  <data name="Button_Normal1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Normal1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I3108" xml:space="preserve">
+    <value>再次混匀</value>
+  </data>
+  <data name="ResultError14" xml:space="preserve">
+    <value>未探测液面</value>
+  </data>
+  <data name="Reagentopen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Reagentopen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Button_Normal11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Normal11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Button_Press1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button_Press1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="I2103" xml:space="preserve">
+    <value>卸片小车初始化完成</value>
+  </data>
+  <data name="I2104" xml:space="preserve">
+    <value>转盘电机初始化完成</value>
+  </data>
+  <data name="I2107" xml:space="preserve">
+    <value>转盘零位初始化完成</value>
+  </data>
+  <data name="I2108" xml:space="preserve">
+    <value>片仓小车初始化完成</value>
+  </data>
+  <data name="I2109" xml:space="preserve">
+    <value>取样臂升降电机初始化完成</value>
+  </data>
+  <data name="I2113" xml:space="preserve">
+    <value>取样比旋转电机初始化完成</value>
+  </data>
+  <data name="I2114" xml:space="preserve">
+    <value>转盘卸片完成</value>
+  </data>
+  <data name="I2115" xml:space="preserve">
+    <value>片仓小车存在废片</value>
+  </data>
+  <data name="I2116" xml:space="preserve">
+    <value>片仓小车清空</value>
+  </data>
+  <data name="I2118" xml:space="preserve">
+    <value>吸样泵初始化完成</value>
+  </data>
+</root>
