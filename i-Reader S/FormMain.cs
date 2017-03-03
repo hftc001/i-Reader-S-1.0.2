@@ -68,9 +68,6 @@ namespace i_Reader_S
         
         //用户权限
         public string UserType = "";//2017-2-24
-
-        //每日液路自检状态判断信息{ 液路测试状态，液路自检次数 }
-        public int[] LiquidCheck = { 5, 5 };
         
         //触摸屏美观要求，需要隐藏鼠标
         [DllImport("user32.dll", EntryPoint = "ShowCursor", CharSet = CharSet.Auto)]
@@ -4515,17 +4512,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         "*0199", "*1101", "*2100", "*3153", "*3154", "*3160", "*3161", "*3162", "*3163", "*3190",
                         "*3191", "*3135",  "!3501", "!3525", "!3526", "!3527",
-                        "*2103", "*2104", "*2107", "*2108", "*2109", "*2113", "*2114", "*2115", "*2116", "*2118"//2017-3-1
+                        "*2103", "*2104", "*2107", "*2108", "*2109", "*2113", "*2114", "*2115", "*2116", "*2118",
+                        "!2501", "!2502", "!2505", "!2506", "!2510", "!2511", "!2512", "!2513", "!2514", "!2520", "!2521",
+                        "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2550", "!2901", "!2902", "!2905", "!2906",
+                        "!2907", "!2910", "!2911", "!2912"//2017-3-1
                     };
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 = { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", };
-                    //液路自检报警，每日自检重复多次//2017-3-1
-                    string[] msgnoparam3 =
-                    {
-                        "!2501", "!2502", "!2505", "!2506", "!2510", "!2511", "!2512", "!2513", "!2514", "!2520", "!2521",
-                        "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2550", "!2901", "!2902", "!2905", "!2906",
-                        "!2907", "!2910", "!2911", "!2912"
-                    };//2017-3-1
+                  
                     //无需特殊处理的含参数信息
                     string[] msgwithparam =
                     {
@@ -4623,14 +4617,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             case "*2102":
                                 UpdateSupplyLeft(2, 0);
                                 break;
-                            case "2120":
-                                if (LiquidCheck[0] == 1)
-                                {
-                                    LiquidCheckEveryDay(2);//界面恢复
-                                    LiquidCheck[0] = 2;//当日液路自检过程完成
-                                    timerLiquidCheck.Start();//重新启动计时
-                                }
-                                break;
                             case "*3146":
                                 if (ConfigRead("IDRead") == "1")
                                 {
@@ -4664,20 +4650,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 break;
                         }
                     }
-                    //2017-3-1
-                    else if (msgnoparam3.Contains(msgType))
-                    {
-                        if (LiquidCheck[0] == 1 & LiquidCheck[1] <= 2)//每天总共液路自检3次
-                        {
-                            LiquidCheck[1] = LiquidCheck[1] + 1;
-                            serialPort_DataSend(serialPortMain, "#0002$2");
-                        }
-                        else
-                        {
-                            timerLiquidCheck.Start();//重新启动计时
-                            LiquidCheckEveryDay(2);//界面回复
-                        }
-                    }//2017-3-1
                     else if (msgwithparam.Contains(msgType) | errorwithparam.Contains(msgType))
                     {
                         var param = detail[1];
@@ -4829,11 +4801,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 var statusId = msgInfo;
                                 msgInfo = _rm.GetString("MeachineStatus" + statusId);
                                 _otherInt[2] = int.Parse(statusId);
-                                if (_otherInt[2] == 0 & LiquidCheck[0] == 1)//2017-3-1
-                                {
-                                    timerLiquidCheck.Stop();
-                                    serialPort_DataSend(serialPortMain, "#0002$2");
-                                }
                                 Invoke(new Action(() =>
                                 {
                                     labelMeachineStatus.Text = msgInfo;
@@ -4885,15 +4852,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             case "*3120":
                                 // ReSharper disable once ResourceItemNotResolved
                                 msgLog = Resources.I3120;
-                                if (msgInfo.IndexOf("$0", StringComparison.Ordinal) > -1 & LiquidCheck[0] == 0)
-                                {
-                                    LiquidCheckEveryDay(0);
-                                    LiquidCheck[0] = 1;
-                                }
-                                else
-                                {
-                                    LiquidCheckEveryDay(1);
-                                }//2017-3-1
                                 msgLog = msgInfo.IndexOf("$0", StringComparison.Ordinal) > -1
                                     ? msgLog?.Substring(msgLog.IndexOf("[0]", StringComparison.Ordinal) + 3)
                                     : msgLog?.Substring(msgLog.IndexOf("[1]", StringComparison.Ordinal) + 3);
@@ -7259,67 +7217,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             comboBoxUserType.Enabled = true;
             comboBoxUserType.Text = "";
         }//2017-2-27
+        
 
-        //2017-3-1
-        //每日00:00:00时判断仪器状态，
-
-        private void timerLiquidCheck_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (LiquidCheck[0] == 0)
-                {
-                    if (DateTime.Now.TimeOfDay > TimeSpan.Parse(textBoxTime.Text + @":05:00") & DateTime.Now.TimeOfDay < TimeSpan.Parse(textBoxTime.Text + @":10:00"))
-                    {
-                        serialPort_DataSend(serialPortMain, "#0003");
-                    }
-                }
-                else if (LiquidCheck[0] == 2)
-                {
-                    if (DateTime.Now.TimeOfDay > TimeSpan.Parse(textBoxTime.Text + @":10:00"))
-                    {
-                        LiquidCheck[0] = 3;
-                    }
-                }
-                else if (LiquidCheck[0] == 3)
-                {
-                    if (DateTime.Now.TimeOfDay > TimeSpan.Parse((int.Parse(textBoxTime.Text)-1).ToString() + @":55:00") & DateTime.Now.TimeOfDay < TimeSpan.Parse(textBoxTime.Text + @":00:00"))
-                    {
-                        LiquidCheck[0] = 0;
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                MessageBox.Show(ee.ToString());
-            }
-        }
-
-        //每日液路自检控制
-        private void LiquidCheckEveryDay(int state)
-        {
-            if (state == 0 & _otherInt[2] == 3)
-            {
-                serialPort_DataSend(serialPortMain, "#0004");
-                labelStopStatus.Text = "正在进行每日液路自检";
-            }
-            else if (state == 1)
-            {
-                return;
-            }
-            else if (state == 2)
-            {
-                serialPort_DataSend(serialPortMain, "#0004");
-                labelStopStatus.Text = "紧急停止确认";
-                LiquidCheck[1] = 0;
-            }
-        }
-        //2017-3-2
         private void textBoxOpenState_TextChanged(object sender, EventArgs e)
         {
             textBox1.Focus();
-            var a = 1;
         }
+
         int Click_num = 0;
         private void textBoxOpenState_MouseClick(object sender, MouseEventArgs e)
         {
