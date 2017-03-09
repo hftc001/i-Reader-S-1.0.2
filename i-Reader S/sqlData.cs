@@ -653,7 +653,7 @@ namespace i_Reader_S
         }
 
         //查询可供选择的测试项目
-        public static  DataTable SelectTestItem()
+        public static DataTable SelectTestItem()
         {
             var strsql = new StringBuilder();
             strsql.Append(
@@ -723,11 +723,7 @@ namespace i_Reader_S
             strsql.Append(testitemid);
             ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
         }
-
-        public static void UpdateDb(string strsql)
-        {
-            ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql);
-        }
+        
 
         //修改样本号
         public static void UpdateWorkRunlistSampleNobySeq(string seq, string sampleno)
@@ -940,13 +936,15 @@ namespace i_Reader_S
         public static DataTable SelectTestItem(string productId)
         {
             var strsql = new StringBuilder();
+            //查询项目结果 选择项目
             if (productId == "")
                 strsql.Append("select TestItemName,a.productid from TestItemInfo a,ProductInfo b where a.ProductID=b.ProductID");
-            else
-            { 
-            strsql.Append("select TestItemName,a.productid from TestItemInfo a,ProductInfo b where a.ProductID=b.ProductID and b.productid in(");
-            strsql.Append(productId);
-            strsql.Append(")  and testitemname <> 'HsCRP'");
+            else//切换项目
+            {
+                strsql.Append("select TestItemName,a.productid from TestItemInfo a,ProductInfo b where a.ProductID=b.ProductID and b.productid in(");
+                strsql.Append(productId);
+                strsql.Append(")  and testitemid < ");
+                strsql.Append(ConfigurationManager.AppSettings["ASUEnable"] == "1" ? 99 : 98);
             }
             return
             ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
@@ -1128,7 +1126,7 @@ namespace i_Reader_S
         public static DataTable SelectUserName(string UserName)
         {
             var str = new StringBuilder();
-            str.Append("select username from UserInfo where username = '");
+            str.Append("select username,usertype from UserInfo where username = '");
             str.Append(UserName);
             str.Append("' ");
             return
@@ -1144,6 +1142,17 @@ namespace i_Reader_S
             str.Append(Username);
             str.Append("'");
             ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, str.ToString());
+        }
+
+        //防止管理员被全部删除
+        public static DataTable SelectUsertype(string Usertype)
+        {
+            var str = new StringBuilder();
+            str.Append("select * from UserInfo where usertype = '");
+            str.Append(Usertype);
+            str.Append("'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, str.ToString()).Tables[0];
         }
     }
 

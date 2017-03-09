@@ -87,7 +87,6 @@ namespace i_Reader_S
         /// <param name="newValue">配置值</param>
         private static void UpdateAppConfig(string newKey, string newValue)
         {
-            var ccc = 1;
             var isModified = ConfigurationManager.AppSettings.Cast<string>().Any(key => key == newKey);
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (isModified)
@@ -264,18 +263,29 @@ namespace i_Reader_S
                 }
                 else if (btn == buttonFixTestItem)
                 {
+                    buttonFixTestItem.Enabled = false;
                     var rowindex1 = dataGridViewTestItem.CurrentCell.RowIndex;
+
                     SqlData.UpdateTestIteminfo(textBoxSettingTestItemName.Text, textBoxSettingUnit.Text,
                         textBoxSettingUnitRatio.Text,
                         textBoxSettingRatio.Text, textBoxSettingWarning.Text, textBoxSettingAccurancy.Text,
                         dataGridViewTestItem[0, rowindex1].Value.ToString(),
                         dataGridViewTestItem[1, rowindex1].Value.ToString());
+
                     if (labelNextTestItem.Text == textBoxSettingTestItemName.Text)
                         labelNextTestItem.Text = textBoxSettingTestItemName.Text;
-                    if (textBoxSettingTestItemName.Text == "CRPDILD")
+                    if (textBoxSettingTestItemName.Text == "CRPDIL")
                     {
                         UpdateAppConfig("PreDilu", textBoxPreDilu.Text);
                     }
+                    textBoxSettingTestItemName.Clear();
+                    textBoxSettingUnit.Clear();
+                    textBoxSettingUnitDefault.Clear();
+                    textBoxSettingUnitRatio.Clear();
+                    textBoxSettingRatio.Clear();
+                    textBoxSettingWarning.Clear();
+                    textBoxSettingAccurancy.Clear();
+                    textBoxPreDilu.Clear();
                     buttonSubMenu_Click(button2, null);
                 }
                 else if (btn == buttonFluoFix)
@@ -744,10 +754,17 @@ namespace i_Reader_S
                 }
                 else if (btn == buttonUserDelete)
                 {
-                    SqlData.DeleteUser(textBoxNewUserName.Text.ToString());
-                    MessageboxShow("用户已经删除");
-                    ShowAllUsers();
-                    SetUsersetting();
+                    if (SqlData.SelectUsertype("1").Rows.Count <= 1 & SqlData.SelectUserName(textBoxNewUserName.Text.ToString()).Rows[0][1].ToString() == "1")
+                    {
+                        MessageboxShow("不能删除所有管理员");
+                    }
+                    else
+                    {
+                        SqlData.DeleteUser(textBoxNewUserName.Text.ToString());
+                        MessageboxShow("用户已经删除");
+                        ShowAllUsers();
+                        SetUsersetting();
+                    }
                 }
                 else if (btn == buttonUserChange)
                 {
@@ -829,6 +846,10 @@ namespace i_Reader_S
                     }
 
                 }//2017-2-24
+                else if (btn == buttonMinOpen)
+                {
+                    WindowState = FormWindowState.Minimized;
+                }
             }
             catch (Exception ee)
             {
@@ -907,13 +928,7 @@ namespace i_Reader_S
                     case "Doing":
                         buttonDoing.BackgroundImage = Resources.Button_Press;
                         buttonDoing.Font = new Font("微软雅黑", 15, FontStyle.Bold);
-                        if (ConfigRead("ASUEnable") == "0")
-                            dataGridViewMain.Size = new Size(464, 378);
-                        else
-                        {
-                            dataGridViewMain.Size = new Size(464, 432);
-                            dataGridViewMain.RowTemplate.Height = 43;
-                        }
+                        dataGridViewMain.Size = new Size(464, 378);
                         UpdatedataGridViewMain("Doing");
                         panelPic.Visible = false;//2017-2-24
                         break;
@@ -1043,7 +1058,7 @@ namespace i_Reader_S
                 case "buttonSetting":
                     buttonSetting.BackgroundImage = Resources.Setting_Press;
                     //2017-2-24
-                    tabControlSetting.SelectedTab = tabPageSetting;
+                    tabControlSetting.SelectedTab = tabPageGeneralSetting;
                     comboBoxUserType.Text = "";
                     comboBoxUserType.Enabled = true;
                     if (UserType == "1")
@@ -1126,11 +1141,25 @@ namespace i_Reader_S
                     if (newTestitem == null) return;
                     if (newTestitem == "") return;
                     if (labelNextTestItem.Text == newTestitem) return;
+                    if (ConfigRead("ASUEnable") == "1")
+                    {
+                        if (newTestitem == "人工进样" | newTestitem == "CRPQC" & serialPortME.IsOpen)
+                        {
+                            serialPortME.Close();
+                            serialPort_DataSend(serialPortMain, "#3024$1");
+                        }
+                        else if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
+                        {
+                            serialPortME.Open();
+                            serialPort_DataSend(serialPortMain, "#3024$0");
+                        }
+                    }
                     labelNextTestItem.Text = newTestitem;
                     var reagentStoreId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
                     SwitchTestItem(reagentStoreId);
                     // ReSharper disable once ResourceItemNotResolved
                     Invoke(new Action(() => Log_Add(Resources.CC07 + labelNextTestItem.Text, false, Color.Red)));
+                    if (newTestitem !=  "人工进样" & newTestitem != "CRPQC")
                     UpdateAppConfig("TestItem", labelNextTestItem.Text);
                     if (newTestitem.Substring(newTestitem.Length - 2) == "QC")
                     {
@@ -1938,6 +1967,7 @@ namespace i_Reader_S
             }
             else if (sender == dataGridViewTestItem)
             {
+                buttonFixTestItem.Enabled = true;
                 if (e.RowIndex > -1)
                 {
                     textBoxSettingTestItemName.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -1947,7 +1977,7 @@ namespace i_Reader_S
                     textBoxSettingUnitDefault.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[7].Value.ToString();
                     textBoxSettingUnitRatio.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[8].Value.ToString();
                     textBoxSettingWarning.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[5].Value.ToString();
-                    if (textBoxSettingTestItemName.Text == "CRPDILD")
+                    if (textBoxSettingTestItemName.Text == "CRPDIL")
                     {
                         labelPreDilu.Visible = true;
                         textBoxPreDilu.Visible = true;
@@ -2154,7 +2184,7 @@ namespace i_Reader_S
 
                 }
 
-                if (testitemname == "CRPDILD")
+                if (testitemname == "CRPDIL")
                     result = result * double.Parse(ConfigRead("PreDilu")) / 5;
 
                 var flag1 = "";
@@ -2731,6 +2761,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         /// 添加信息到日志列表、日志文本框中
         /// </summary>
         /// <param name="logstr">添加的日志信息</param>
+        /// <param name="logstropen">添加开机状态的日志信息</param>
         /// <param name="alert">是否报警</param>
         /// &gt;
         /// <param name="logtype">写入日志列表的编号</param>
@@ -2739,10 +2770,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             // ReSharper disable once LocalizableElement
             textBoxLog.Text = string.Format("{0:[yyyy-MM-dd HH:mm:ss.fff]}{1}\r\n{2}", DateTime.Now, logstr, textBoxLog.Text);
-            var logstr1 = logstr.Substring(14);//2017-3-2
-            textBoxOpenState.Text = string.Format("{0}\r\n{1}", logstr1, textBoxOpenState.Text);
-            if (alert)
-                ShowMyAlert(logstr);
+            if (tabControlMain.SelectedTab == tabPageLogin)
+            {
+                var logstropen = logstr.Substring(14);
+                if (logstropen.Substring(0, 2) != "湿度")
+                {
+                    textBoxOpenState.Text = string.Format("{0}\r\n{1}", logstropen, textBoxOpenState.Text);
+                }
+                if (alert)
+                {
+                    ShowMyAlert(logstr);
+                    textBoxOpenState.Height = 80;
+                    textBoxOpenState.ForeColor = Color.Red;
+                }
+            }
             dataGridViewLog.Rows.Insert(0, 1);
             dataGridViewLog[0, 0].Value = DateTime.Now.ToString("HH:mm:ss");
             dataGridViewLog[1, 0].Value = logstr;
@@ -2782,7 +2823,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             var msgLog = "";
             if (msgType == "*3103")
             {
-                if (ConfigRead("ASUEnable") == "0")
+                if (ConfigRead("ASUEnable") == "0" | tempSend == "")
                 {
                     var sampleNo = "";
                     var testItemName = "";
@@ -2990,7 +3031,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 labelCountDown.Text = Math.Max(0, int.Parse(labelCountDown.Text) - 1).ToString();
                 if (labelCountDown.Text == "0")
                 {
-                    buttonStop.Visible = true;
+                    buttonMinOpen.Visible = true;
                 }
                 labelCountDown.Location = new Point(40 / 2 - labelCountDown.Size.Width / 2, labelCountDown.Location.Y);
                 //系统时间更新
@@ -3046,6 +3087,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     labelpage.Visible = true;
 
                     buttonMenu_Click(buttonHome, null);
+                    if (ConfigRead("ASUEnable") == "1")
+                    {
+                        serialPort_DataSend(serialPortMain, "#3024$0");
+                    }
                     var reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
                     SwitchTestItem(reagentstoreid);
                     ReagentCloseTime = DateTime.Now.AddSeconds(+10);
@@ -4515,7 +4560,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         "*2103", "*2104", "*2107", "*2108", "*2109", "*2113", "*2114", "*2115", "*2116", "*2118",
                         "!2501", "!2502", "!2505", "!2506", "!2510", "!2511", "!2512", "!2513", "!2514", "!2520", "!2521",
                         "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2550", "!2901", "!2902", "!2905", "!2906",
-                        "!2907", "!2910", "!2911", "!2912"//2017-3-1
+                        "!2907", "!2910", "!2911", "!2912"
                     };
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 = { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", };
@@ -5285,7 +5330,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             try
             {
                 var reactionParam = SqlData.SelectReactionParam(reagentstoreid);
-                var dilutionId = labelNextTestItem.Text == "CRPDILD" ? "7" : reactionParam.Rows[0][0].ToString();
+                var dilutionId = labelNextTestItem.Text == "CRPDIL" ? "7" : reactionParam.Rows[0][0].ToString();
                 var sensorId = reactionParam.Rows[0][1].ToString();
                 var reactionTime = reactionParam.Rows[0][2].ToString();
                 var dropVolume = reactionParam.Rows[0][3].ToString();
@@ -5663,8 +5708,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         Log_Add(str, true);
                     }));
                 }
-                //更新消耗品图示
-                Invoke(new Action(UpdateSupplyUi));
+                    //更新消耗品图示
+                    Invoke(new Action(UpdateSupplyUi));
             }
             catch (Exception)
             {
@@ -5754,19 +5799,19 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 var wasteReagentUsage = double.Parse(supplyLeft[3]) / double.Parse(supplyVolume[3]) * 100;
 
                 if(buttonModifyLeft.Text == @"更改存余"& buttonModifyVolume.Text=="更改容量")
-                { 
-                //整数表示
-                labelDilution1.Text = dilutionUsage.ToString("F0") + @"%";
-                labelDilution2.Text = dilutionUsage.ToString("F0") + @"%";
+                {
+                    //整数表示
+                    labelDilution1.Text = dilutionUsage.ToString("F0") + @"%";
+                    labelDilution2.Text = dilutionUsage.ToString("F0") + @"%";
 
-                labelClean1.Text = cleanUsage.ToString("F0") + @"%";
-                labelClean2.Text = cleanUsage.ToString("F0") + @"%";
+                    labelClean1.Text = cleanUsage.ToString("F0") + @"%";
+                    labelClean2.Text = cleanUsage.ToString("F0") + @"%";
 
-                labelWaste1.Text = wasteUsage.ToString("F0") + @"%";
-                labelWaste2.Text = wasteUsage.ToString("F0") + @"%";
+                    labelWaste1.Text = wasteUsage.ToString("F0") + @"%";
+                    labelWaste2.Text = wasteUsage.ToString("F0") + @"%";
 
-                labelWasteReagent1.Text = wasteReagentUsage.ToString("F0") + @"%";
-                labelWasteReagent2.Text = wasteReagentUsage.ToString("F0") + @"%";
+                    labelWasteReagent1.Text = wasteReagentUsage.ToString("F0") + @"%";
+                    labelWasteReagent2.Text = wasteReagentUsage.ToString("F0") + @"%";
                 }
                 labelSupplyLeft.Text = "稀释液:" + dilutionUsage.ToString("F0") + "%";
                 labelSupplyLeft2.Text = "清洗液:" + cleanUsage.ToString("F0") + "%";
@@ -5791,26 +5836,22 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 {
                     panelDilution2.BackgroundImage = Resources.BottleFull;
                     labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
-
                 }
 
                 if (cleanUsage < 10)
                 {
                     panelClean2.BackgroundImage = Resources.BottleFull3;
                     labelCleanStatus.BackColor = Color.Red;
-
                 }
                 else if (cleanUsage < 30)
                 {
                     panelClean2.BackgroundImage = Resources.BottleFull2;
                     labelCleanStatus.BackColor = Color.Yellow;
-
                 }
                 else
                 {
                     panelClean2.BackgroundImage = Resources.BottleFull;
                     labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
-
                 }
                 if (wasteMode == "0")
                 {
@@ -5819,19 +5860,16 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         panelWaste2.BackgroundImage = Resources.BottleFull3;
                         labelWasteStatus.BackColor = Color.Red;
-
                     }
                     else if (wasteUsage > 70)
                     {
                         panelWaste2.BackgroundImage = Resources.BottleFull2;
                         labelWasteStatus.BackColor = Color.Yellow;
-
                     }
                     else
                     {
                         panelWaste2.BackgroundImage = Resources.BottleFull;
                         labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
-
                     }
                 }
                 else
@@ -5843,13 +5881,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 {
                     panelWasteReagent2.BackgroundImage = Resources.ReagentFull3;
                     labelReagentStatus.BackColor = Color.Red;
-
                 }
                 else if (wasteReagentUsage > 70)
                 {
                     panelWasteReagent2.BackgroundImage = Resources.ReagentFull2;
                     labelReagentStatus.BackColor = Color.Yellow;
-
                 }
                 else
                 {
@@ -5861,8 +5897,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 panelClean1.Size = new Size(128, (118 - (int)cleanUsage * 4 / 5));
                 panelWaste1.Size = new Size(128, (118 - (int)wasteUsage * 4 / 5));
                 panelWasteReagent1.Size = new Size(128, (125 - (int)wasteReagentUsage * 86 / 100));
-
-
             }
             catch (Exception)
             {
@@ -6617,7 +6651,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void timerSupplyAlert_Tick(object sender, EventArgs e)
         {
-            timerSupplyAlert.Stop();
             if (ConfigRead("FloatBallEnable") == "1")
             {
                 if (labelLock.Text != "")
@@ -7235,10 +7268,22 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             else if (Click_num == 1)
             {
-                textBoxOpenState.Height = 40;
-                textBoxOpenState.Location = new Point(215, 430);
-                Click_num = 0;
+                if (textBoxOpenState.ForeColor == Color.Red)
+                {
+                    textBoxOpenState.Height = 80;
+                    textBoxOpenState.Location = new Point(215, 430);
+                    Click_num = 0;
+                }
+                else
+                {
+                    textBoxOpenState.Height = 40;
+                    textBoxOpenState.Location = new Point(215, 430);
+                    Click_num = 0;
+                }
             }
+            textBoxOpenState.SelectionStart = 0;
+            textBoxOpenState.ScrollToCaret();
+            textBox1.Focus();
         }
     }
 

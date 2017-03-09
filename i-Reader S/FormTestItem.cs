@@ -95,8 +95,6 @@ namespace i_Reader_S
             Size = new Size(1024, 82 * ((dttestitem.Rows.Count - 1) / 5 + 1) + 4);
             for (int i = 0; i < dttestitem.Rows.Count; i++)
             {
-                /*
-                */
                 btns[i] = new Button
                 {
                     BackColor = Color.Transparent,
