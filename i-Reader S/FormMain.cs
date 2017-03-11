@@ -1561,6 +1561,23 @@ namespace i_Reader_S
             return b;
         }
 
+        private double Cal(double a, string calparam,string style)
+        {
+            var dbxx1 = calparam.Split(',');
+            var b = 0.0;
+            if (style == "min")
+            {
+                b = double.Parse(dbxx1[0]) * a + double.Parse(dbxx1[1]);
+            }
+            else if (style == "max")
+            {
+                b = (double.Parse(dbxx1[3]) - double.Parse(dbxx1[6])) / 
+                    (1 + Math.Pow((a / double.Parse(dbxx1[4])), double.Parse(dbxx1[5]))) + 
+                    double.Parse(dbxx1[6]);
+            }
+            return b;
+        }
+
         /// <summary>
         /// 计算胶体金的浓度值
         /// </summary>
@@ -1584,15 +1601,31 @@ namespace i_Reader_S
             var g = double.Parse(dtCalibdata.Rows[0][7].ToString());
             var calparam = string.Format("6^{0},{1},{2},{3},{4},{5},{6}", a, b, c, d, e, f, g);
             var fun = calparam.Split('^');
-            if (Cal(min, fun[1]) > ty) return min;
-            if (Cal(max, fun[1]) < ty) return max;
-
-            for (var i = 0; i < 10000; i++)
+            if (int.Parse(dtCalibdata.Rows[0][1].ToString()) == 6)//CRP项目
             {
-                var a1 = Cal(min + (max - min) / 10000 * i, fun[1]);
-                var a2 = Cal(min + (max - min) / 10000 * (i + 1), fun[1]);
-                if (!(ty >= a1 & ty <= a2)) continue;
-                return min + (max - min) / 10000 * i;
+                if (Cal(min, fun[1]) > ty) return min;
+                if (Cal(max, fun[1]) < ty) return max;
+
+                for (var i = 0; i < 10000; i++)
+                {
+                    var a1 = Cal(min + (max - min) / 10000 * i, fun[1]);
+                    var a2 = Cal(min + (max - min) / 10000 * (i + 1), fun[1]);
+                    if (!(ty >= a1 & ty <= a2)) continue;
+                    return min + (max - min) / 10000 * i;
+                }
+            }
+            else if (int.Parse(dtCalibdata.Rows[0][1].ToString()) == 5)//PCT项目
+            {
+                if (Cal(min, fun[1],"min") > ty) return min;
+                if (Cal(max, fun[1],"max") < ty) return max;
+                if (ty <= c)
+                {
+                    return (ty - b) / a;
+                }
+                else if (ty > c)
+                {
+                    return (Math.Pow((d - g) / (ty - g), (1 / f)) * e);
+                }
             }
             return double.Parse(j.ToString("f" + accurancy));
         }
@@ -1738,6 +1771,7 @@ namespace i_Reader_S
                     PortLog("Log", "F", string.Format("(C1Y,TY,C2Y)=({0},{1},{2})", c1Y, ty, c2Y));
                 }));
                 FixLight(c1Y, ty, c2Y);
+                Thread.Sleep(1000);
             }
             return str;
         }
@@ -2212,7 +2246,7 @@ namespace i_Reader_S
                             result1 = 5;
                         }
 
-                        exportResult(sampleNo, "CRPDIL", flag1+result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy-MM-dd HH:mm:ss"));
+                        exportResult(sampleNo, "HsCRP", flag1+result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy-MM-dd HH:mm:ss"));
 
                     }
                 }
