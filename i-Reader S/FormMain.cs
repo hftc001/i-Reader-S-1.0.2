@@ -1601,7 +1601,7 @@ namespace i_Reader_S
             var g = double.Parse(dtCalibdata.Rows[0][7].ToString());
             var calparam = string.Format("6^{0},{1},{2},{3},{4},{5},{6}", a, b, c, d, e, f, g);
             var fun = calparam.Split('^');
-            if (int.Parse(dtCalibdata.Rows[0][1].ToString()) == 6)//CRP项目
+            if (int.Parse(dtCalibdata.Rows[0][0].ToString()) == 6)//CRP项目
             {
                 if (Cal(min, fun[1]) > ty) return min;
                 if (Cal(max, fun[1]) < ty) return max;
@@ -1614,7 +1614,7 @@ namespace i_Reader_S
                     return min + (max - min) / 10000 * i;
                 }
             }
-            else if (int.Parse(dtCalibdata.Rows[0][1].ToString()) == 5)//PCT项目
+            else if (int.Parse(dtCalibdata.Rows[0][0].ToString()) == 5)//PCT项目
             {
                 if (Cal(min, fun[1],"min") > ty) return min;
                 if (Cal(max, fun[1],"max") < ty) return max;
@@ -1624,7 +1624,14 @@ namespace i_Reader_S
                 }
                 else if (ty > c)
                 {
-                    return (Math.Pow((d - g) / (ty - g), (1 / f)) * e);
+                    try
+                    {
+                        return (Math.Pow((d - g) / (ty - g), (1 / f)) * e);
+                    }
+                    catch (Exception)
+                    {
+                        return -9;
+                    }
                 }
             }
             return double.Parse(j.ToString("f" + accurancy));
@@ -1689,7 +1696,7 @@ namespace i_Reader_S
         {
             var dt = SqlData.Selectresultinfo(seq);
             var sampleno = dt.Rows.Count == 0 ? seq : dt.Rows[0][0].ToString(); ;
-            //Thread.Sleep(1000);
+            Thread.Sleep(1000);
             CCam.CameraPlay();
             // System.Threading.Thread.Sleep(1000);
             var bDataWide = false;
@@ -1771,7 +1778,6 @@ namespace i_Reader_S
                     PortLog("Log", "F", string.Format("(C1Y,TY,C2Y)=({0},{1},{2})", c1Y, ty, c2Y));
                 }));
                 FixLight(c1Y, ty, c2Y);
-                Thread.Sleep(1000);
             }
             return str;
         }
@@ -2245,9 +2251,7 @@ namespace i_Reader_S
                             flag1 = ">";
                             result1 = 5;
                         }
-
-                        exportResult(sampleNo, "HsCRP", flag1+result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy-MM-dd HH:mm:ss"));
-
+                        exportResult(sampleNo, "HsCRP", flag1+result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy/MM/dd HH:mm:ss"));
                     }
                 }
 
