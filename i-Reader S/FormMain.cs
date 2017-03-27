@@ -68,6 +68,9 @@ namespace i_Reader_S
         
         //用户权限
         public string UserType = "";//2017-2-24
+
+        //ASU测试是否已经完成的判断变量//2017-3-22
+        public bool ASUComplete = true;
         
         //触摸屏美观要求，需要隐藏鼠标
         [DllImport("user32.dll", EntryPoint = "ShowCursor", CharSet = CharSet.Auto)]
@@ -519,7 +522,7 @@ namespace i_Reader_S
                     LogSave("Main" + DateTime.Now.ToString("yyyyMMdd") + ".txt", textBoxMain.Text);
                     LogSave("QR" + DateTime.Now.ToString("yyyyMMdd") + ".txt", textBoxQR.Text);
                     LogSave("TH" + DateTime.Now.ToString("yyyyMMdd") + ".txt", textBoxTH.Text);
-                    if (ConfigRead("ASUEanble") == "1")
+                    if (ConfigRead("ASUEnable") == "1")
                         LogSave("ASU" + DateTime.Now.ToString("yyyyMMdd") + ".txt", textBoxASU.Text);
 
                     var strlog = new StringBuilder();
@@ -928,15 +931,20 @@ namespace i_Reader_S
                     case "Doing":
                         buttonDoing.BackgroundImage = Resources.Button_Press;
                         buttonDoing.Font = new Font("微软雅黑", 15, FontStyle.Bold);
-                        dataGridViewMain.Size = new Size(464, 378);
+                        dataGridViewMain.Size = new Size(464, 380);
+                        if (ConfigRead("ASUEnable") == "1")
+                        {
+                            dataGridViewMain.RowTemplate.Height = 38;
+                        }
                         UpdatedataGridViewMain("Doing");
                         panelPic.Visible = false;//2017-2-24
                         break;
-
+                        
                     case "Done":
                         buttonDone.BackgroundImage = Resources.Button_Press;
                         buttonDone.Font = new Font("微软雅黑", 15, FontStyle.Bold);
                         dataGridViewMain.Size = new Size(464, 432);
+                        dataGridViewMain.RowTemplate.Height = 54;
                         UpdatedataGridViewMain("Done");
                         panelPic.Visible = false;//2017-2-24
                         break;
@@ -945,6 +953,7 @@ namespace i_Reader_S
                         buttonException.BackgroundImage = Resources.Button_Press1;
                         buttonException.Font = new Font("微软雅黑", 15, FontStyle.Bold);
                         dataGridViewMain.Size = new Size(464, 432);
+                        dataGridViewMain.RowTemplate.Height = 54;
                         UpdatedataGridViewMain("Exception");
                         labelExceptionNo.Visible = false;
                         labelExceptionNo.Text = "0";
@@ -1116,6 +1125,7 @@ namespace i_Reader_S
             dataGridViewQCSetting.Visible = true;
             buttonFixQCData.Visible = false;
         }
+        
 
         private void buttonSubMenu_Click(object sender, EventArgs e)
         {
@@ -1140,26 +1150,49 @@ namespace i_Reader_S
                     //空项目名不处理
                     if (newTestitem == null) return;
                     if (newTestitem == "") return;
-                    if (labelNextTestItem.Text == newTestitem) return;
+                    if (labelNextTestItem.Text == newTestitem)
+                    {
+                        if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
+                        {
+                            labelhuman.Visible = false;
+                            serialPortME.Open();
+                            serialPort_DataSend(serialPortMain, "#3024$0");
+                        }
+                        return;
+                    } 
                     if (ConfigRead("ASUEnable") == "1")
                     {
                         if (newTestitem == "人工进样" | newTestitem == "CRPQC" & serialPortME.IsOpen)
                         {
-                            serialPortME.Close();
-                            serialPort_DataSend(serialPortMain, "#3024$1");
+                            if (newTestitem == "人工进样")
+                            {
+                                if (ASUComplete == false)
+                                {
+                                    MessageboxShow("ASU测试尚未完成，请勿开启人工进样模式");
+                                    return;
+                                }
+                                else
+                                {
+                                    labelhuman.Visible = true;
+                                    serialPortME.Close();
+                                    serialPort_DataSend(serialPortMain, "#3024$1");
+                                }
+                            } 
                         }
                         else if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
                         {
+                            labelhuman.Visible = false;
                             serialPortME.Open();
                             serialPort_DataSend(serialPortMain, "#3024$0");
                         }
                     }
+                    if(newTestitem != "人工进样")
                     labelNextTestItem.Text = newTestitem;
                     var reagentStoreId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
                     SwitchTestItem(reagentStoreId);
                     // ReSharper disable once ResourceItemNotResolved
                     Invoke(new Action(() => Log_Add(Resources.CC07 + labelNextTestItem.Text, false, Color.Red)));
-                    if (newTestitem !=  "人工进样" & newTestitem != "CRPQC")
+                    if (newTestitem !=  "人工进样" & newTestitem != "CRPQC" )
                     UpdateAppConfig("TestItem", labelNextTestItem.Text);
                     if (newTestitem.Substring(newTestitem.Length - 2) == "QC")
                     {
@@ -1414,7 +1447,7 @@ namespace i_Reader_S
                         }
 
                         //定义一个DirectoryInfo对象
-                        var di = new DirectoryInfo(Application.StartupPath + @"\Rawdata");
+                        var di = new DirectoryInfo(Application.StartupPath + @"\Rawdata"); 
 
                         //通过GetFiles方法,获取di目录中的所有文件的大小
                         var len = di.GetFiles().Aggregate<FileInfo, double>(0, (current, fi) => current + fi.Length);
@@ -2774,6 +2807,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             tbtemp = tabPageLogin;
             Size = new Size(1024, 768);
             timerLoad.Start();
+
+            if (File.Exists(Application.StartupPath + "/ExceptionChar.txt"))
+            {
+                File.Delete(Application.StartupPath + "/ExceptionChar.txt");
+            }
         }
 
         //荧光数据校验位计算
@@ -3030,19 +3068,33 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             if (sender == toolStripMenuItem1)
             {
-                var rowIndex = int.Parse(CounterText);
-                DateTime time;
-                if (tabControlMain.SelectedTab == tabPageHome)
+                if (PrinterSettings.InstalledPrinters.Count == 0)
                 {
-                    dataGridViewMain.Rows[rowIndex].Selected = true;
-                    time = DateTime.Parse(dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString());
+                    MessageboxShow("打印机未安装");
                 }
                 else
                 {
-                    dataGridViewSearch.Rows[rowIndex].Selected = true;
-                    time = DateTime.Parse(dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString());
+                    try
+                    {
+                        var rowIndex = int.Parse(CounterText);
+                        DateTime time;
+                        if (tabControlMain.SelectedTab == tabPageHome)
+                        {
+                            dataGridViewMain.Rows[rowIndex].Selected = true;
+                            time = DateTime.Parse(dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString());
+                        }
+                        else
+                        {
+                            dataGridViewSearch.Rows[rowIndex].Selected = true;
+                            time = DateTime.Parse(dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString());
+                        }
+                        ResultPrintOut(time.ToString("yyyy-MM-dd HH:mm:ss"));
+                    }
+                    catch (Exception)
+                    {
+                        MessageboxShow("打印机驱动未安装");
+                    }
                 }
-                ResultPrintOut(time.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             else if (sender == timerPageUp)
             {
@@ -3060,9 +3112,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 if (engineerMode > 0)
                     engineerMode--;
-                if (tempSend != "" & sampleready == true)
+                if (tempSend != "" & sampleready == true )
                 {
-                    serialPort_DataSend(serialPortMain, "#3051");
+                    timerSampleStart.Start();
                     sampleready = false;
                 }
 
@@ -3673,7 +3725,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
                     }
                     if (tempSend != "")
-                        serialPort_DataSend(serialPortMain, "#3051");
+                        timerSampleStart.Start();
 
                 }));
             }
@@ -4124,7 +4176,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     else if (ch != '\x06' & ch != '\x15' & ch != '\x0d' & (ch < ' ' | ch > '~'))
                     {
                         _comStr[0] += "<" + ((int)ch).ToString("X2") + ">";
-                        ExeptionChar("<" + ((int)ch).ToString("X2") + ">");
+                        //ExeptionChar("<" + ((int)ch).ToString("X2") + ">");2017-3-22
 
                     }
                     else if (ch == '\x06')
@@ -4133,7 +4185,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     else if (ch == '\x15')
                     {
-                        ExeptionChar("<NAK>");
+                        //ExeptionChar("<NAK>");
                         _comStr[0] += "<NAK>";
                     }
                     else
@@ -4975,7 +5027,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         else if (msgType == "*3104")
                         {
                             SampleNormal = true;
-                            Invoke(new Action(() => timerSampleReady.Start()));
+                            if (serialPortME.IsOpen)
+                            {
+                                Invoke(new Action(() => timerSampleReady.Start()));
+                            }
                         }
                         SqlData.UpdateWorkStatusBySeq(info, seq);
                         //如果处于待测页面需要刷新界面
@@ -6774,7 +6829,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 else if (cmdbyte == 0x06)
                     currentline.Append("<ACK>");
                 else if (cmdbyte == 0x15)
-                    currentline.Append("<NAK");
+                    currentline.Append("<NAK>");
                 else
                 {
                     char ch = (char)cmdbyte;
@@ -6884,6 +6939,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
                     break;
                 case "A":
+                    ASUComplete = false;
                     var mestatus = "";
                     mestatus = _otherInt[2] == 3 ? "01" : "00";
                     var linestatus = strTemp.Substring(9, 3);
@@ -6904,11 +6960,19 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     strO += LeftCheck(strO.Substring(1));
                     var strbyteO = Encoding.ASCII.GetBytes(strO);
                     Invoke(new Action(() => PortLog("ASU", "S", strO)));
-
                     serialPortME.Write(strbyteO, 0, strbyteO.Length);
+
+                    var testitem = SqlData.SelectProductIdItemIdByname(labelNextTestItem.Text.ToString()).Rows[0][1].ToString();
+                    var TyFixStr = ConfigRead("COMSFix");
+                    DataTable ASU = SqlData.SelectASUmessage();
+                    var ReagentStoreID = ASU.Rows[0][0].ToString();
+                    var DilutionRatio = ASU.Rows[0][1].ToString();
+                    var ReactionTime = ASU.Rows[0][2].ToString();
+                    var CalibDataID = ASU.Rows[0][3].ToString();
                     //写入待测列表中
-                    SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, "0", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", "1",
-                        "1", "1", "1", "12");
+                    SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                        ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                    Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
                     seqtemp--;
                     UpdatedataGridViewMain("Doing");
                     break;
@@ -6923,6 +6987,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     break;
             }
         }
+
         bool SampleNormal = true;
         private void timerSampleReady_Tick(object sender, EventArgs e)
         {
@@ -6934,7 +6999,15 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 tempSend = "";
             }
             timerSampleReady.Stop();
-
+            //判断ASU是否已经测试完成
+            if (ASUComplete == false)
+            {
+                DataTable dt = SqlData.SelectWorkRunlistforASU();
+                if (dt.Rows.Count == 0)
+                {
+                    ASUComplete = true;
+                }
+            }
             if (!SampleNormal)
                 sampleready = true;
         }
@@ -7090,6 +7163,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 Log_Add("6224" + ee.Message, false);
             }
         }
+        
 
         private void serialPortFloatBall_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -7297,6 +7371,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         int Click_num = 0;
         private void textBoxOpenState_MouseClick(object sender, MouseEventArgs e)
+            //加载界面状态显示
         {
             if (Click_num == 0)
             {
@@ -7322,6 +7397,12 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             textBoxOpenState.SelectionStart = 0;
             textBoxOpenState.ScrollToCaret();
             textBox1.Focus();
+        }
+
+        private void timerSampleStart_Tick(object sender, EventArgs e)
+        {
+            timerSampleStart.Stop();
+            serialPort_DataSend(serialPortMain, "#3051");
         }
     }
 

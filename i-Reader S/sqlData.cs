@@ -1154,6 +1154,25 @@ namespace i_Reader_S
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, str.ToString()).Tables[0];
         }
+
+        //ASU添加信息
+        public static DataTable SelectASUmessage()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select a.ReagentStoreID,b.DilutionRatioID,b.ReactionTime,a.CalibDataId from ReagentStore a, ProductInfo b,CalibData c where ISWorkStore = 1 and a.CalibDataID = c.CalibDataID and b.ProductID = c.ProductID");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
+                    ];
+        }
+
+        //查询是否有ASU传送
+        public static DataTable SelectWorkRunlistforASU()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select WorkingStatus from WorkRunList where WorkingStatus = 'ASU传送'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+        }
     }
 
 }

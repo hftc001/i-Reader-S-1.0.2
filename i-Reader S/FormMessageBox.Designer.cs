@@ -47,7 +47,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft YaHei", 16F);
+            this.label1.Font = new System.Drawing.Font("微软雅黑", 16F);
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(10, 9);
             this.label1.Name = "label1";
@@ -58,7 +58,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F);
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 14.25F);
             this.label2.Location = new System.Drawing.Point(13, 57);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 25);
@@ -69,7 +69,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.DodgerBlue;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft YaHei", 14.25F);
+            this.button1.Font = new System.Drawing.Font("微软雅黑", 14.25F);
             this.button1.Location = new System.Drawing.Point(292, 145);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(108, 55);

@@ -235,6 +235,7 @@
             this.buttonException = new System.Windows.Forms.Button();
             this.buttonDone = new System.Windows.Forms.Button();
             this.buttonDoing = new System.Windows.Forms.Button();
+            this.labelhuman = new System.Windows.Forms.Label();
             this.tabPageQC = new System.Windows.Forms.TabPage();
             this.dataGridViewQC2 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -417,6 +418,7 @@
             this.serialPortFloatBall = new System.IO.Ports.SerialPort(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.labeluser = new System.Windows.Forms.Label();
+            this.timerSampleStart = new System.Windows.Forms.Timer(this.components);
             this.tabControlMain.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
             this.panelLogin.SuspendLayout();
@@ -1790,6 +1792,7 @@
             this.panel1.Controls.Add(this.buttonException);
             this.panel1.Controls.Add(this.buttonDone);
             this.panel1.Controls.Add(this.buttonDoing);
+            this.panel1.Controls.Add(this.labelhuman);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
@@ -1917,6 +1920,11 @@
             this.buttonDoing.Name = "buttonDoing";
             this.buttonDoing.UseVisualStyleBackColor = true;
             this.buttonDoing.Click += new System.EventHandler(this.buttonHomeLeft_Click);
+            // 
+            // labelhuman
+            // 
+            resources.ApplyResources(this.labelhuman, "labelhuman");
+            this.labelhuman.Name = "labelhuman";
             // 
             // tabPageQC
             // 
@@ -3438,6 +3446,11 @@
             this.labeluser.BackColor = System.Drawing.Color.Transparent;
             this.labeluser.Name = "labeluser";
             // 
+            // timerSampleStart
+            // 
+            this.timerSampleStart.Interval = 2000;
+            this.timerSampleStart.Tick += new System.EventHandler(this.timerSampleStart_Tick);
+            // 
             // ReaderS
             // 
             resources.ApplyResources(this, "$this");
@@ -3929,6 +3942,8 @@
         private System.Windows.Forms.DataGridView dataGridViewAllUsers;
         private System.Windows.Forms.Button buttonMinOpen;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label labelhuman;
+        private System.Windows.Forms.Timer timerSampleStart;
     }
 }
 

@@ -151,7 +151,7 @@ namespace i_Reader_S
 
             }
             var str = "";
-            if (c1Y + c2Y - miny * 2 < 1000&ReaderS.LocationCcd!=-1) str = "-11^";
+            if (c1Y + c2Y - miny * 2 < 1000 & ReaderS.LocationCcd!=-1) str = "-11^";
 
             //Max(71, 4020); Min(481, 566); C1(323, 2192); T(619, 1040); C2(925, 2152); nstartY(425)
             return str+$"Max({maxx}, {maxy}); Min({minx}, {miny}); C1({c1X}, {c1Y}); T({tx}, {ty}); C2({c2X}, {c2Y}); nstartY({midY})";
