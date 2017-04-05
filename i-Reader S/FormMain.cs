@@ -63,8 +63,8 @@ namespace i_Reader_S
         //searchcondition 查询列表条件
         private string _searchcondition = string.Format(" and createtime between '{0:yyyy-MM-dd 00:00:00}' and '{1:yyyy-MM-dd 23:59:59}' ", DateTime.Today.AddDays(-7), DateTime.Now);
 
-        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,,是否光源校准
-        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0 };
+        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准
+        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0 };
         
         //用户权限
         public string UserType = "";//2017-2-24
@@ -271,7 +271,7 @@ namespace i_Reader_S
 
                     SqlData.UpdateTestIteminfo(textBoxSettingTestItemName.Text, textBoxSettingUnit.Text,
                         textBoxSettingUnitRatio.Text,
-                        textBoxSettingRatio.Text, textBoxSettingWarning.Text, textBoxSettingAccurancy.Text,
+                        textBoxSettingRatio.Text, textBoxSettingAccurancy.Text,
                         dataGridViewTestItem[0, rowindex1].Value.ToString(),
                         dataGridViewTestItem[1, rowindex1].Value.ToString());
 
@@ -359,15 +359,23 @@ namespace i_Reader_S
                         MessageBox.Show(@"需进入维护状态");
                         return;
                     }
+                    _otherInt[7] = 1;
                     if (LocationCcd == -1)
                         LocationCcd = 0;
                     var str = CalTy("0");
                     var tx = str.Substring(str.IndexOf("T(", StringComparison.Ordinal) + 2);
                     var midY = str.Substring(str.IndexOf("nstartY", StringComparison.Ordinal) + 8);
                     var midy = int.Parse(midY.Substring(0, midY.IndexOf(")", StringComparison.Ordinal))) - 428;
-                    Log_Add(string.Format(@"中心偏移量为：（{0},{1})", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy), false);
+                    
+                    var Rdiff = str.Substring(str.IndexOf("Rdiff", StringComparison.Ordinal) + 6);
+                    var Turn = Rdiff.Substring(0, Rdiff.IndexOf(")", StringComparison.Ordinal));
+
+                    Log_Add(string.Format(@"偏移位置：左右：{0}; 上下：{1}; 旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn), false);
+                    //Log_Add(string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy), false);
                     Log_Add(str, false);
-                    labelResult.Text = string.Format(@"中心偏移量为：（{0},{1})", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy);
+                    labelResult.Text = string.Format(@"偏移位置：左右：{0}; 上下：{1}; 旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn);
+                    //labelResult.Text = string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy);
+                    _otherInt[7] = 0;
                 }
                 else if (btn == buttonMinWindow)
                 {
@@ -1152,7 +1160,8 @@ namespace i_Reader_S
                     if (newTestitem == "") return;
                     if (labelNextTestItem.Text == newTestitem)
                     {
-                        if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
+                        //if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
+                        if (labelhuman.Visible == true & !serialPortME.IsOpen)//2017-4-1
                         {
                             labelhuman.Visible = false;
                             serialPortME.Open();
@@ -1659,7 +1668,7 @@ namespace i_Reader_S
                 {
                     try
                     {
-                        return (Math.Pow((d - g) / (ty - g), (1 / f)) * e);
+                        return (Math.Pow(((d - g) / (ty - g) - 1), (1 / e)) * f);
                     }
                     catch (Exception)
                     {
@@ -1768,6 +1777,12 @@ namespace i_Reader_S
 
             if (_otherInt[6] == 0)
             {
+                //中心校准
+                if (_otherInt[7] == 1)
+                {
+                    str = CalMethods.CalTurn(data, str);
+                }
+
                 var midy = str.Substring(str.IndexOf("nstartY(", StringComparison.Ordinal) + 8);
                 var midY = int.Parse(midy.Substring(0, midy.IndexOf(")", StringComparison.Ordinal)));
 
@@ -3034,11 +3049,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     case "!3901":
                         ty = "-3";
                         break;
-
                     case "!3903":
                         ty = "-2";
                         break;
-
                     case "!3540":
                         ty = "-5";
                         break;
@@ -3291,6 +3304,12 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         // 主菜单下控件按下事件
         private void panelReagent_Click(object sender, EventArgs e)
         {
+            panelReagent1.Enabled = false;
+            panelReagent2.Enabled = false;
+            panelReagent3.Enabled = false;
+            panelReagent4.Enabled = false;
+            panelReagent5.Enabled = false;
+
             var no = ((Panel)sender).Name.Substring(((Panel)sender).Name.Length - 1);
             serialPort_DataSend(serialPortMain, "#0010$" + no);
         }
@@ -4176,7 +4195,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     else if (ch != '\x06' & ch != '\x15' & ch != '\x0d' & (ch < ' ' | ch > '~'))
                     {
                         _comStr[0] += "<" + ((int)ch).ToString("X2") + ">";
-                        //ExeptionChar("<" + ((int)ch).ToString("X2") + ">");2017-3-22
+                        ExeptionChar("<" + ((int)ch).ToString("X2") + ">");
 
                     }
                     else if (ch == '\x06')
@@ -4185,7 +4204,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     else if (ch == '\x15')
                     {
-                        //ExeptionChar("<NAK>");
+                        ExeptionChar("<NAK>");
                         _comStr[0] += "<NAK>";
                     }
                     else
@@ -7070,6 +7089,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 }
             }
         }
+
         List<string> cmdlist = new List<string>();
         private void timerMainPort_Tick(object sender, EventArgs e)
         {
@@ -7091,16 +7111,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     backstr = "\x0d\x03" + MainPortCheck(strCmd + "\x0d");
 
                     serialPort_DataDeal(strCmd, "MainSend");
-
-                    if (strCmd.IndexOf("#0010") > -1)
-                    {
-                        panelReagent1.Enabled = false;
-                        panelReagent2.Enabled = false;
-                        panelReagent3.Enabled = false;
-                        panelReagent4.Enabled = false;
-                        panelReagent5.Enabled = false;
-                    }
-
                 }
                 else
                 {
