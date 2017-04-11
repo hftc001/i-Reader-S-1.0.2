@@ -162,6 +162,71 @@ namespace i_Reader_S
             }
         }
 
+        public static string CalTurn(int[,] data, string str)
+        {
+            try
+            {
+                var tx = str.Substring(str.IndexOf("T(", StringComparison.Ordinal) + 2);
+                int Tx = int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal)));
+
+                int h = data.GetLength(0);
+
+                int[] datarow = MyMath.MyMath.RowMean(data);
+                int[] datacol = MyMath.MyMath.ColMean(data);
+                int data1 = datarow.Max() / 4 + 3 * datarow.Min() / 4;
+                int data2 = datacol.Max() / 4 + 3 * datacol.Min() / 4;
+                int[,] subrow1 = MyMath.MyMath.SubArray(data, 0, h - 1, Tx - 210, Tx - 190);
+                int[,] subrow2 = MyMath.MyMath.SubArray(data, 0, h - 1, Tx + 190, Tx + 210);
+                int[] subrow11 = MyMath.MyMath.ColMean(subrow1);
+                int[] subrow22 = MyMath.MyMath.ColMean(subrow2);
+                int cx11 = 0;
+                int cx21 = 0;
+                int cx12 = 0;
+                int cx22 = 0;
+                for (int i = 0; i < subrow11.Length; i++)
+                {
+                    if (subrow11[i] < data1)
+                    {
+                        cx11 = i;
+                        break;
+                    }
+                }
+                for (int i = subrow11.Length - 1; i > -1; i--)
+                {
+                    if (subrow11[i] < data1)
+                    {
+                        cx21 = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < subrow22.Length; i++)
+                {
+                    if (subrow22[i] < data1)
+                    {
+                        cx12 = i;
+                        break;
+                    }
+                }
+                for (int i = subrow22.Length - 1; i > -1; i--)
+                {
+                    if (subrow11[i] < data1)
+                    {
+                        cx22 = i;
+                        break;
+                    }
+                }
+                int Rdiff = (cx11 + cx21) / 2 - (cx12 + cx22) / 2;
+
+                return str + $"; Rdiff({Rdiff})";
+            }
+            catch (Exception)
+            {
+                return "-9";
+            }
+        }
+
+
+
 
 
         /// <summary>

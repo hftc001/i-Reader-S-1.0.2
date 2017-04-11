@@ -1088,6 +1088,10 @@ namespace i_Reader_S
                         buttonCheckAllUsers.Visible = false;
                         buttonCheckAllUsers.Enabled = false;
                     }//2017-2-24
+                    if (ConfigRead("ASUEnable") == "1")
+                    {
+                        groupBox5.Visible = true;
+                    }//20
                     break;
 
                 case "buttonMessage":
@@ -5508,7 +5512,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                      tbx.Name == textBoxSettingWarning.Name)
                 CounterText = "Num|" + tbx.Text;
             else if (tbx.Name == textBoxSettingAccurancy.Name | tbx.Name == textBoxStartSample.Name |
-                      tbx.Name == textBoxPage.Name | tbx.Name == textBoxSleepTime.Name | tbx.Name == textBoxPreDilu.Name)
+                      tbx.Name == textBoxPage.Name | tbx.Name == textBoxSleepTime.Name | tbx.Name == textBoxPreDilu.Name | tbx.Name == textBoxBarcodeLength.Name)
                 CounterText = "Int|" + tbx.Text;
             else if (tbx.Name == textBoxSearchSample.Name | tbx.Name == textBoxQCSampleNo.Name)
             {
@@ -5550,6 +5554,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 var time = int.Parse(str) * 60;
                 UpdateAppConfig("SleepTime", str);
                 serialPort_DataSend(serialPortMain, "#3052$" + time);
+            }
+            else if (tbx.Name == textBoxBarcodeLength.Name)
+            {
+                if (str == "") { _otherInt[0] = 0; ShowMyAlert("条码长度不能为空"); return; }
+                UpdateAppConfig("BarcodeLength", str);
             }
             else if (tbx.Name == textBoxSettingWarning.Name | tbx.Name == textBoxSettingAccurancy.Name)
             {
@@ -6241,6 +6250,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 : Resources.switch_on;
             textBoxSleepTime.Text = ConfigRead("SleepTime");
             textBoxStartSample.Text = ConfigRead("StartSampleNo");
+            textBoxBarcodeLength.Text = ConfigRead("BarcodeLength");
 
 
             //资源文件
@@ -6975,6 +6985,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var sampleid1 = strTemp.Substring(11, 20).Replace(" ", "");
                     var shelfid1 = strTemp.Substring(31, 10);
                     var locationid1 = strTemp.Substring(41, 2);
+                    if (sampleid1.Length != int.Parse(ConfigRead("BarcodeLength")))
+                    {
+                        type1 = "01";
+                    }
                     var strO = "\x02" + "o" + _mEseq + type1 + sampleid1.PadRight(20) + "\x03";
                     strO += LeftCheck(strO.Substring(1));
                     var strbyteO = Encoding.ASCII.GetBytes(strO);
@@ -6989,11 +7003,22 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var ReactionTime = ASU.Rows[0][2].ToString();
                     var CalibDataID = ASU.Rows[0][3].ToString();
                     //写入待测列表中
-                    SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
-                        ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                    Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
-                    seqtemp--;
-                    UpdatedataGridViewMain("Doing");
+                    if (sampleid1.Length == int.Parse(ConfigRead("BarcodeLength")))
+                    {
+                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                            ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                        Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
+                        seqtemp--;
+                        UpdatedataGridViewMain("Doing");
+                    }
+                    else
+                    {
+                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "条码长度错误", TyFixStr,
+                            ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                        Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + "样本号长度不正确", false);
+                        seqtemp--;
+                        UpdatedataGridViewMain("Doing");
+                    }
                     break;
                 case "S":
                     var type2 = strTemp.Substring(9, 2);

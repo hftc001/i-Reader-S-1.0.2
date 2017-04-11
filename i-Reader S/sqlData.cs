@@ -701,7 +701,6 @@ namespace i_Reader_S
 
         //更新产品项目信息
         public static void UpdateTestIteminfo(string testitemname, string unit, string unitratio, string ratio,
-            string warningvalue,
             string accurancy, string productid, string testitemid)
         {
             var strsql = new StringBuilder();
@@ -713,8 +712,6 @@ namespace i_Reader_S
             strsql.Append(unitratio);
             strsql.Append(", ratio=");
             strsql.Append(ratio);
-            strsql.Append(",warningvalue=");
-            strsql.Append(warningvalue);
             strsql.Append(",accurancy=");
             strsql.Append(accurancy);
             strsql.Append(" where productid=");
