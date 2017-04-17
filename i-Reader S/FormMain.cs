@@ -50,6 +50,7 @@ namespace i_Reader_S
 
         //当前仪器测试参数 检测头，片仓,反应时间
         private int[] _MParam = { 0, 1, 300 };
+        
 
         //警告弹窗
         private FormAlert _myAlert;
@@ -7219,8 +7220,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             {
                                 Invoke(new Action(() => Log_Add("FloatBall:" + str, false)));
                                 var wastestatus = str.Split('$')[1];
-                                var cleanstatus = str.Split('$')[3];
                                 var dilutionstatus = str.Split('$')[2];
+                                var cleanstatus = str.Split('$')[3];
                                 if (wastestatus == "1")
                                 {
                                     labelWasteStatus.BackColor = Color.Red;
@@ -7231,6 +7232,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         serialPort_DataSend(serialPortMain, "#3053$1");
                                         labelLock.Text = "仪器锁定";
                                         Log_Add("请清空废液后继续操作，当前仪器锁定", true);
+                                        ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
                                     }
                                 }
                                 else
@@ -7270,6 +7272,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     labelCleanStatus.BackColor = Color.Red;
                                     labelSupplyLeft2.Text = "清洗液:×";
 
+                                    if (count[1] == "0")
+                                        serialPort_DataSend(serialPortMain, "#3025$2");
                                 }
                                 else
                                 {
