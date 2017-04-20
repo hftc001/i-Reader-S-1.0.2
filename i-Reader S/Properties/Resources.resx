@@ -839,4 +839,7 @@
   <data name="I2118" xml:space="preserve">
     <value>吸样泵初始化完成</value>
   </data>
+  <data name="ResultError15" xml:space="preserve">
+    <value>电极异常</value>
+  </data>
 </root>

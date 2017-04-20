@@ -38,6 +38,8 @@ namespace i_Reader_S
 
         //用于切换测试项目
         public static string TestItemText = "";
+        //用于确定弹窗形式
+        public static string [] MessageType = { "", "" };
 
         //荧光的数据需要8个数一组自行读取，为间断式数据，用于存储荧光数据
         private readonly List<double> _fluoData = new List<double>();
@@ -45,8 +47,8 @@ namespace i_Reader_S
         //主控、二维码、温湿度、荧光数据、荧光电机、浮球串口
         private readonly string[] _comStr = { "", "", "", "-1", "", "" };
 
-        //荧光测试的seq，打印信息,CCDSeq
-        private readonly string[] _otherStr = { "", "", "" };
+        //荧光测试的seq，打印信息，CCDSeq
+        private readonly string[] _otherStr = { "", "", ""};
 
         //当前仪器测试参数 检测头，片仓,反应时间
         private int[] _MParam = { 0, 1, 300 };
@@ -64,8 +66,8 @@ namespace i_Reader_S
         //searchcondition 查询列表条件
         private string _searchcondition = string.Format(" and createtime between '{0:yyyy-MM-dd 00:00:00}' and '{1:yyyy-MM-dd 23:59:59}' ", DateTime.Today.AddDays(-7), DateTime.Now);
 
-        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准
-        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗
+        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         
         //用户权限
         public string UserType = "";//2017-2-24
@@ -371,10 +373,10 @@ namespace i_Reader_S
                     var Rdiff = str.Substring(str.IndexOf("Rdiff", StringComparison.Ordinal) + 6);
                     var Turn = Rdiff.Substring(0, Rdiff.IndexOf(")", StringComparison.Ordinal));
 
-                    Log_Add(string.Format(@"偏移位置：左右：{0}; 上下：{1}; 旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn), false);
+                    Log_Add(string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn), false);
                     //Log_Add(string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy), false);
                     Log_Add(str, false);
-                    labelResult.Text = string.Format(@"偏移位置：左右：{0}; 上下：{1}; 旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn);
+                    labelResult.Text = string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn);
                     //labelResult.Text = string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy);
                     _otherInt[7] = 0;
                 }
@@ -1154,11 +1156,19 @@ namespace i_Reader_S
                         Log_Add(Resources.SwitchTestItemError, true);
                         return;
                     }
-                    TestItemText = labelNextTestItem.Text + "|";
+                    if (labelhuman.Visible == true)
+                    {
+                        TestItemText = "人工进样" + "|";
+                    }
+                    else
+                    {
+                        TestItemText = labelNextTestItem.Text + "|";
+                    }
                     for (var i = 0; i < dttestitem.Rows.Count; i++)
                     {
                         TestItemText += dttestitem.Rows[i][0] + "|";
                     }
+                    
                     var newTestitem = Mytestitem();
                     //空项目名不处理
                     if (newTestitem == null) return;
@@ -1180,6 +1190,11 @@ namespace i_Reader_S
                         {
                             if (newTestitem == "人工进样")
                             {
+                                DataTable dt = SqlData.SelectWorkRunlistforASU();
+                                if (dt.Rows.Count == 0)
+                                {
+                                    ASUComplete = true;
+                                }
                                 if (ASUComplete == false)
                                 {
                                     MessageboxShow("ASU测试尚未完成，请勿开启人工进样模式");
@@ -3042,7 +3057,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 }
             }
             //测试出错处理，清洗液不足、稀释液不足、取片失败
-            else if (msgType == "!3901" | msgType == "!3903" | msgType == "!3540" | msgType == "!3927" | msgType == "!3925" | msgType == "!3926")
+            else if (msgType == "!3901" | msgType == "!3903" | msgType == "!3540" | msgType == "!3927" | msgType == "!3928" | msgType == "!3925" | msgType == "!3926")
             {
                 var dtSampleNoTime = SqlData.SelectSampleNoTimeBySeq(seq);
                 if (dtSampleNoTime.Rows.Count == 0) return;
@@ -3069,13 +3084,21 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     case "!3927":
                         ty = "-14";
                         break;
+                    case "!3928":
+                        ty = "-15";
+                        break;
                 }
                 DrawResult(ty, seq, "", "", "");
                 Invoke(new Action(() =>
                 {
                     if (GetResxString("Exception", "ColumnText") == labelOther.Text)
                         UpdatedataGridViewMain("Exception");
-                    if (msgType == "!3901" | msgType == "!3903" | msgType == "!3540")
+                    if (msgType == "!3901" | msgType == "!3903")
+                    {
+                        MessageType[1] = "1";
+                        Log_Add(sampleNo + msgLog, true);
+                    }
+                    if (msgType == "!3540")
                         Log_Add(sampleNo + msgLog, true);
                 }));
             }
@@ -4677,7 +4700,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         "!2907", "!2910", "!2911", "!2912"
                     };
                     //无参数的信息,需后续操作
-                    string[] msgnoparam2 = { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", };
+                    string[] msgnoparam2 = 
+                    { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904"};
                   
                     //无需特殊处理的含参数信息
                     string[] msgwithparam =
@@ -4806,6 +4830,16 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     }
                                     ));
                                 }
+                                break;
+                            //清洗液灌注失败
+                            case "!3902":
+                                MessageboxShow("清洗液灌注失败，请更换清洗液\r\n之后点击确定进行灌注", true);
+                                serialPort_DataSend(serialPortMain, "#3051");
+                                break;
+                            //稀释液灌注失败
+                            case "!3904":
+                                MessageboxShow("稀释液灌注失败，请更换稀释液\r\n之后点击确定进行灌注", true);
+                                serialPort_DataSend(serialPortMain, "#3051");
                                 break;
                         }
                     }
@@ -5155,7 +5189,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         OperationAfterDealMsgWithSeq(msgType, seq1, "");
                     }
 
-                    else if (msgType == "!3927" | msgType == "!3925" | msgType == "!3926")
+                    else if (msgType == "!3927" | msgType == "!3925" | msgType == "!3926" | msgType == "!3928")
                     {
                         try
                         {
@@ -5606,6 +5640,23 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
         }
 
+        private void UpdatedataGridViewMainASU()
+        {
+            try
+            {
+                dataGridViewMain.DataSource = SqlData.SelectWorkRunlistASU();
+                      
+                dataGridViewMain.Columns[0].Visible = false;
+                dataGridViewMain.Columns[4].Visible = false;
+                dataGridViewMain.Columns[1].Width = 175;
+                dataGridViewMain.Columns[2].Width = 155;
+                dataGridViewMain.Columns[3].Width = 135;
+            }
+            catch (Exception)
+            {
+                Log_Add("更新主表时出错", true);
+            }
+        }
         /// <summary>
         /// 更新搜索列表
         /// </summary>
@@ -6970,6 +7021,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     break;
                 case "A":
                     ASUComplete = false;
+                    if (SqlData.SelectWorkRunlistforASUNum().Rows.Count == 0)
+                    {
+                        var ReagentID = SqlData.SwitchReagentStore().Rows[0][0].ToString();
+                        serialPort_DataSend(serialPortMain,"#3011$" + ReagentID);
+                    }
                     var mestatus = "";
                     mestatus = _otherInt[2] == 3 ? "01" : "00";
                     var linestatus = strTemp.Substring(9, 3);
@@ -7010,7 +7066,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
                         Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
                         seqtemp--;
-                        UpdatedataGridViewMain("Doing");
+                        UpdatedataGridViewMainASU();
                     }
                     else
                     {
@@ -7018,7 +7074,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
                         Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + "样本号长度不正确", false);
                         seqtemp--;
-                        UpdatedataGridViewMain("Doing");
+                        UpdatedataGridViewMainASU();
                     }
                     break;
                 case "S":
@@ -7199,7 +7255,27 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 Log_Add("6224" + ee.Message, false);
             }
         }
-        
+
+        private void MessageboxShow(string str, bool confirm)
+        {
+            if (confirm == true)
+                MessageType[0] = "1";
+            if (_myMsab != null)
+            {
+                if (!_myMsab.IsDisposed)
+                    return;
+            }
+            try
+            {
+                messstr = str;
+                _myMsab = new FormMessageBox { Owner = this };
+                _myMsab.ShowDialog();
+            }
+            catch (Exception ee)
+            {
+                Log_Add("6225" + ee.Message, false);
+            }
+        }
 
         private void serialPortFloatBall_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -7232,7 +7308,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         serialPort_DataSend(serialPortMain, "#3053$1");
                                         labelLock.Text = "仪器锁定";
                                         Log_Add("请清空废液后继续操作，当前仪器锁定", true);
-                                        ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
                                     }
                                 }
                                 else
@@ -7271,9 +7346,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     labelFloatBallClean.BackColor = Color.Red;
                                     labelCleanStatus.BackColor = Color.Red;
                                     labelSupplyLeft2.Text = "清洗液:×";
-
-                                    if (count[1] == "0")
-                                        serialPort_DataSend(serialPortMain, "#3025$2");
                                 }
                                 else
                                 {

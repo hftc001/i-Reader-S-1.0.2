@@ -91,6 +91,7 @@
             this.Name = "FormMessageBox";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "FormMessageBox";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMessageBox_FormClosed);
             this.Load += new System.EventHandler(this.FormMessageBox_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

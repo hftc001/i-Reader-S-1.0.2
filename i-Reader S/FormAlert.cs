@@ -50,12 +50,16 @@ namespace i_Reader_S
             int y = 150;
             Location = new Point(x, y);//设置窗体在屏幕右下角显示
             AnimateWindow(Handle, 1000, AwBlend | AwHorNegative);
-            timer1.Interval = 3000;
+            if (ReaderS.MessageType[1] == "1")
+            { timer1.Interval = 30000; }
+            else
+            { timer1.Interval = 3000; }
             timer1.Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            ReaderS.MessageType[1] = "0";
             Close();
         }
     }

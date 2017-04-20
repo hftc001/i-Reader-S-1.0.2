@@ -21,7 +21,7 @@ namespace i_Reader_S
         {
             var strsql = new StringBuilder();
             strsql.Append("select b.SensorID,a.Sampleno,d.TestItemName, a.flag+case ");
-            for (int i = -1; i > -15; i--)
+            for (int i = -1; i > -16; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -345,7 +345,7 @@ namespace i_Reader_S
         {
             var strsql = new StringBuilder();
             strsql.Append("select createtime, sampleno,c.TestItemName,a.flag+ case ");
-            for (int i = -1; i > -15; i--)
+            for (int i = -1; i > -16; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -581,7 +581,7 @@ namespace i_Reader_S
             strsql.Append(",TestItemName as ");
             strsql.Append(headerstr?[1]);
             strsql.Append(",w.flag+ case  ");
-            for (int i = -1; i > -15; i--)
+            for (int i = -1; i > -16; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -614,7 +614,7 @@ namespace i_Reader_S
             //
             var strsql = new StringBuilder();
             strsql.Append("select createtime, sampleno,c.TestItemName,a.flag+ case ");
-            for (int i = -1; i > -15; i--)
+            for (int i = -1; i > -16; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -694,6 +694,15 @@ namespace i_Reader_S
                 hostQuery == "0"
                     ? "select Sequence,SampleNo,b.TestItemName ,WorkingStatus from workrunlist a,TestItemInfo b,calibdata c where c.ProductID=b.ProductID and a.TestItemID=b.TestItemID and a.CalibDataID=c.CalibDataid"
                     : "select b,c,d,e from((select '0' as a, Sequence as b, SampleNo as c, b.TestItemName as d, WorkingStatus as e from workrunlist a, TestItemInfo b, calibdata c where c.ProductID = b.ProductID and a.TestItemID = b.TestItemID and a.CalibDataID = c.CalibDataid)union(select '1' as a, HostQueryList.[index] as b, SampleNo as c, TestItemName as d, '排队' as e from HostQueryList)) temp");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
+                    ];
+        }
+
+        public static DataTable SelectWorkRunlistASU()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select Sequence,SampleNo,b.TestItemName ,WorkingStatus,a.createtime from workrunlist a,TestItemInfo b,calibdata c where c.ProductID=b.ProductID and a.TestItemID=b.TestItemID and a.CalibDataID=c.CalibDataid order by a.Createtime asc" );
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
                     ];
@@ -1167,6 +1176,15 @@ namespace i_Reader_S
         {
             var strsql = new StringBuilder();
             strsql.Append("select WorkingStatus from WorkRunList where WorkingStatus = 'ASU传送'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+        }
+
+        //查询是否有ASU传送
+        public static DataTable SelectWorkRunlistforASUNum()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select Createtime from WorkRunList");
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }

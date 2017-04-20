@@ -1980,6 +1980,15 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
+        ///   查找类似 电极异常 的本地化字符串。
+        /// </summary>
+        internal static string ResultError15 {
+            get {
+                return ResourceManager.GetString("ResultError15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 稀释液不足 的本地化字符串。
         /// </summary>
         internal static string ResultError2 {
