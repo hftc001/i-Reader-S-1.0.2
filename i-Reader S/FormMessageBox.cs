@@ -39,7 +39,6 @@ namespace i_Reader_S
 
         private void FormMessageBox_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (ReaderS.MessageType[0] == "1")
                 ReaderS.MessageType[0] = "";
         }
     }

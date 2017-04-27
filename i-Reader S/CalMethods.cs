@@ -16,145 +16,190 @@ namespace i_Reader_S
         {
             try
             {
-            //1、找到中间线
-            int midY = 0;
-            //如果是灰度片，需固定中间线位置为1016/2-80
-            if (ReaderS.LocationCcd == -1)
-            {
-                midY = 428;
-            }
-            //普通片需要查找中间线
-            else
-            {
-                int[] data1 = new int[data.GetLength(0)];
-                for (int i = 0; i < data.GetLength(0); i++)
+                //1、找到中间线
+                int midY = 0;
+                //如果是灰度片，需固定中间线位置为1016/2-80
+                if (ReaderS.LocationCcd == -1)
                 {
-                    for (int j = 0; j < data.GetLength(1); j++)
-                    {
-                        data1[i] += data[i, j];
-                    }
-                    data1[i] /= data.GetLength(1);
+                    midY = 428;
                 }
-
-                int UpX = 0;
-                int DownX = 0;
-                for (int i = 0; i < data1.Length; i++)
+                //普通片需要查找中间线
+                else
                 {
-                    if (data1[i] < data1.Min() + data1.Max() / 4 - data1.Min() / 4)
+                    int[] data1 = new int[data.GetLength(0)];
+                    for (int i = 0; i < data.GetLength(0); i++)
                     {
-                        UpX = i;
-                        break;
+                        for (int j = 0; j < data.GetLength(1); j++)
+                        {
+                            data1[i] += data[i, j];
+                        }
+                        data1[i] /= data.GetLength(1);
                     }
+
+                    int UpX = 0;
+                    int DownX = 0;
+                    for (int i = 0; i < data1.Length; i++)
+                    {
+                        if (data1[i] < data1.Min() + data1.Max() / 4 - data1.Min() / 4)
+                        {
+                            UpX = i;
+                            break;
+                        }
+                    }
+                    if (UpX == 0) return "-9";
+                    for (int i = data1.Length - 1; i > -1; i--)
+                    {
+                        if (data1[i] < data1.Min() + data1.Max() / 4 - data1.Min() / 4)
+                        {
+                            DownX = i;
+                            break;
+                        }
+                    }
+                    if (DownX == 0) return "-9";
+                    midY = DownX / 2 + UpX / 2 - 80;
                 }
-                if (UpX == 0) return "-9";
-                for (int i = data1.Length - 1; i > -1; i--)
-                {
-                    if (data1[i] < data1.Min() + data1.Max() / 4 - data1.Min() / 4)
-                    {
-                        DownX = i;
-                        break;
-                    }
-                }
-                if (DownX == 0) return "-9";
-                midY = DownX / 2 + UpX / 2-80;
-            }
-            //有效区域取平均
-            int[] data2 = new int[data.GetLength(1)];
-            for (int i = 0; i < data2.Length; i++)
-            {
-                for (int j = midY; j < midY + 160; j++)
-                {
-                    data2[i] += data[j, i];
-                }
-                data2[i] /= 160;
-            }
-
-            int c1X=0;
-            int c1Y=0;
-            int c2X=0;
-            int c2Y=0;
-            int tx=0;
-            int ty=0;
-            int minx = 0;
-            int maxx = 0;
-            int miny = 5000;
-            int maxy = 0;
-
-            if (ReaderS.LocationCcd == -1)
-            {
-                c1X = 338;
-                tx = 638;
-                c2X = 938;
-                c1Y = (int)(data2.Take(c1X + 10).Reverse().Take(20).Average());
-                c2Y = (int)(data2.Take(c2X + 10).Reverse().Take(20).Average());
-                ty = (int)(data2.Take(tx + 10).Reverse().Take(20).Average());
-            }
-            else
-            {
-                int LeftX = 0;
-                int RightX = 0;
-
-                for (int i = 100; i < data2.Length-100; i++)
-                {
-                    if (data2.Take(i + 50).Reverse().Take(150).Min() == data2[i])
-                    {
-                        LeftX = i;break;
-                    }
-                }
-
-                if (LeftX == 0) return "-9";
-                
-                for (int i = data2.Length- 101; i >100; i--)
-                {
-                    if (data2.Take(i + 100).Reverse().Take(150).Min() == data2[i])
-                    {
-                        RightX = i; break;
-                    }
-                }
-
-                if (RightX < LeftX+600) return "-9";
-
-                for (int i = 0; i < RightX / 3 - LeftX / 3; i++)
-                {
-                    if (data2[LeftX + i] > c1Y)
-                    {
-                        c1Y = data2[LeftX + i];
-                        c1X = LeftX + i;
-                    }
-                    if (data2[LeftX + RightX / 3 - LeftX / 3 + i] > ty)
-                    {
-                        ty = data2[LeftX + RightX / 3 - LeftX / 3 + i];
-                        tx = LeftX + RightX / 3 - LeftX / 3 + i;
-                    }
-
-                    if (data2[LeftX + RightX / 3 - LeftX / 3 + i] < miny)
-                    {
-                        minx = LeftX + RightX / 3 - LeftX / 3 + i;
-                        miny = data2[minx];
-                    }
-
-                    if (data2[LeftX + RightX / 3 - LeftX / 3 + RightX / 3 - LeftX / 3 + i] > c2Y)
-                    {
-                        c2Y = data2[LeftX+ RightX / 3 - LeftX / 3+ RightX / 3 - LeftX / 3 + i];
-                        c2X = LeftX+ RightX / 3 - LeftX / 3+ RightX / 3 - LeftX / 3 + i;
-                    }
-                }
-
+                //有效区域取平均
+                int[] data2 = new int[data.GetLength(1)];
                 for (int i = 0; i < data2.Length; i++)
                 {
-                    if (data2[i] > maxy)
+                    for (int j = midY; j < midY + 160; j++)
                     {
-                        maxy = data2[i];
-                        maxx = i;
+                        data2[i] += data[j, i];
                     }
+                    data2[i] /= 160;
                 }
 
-            }
-            var str = "";
-            if (c1Y + c2Y - miny * 2 < 1000 & ReaderS.LocationCcd!=-1) str = "-11^";
+                int c1X = 0;
+                int c1Y = 0;
+                int c2X = 0;
+                int c2Y = 0;
+                int tx = 0;
+                int ty = 0;
+                int minx = 0;
+                int maxx = 0;
+                int miny = 5000;
+                int maxy = 0;
 
-            //Max(71, 4020); Min(481, 566); C1(323, 2192); T(619, 1040); C2(925, 2152); nstartY(425)
-            return str+$"Max({maxx}, {maxy}); Min({minx}, {miny}); C1({c1X}, {c1Y}); T({tx}, {ty}); C2({c2X}, {c2Y}); nstartY({midY})";
+                if (ReaderS.LocationCcd == -1)
+                {
+                    c1X = 338;
+                    tx = 638;
+                    c2X = 938;
+                    c1Y = (int)(data2.Take(c1X + 10).Reverse().Take(20).Average());
+                    c2Y = (int)(data2.Take(c2X + 10).Reverse().Take(20).Average());
+                    ty = (int)(data2.Take(tx + 10).Reverse().Take(20).Average());
+                }
+                else
+                {
+                    int LeftX = 0;
+                    int RightX = 0;
+
+                    for (int i = 100; i < data2.Length - 100; i++)
+                    {
+                        if (data2.Take(i + 50).Reverse().Take(150).Min() == data2[i])
+                        {
+                            LeftX = i; break;
+                        }
+                    }
+
+                    if (LeftX == 0) return "-9";
+
+                    for (int i = data2.Length - 101; i > 100; i--)
+                    {
+                        if (data2.Take(i + 100).Reverse().Take(150).Min() == data2[i])
+                        {
+                            RightX = i; break;
+                        }
+                    }
+
+                    if (RightX < LeftX + 600) return "-9";
+
+                    for (int i = 0; i < RightX / 3 - LeftX / 3; i++)
+                    {
+                        if (data2[LeftX + i] > c1Y)
+                        {
+                            c1Y = data2[LeftX + i];
+                            c1X = LeftX + i;
+                        }
+                        /*
+                        if (data2[LeftX + RightX / 3 - LeftX / 3 + i] > ty)
+                        {
+                            ty = data2[LeftX + RightX / 3 - LeftX / 3 + i];
+                            tx = LeftX + RightX / 3 - LeftX / 3 + i;
+                        }
+                        */
+                        if (data2[LeftX + RightX / 3 - LeftX / 3 + i] < miny)
+                        {
+                            minx = LeftX + RightX / 3 - LeftX / 3 + i;
+                            miny = data2[minx];
+                        }
+
+                        if (data2[LeftX + RightX / 3 - LeftX / 3 + RightX / 3 - LeftX / 3 + i] > c2Y)
+                        {
+                            c2Y = data2[LeftX + RightX / 3 - LeftX / 3 + RightX / 3 - LeftX / 3 + i];
+                            c2X = LeftX + RightX / 3 - LeftX / 3 + RightX / 3 - LeftX / 3 + i;
+                        }
+                    }
+                    //0值算法开始
+                    var startx = c1X / 2 + c2X / 2 - 50;
+
+                    var TY = new List<int>();
+                    var TX = new List<int>();
+                    for (int i = 0; i < 100; i++)
+                    {
+                        if (data2.Skip(startx + i - 10).Take(20).Max() == data2[startx + i] & data2.Skip(startx - 10).Take(20).Min() + 40 < data2[startx + i])
+                        {
+                            TY.Add(data2[startx + i]);
+                            TX.Add(startx + i);
+                        }
+                    }
+                    if (TY.Count() == 0)
+                    {
+                        tx = 0;
+                        ty = 0;
+                    }
+                    else
+                    {
+                        while (TY.Count > 0)
+                        {
+                            var a = data2.Skip(TX[TY.IndexOf(TY.Max())] - 20).Take(10).Average();
+                            var b = data2.Skip(TX[TY.IndexOf(TY.Max())] - 20 - 40).Take(10).Average();
+                            if (a - b > 40)
+                            {
+                                ty = TY.Max();
+                                tx = TX[TY.IndexOf(ty)];
+                                break;
+                            }
+                            else if (TY.Count > 1)
+                            {
+                                TY.Remove(TY.Max());
+                                TX.Remove(TY.IndexOf(TY.Max()));
+                            }
+                            else
+                            {
+                                tx = 0;
+                                ty = 0;
+                                break;
+                            }
+                        }
+                    }
+                    //0值算法结束
+
+                    for (int i = 0; i < data2.Length; i++)
+                    {
+                        if (data2[i] > maxy)
+                        {
+                            maxy = data2[i];
+                            maxx = i;
+                        }
+                    }
+
+                }
+                var str = "";
+                if (c1Y + c2Y - miny * 2 < 1000 & ReaderS.LocationCcd != -1) str = "-11^";
+
+                //Max(71, 4020); Min(481, 566); C1(323, 2192); T(619, 1040); C2(925, 2152); nstartY(425)
+                return str + $"Max({maxx}, {maxy}); Min({minx}, {miny}); C1({c1X}, {c1Y}); T({tx}, {ty}); C2({c2X}, {c2Y}); nstartY({midY})";
             }
             catch (Exception)
             {
@@ -240,11 +285,13 @@ namespace i_Reader_S
             {
                 var dataCount = fluodata.Count;
                 var point = dataCount / 20;
+                //var point = 9;
                 var cx = 0;
                 var tx = 0;
                 double cy = 0;
                 double ty = 0;
                 var tcspan = dataCount * 90 / 180;
+                //var tcspan = 90;
                 for (var i = dataCount / 10; i < dataCount * 9 / 10; i++)
                 {
                     if (fluodata[i] > cy)

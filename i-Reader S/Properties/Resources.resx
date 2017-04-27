@@ -842,4 +842,7 @@
   <data name="ResultError15" xml:space="preserve">
     <value>电极异常</value>
   </data>
+  <data name="ResultError16" xml:space="preserve">
+    <value>条码长度错误</value>
+  </data>
 </root>

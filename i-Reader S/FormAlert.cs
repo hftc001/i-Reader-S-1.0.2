@@ -59,7 +59,7 @@ namespace i_Reader_S
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ReaderS.MessageType[1] = "0";
+            ReaderS.MessageType[1] = "";
             Close();
         }
     }

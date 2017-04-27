@@ -1989,6 +1989,15 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
+        ///   查找类似 条码长度错误 的本地化字符串。
+        /// </summary>
+        internal static string ResultError16 {
+            get {
+                return ResourceManager.GetString("ResultError16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 稀释液不足 的本地化字符串。
         /// </summary>
         internal static string ResultError2 {

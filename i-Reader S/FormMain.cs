@@ -216,6 +216,12 @@ namespace i_Reader_S
                         ShowMyAlert("QC样本号不可重复");
                     }
                 }
+                else if (btn == buttonNotChangeStore)
+                {
+                    var str2 = labelReagentOperation.Text;
+                    str2 = str2.Substring(str2.IndexOf("#", StringComparison.Ordinal) + 1, 1);
+                    ReagentClose(str2);
+                }
                 else if (btn == buttonAddTestItem)
                 {
                     CounterText = "AddNewItem";
@@ -362,23 +368,23 @@ namespace i_Reader_S
                         MessageBox.Show(@"需进入维护状态");
                         return;
                     }
-                    _otherInt[7] = 1;
+                    //_otherInt[7] = 1;
                     if (LocationCcd == -1)
                         LocationCcd = 0;
                     var str = CalTy("0");
                     var tx = str.Substring(str.IndexOf("T(", StringComparison.Ordinal) + 2);
                     var midY = str.Substring(str.IndexOf("nstartY", StringComparison.Ordinal) + 8);
                     var midy = int.Parse(midY.Substring(0, midY.IndexOf(")", StringComparison.Ordinal))) - 428;
-                    
-                    var Rdiff = str.Substring(str.IndexOf("Rdiff", StringComparison.Ordinal) + 6);
-                    var Turn = Rdiff.Substring(0, Rdiff.IndexOf(")", StringComparison.Ordinal));
 
-                    Log_Add(string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn), false);
-                    //Log_Add(string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy), false);
+                    //var Rdiff = str.Substring(str.IndexOf("Rdiff", StringComparison.Ordinal) + 6);
+                    //var Turn = Rdiff.Substring(0, Rdiff.IndexOf(")", StringComparison.Ordinal));
+
+                    //Log_Add(string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn), false);
+                    Log_Add(string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy), false);
                     Log_Add(str, false);
-                    labelResult.Text = string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn);
-                    //labelResult.Text = string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy);
-                    _otherInt[7] = 0;
+                    //labelResult.Text = string.Format(@"中心位置：（{0}，{1}）旋转：{2}", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy, Turn);
+                    labelResult.Text = string.Format(@"中心偏移量为：（{0},{1}）", int.Parse(tx.Substring(0, tx.IndexOf(",", StringComparison.Ordinal))) - 638, midy);
+                    //_otherInt[7] = 0;
                 }
                 else if (btn == buttonMinWindow)
                 {
@@ -1889,10 +1895,16 @@ namespace i_Reader_S
             var Basey = resultStr.Substring(resultStr.IndexOf("Min(", StringComparison.Ordinal) + 4);
             Basey = Basey.Substring(Basey.IndexOf(",") + 1);
             Basey = Basey.Substring(0, Basey.IndexOf(")"));
+
+            var Thit = int.Parse(ty) - int.Parse(Basey);
+
+            var tyFixStr = ConfigRead("CMOSFix");
+
+            var trueThit = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
             Invoke(new Action(() =>
             {
                 Log_Add(resultStr + "^" + seq, false);
-                labelResult.Text = @"TY:" + ty;
+                labelResult.Text = @"TY:" + ty + @" THit:" + trueThit + @" Base:" + Basey;//2017-04-24
             }));
             DrawResult(string.Format("{0}|{1}", ty, Basey), seq, resultStr, path1, path2);
         }
@@ -2266,6 +2278,7 @@ namespace i_Reader_S
                     {
                         var basey = oddata.Split('|')[1];
                         value = double.Parse(ty) - double.Parse(basey);
+                        //value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
                         value = value * double.Parse(tyFixStr.Split('|')[0]);
                     }
 
@@ -3773,6 +3786,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     if (tempSend != "")
                         timerSampleStart.Start();
+                    buttonNotChangeStore.Visible = false;
+                    buttonSetFirst.Visible = false;
 
                 }));
             }
@@ -3811,6 +3826,92 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         buttonSetFirst.Visible = true;
                     // ReSharper disable once ResourceItemNotResolved
                     str = Resources.labelReagentInfoText;
+                    if (str != null)
+                    {
+                        str = str.Replace("[n]", productname1);
+                        str = str.Replace("[m]", lotno1);
+                    }
+                    labelReagentInfo.Text = str;
+                    labelQR.Text = "";
+                    if (lotLeft > 0)
+                        Log_Add(reagentStoreId + "#片仓有剩余，请注意批号、产品的一致性", true);
+
+                    panelReagent1.Enabled = true;
+                    panelReagent2.Enabled = true;
+                    panelReagent3.Enabled = true;
+                    panelReagent4.Enabled = true;
+                    panelReagent5.Enabled = true;
+
+                    var reagentlock = ConfigRead("ReagentLock").Split('-');
+                    if (reagentlock.Length == 5)
+                    {
+                        panelReagent1.Enabled = reagentlock[0] == "0";
+                        panelReagent2.Enabled = reagentlock[1] == "0";
+                        panelReagent3.Enabled = reagentlock[2] == "0";
+                        panelReagent4.Enabled = reagentlock[3] == "0";
+                        panelReagent5.Enabled = reagentlock[4] == "0";
+                    }
+
+                }));
+            }
+            catch (Exception)
+            {
+                Log_Add("仓门打开时出错", true);
+            }
+        }
+        /*
+        //收到片仓打开命令显示片仓操作panel
+        private void ReagentOpen(string reagentStoreId)
+        {
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    labelReagentInfo.Text = "";
+                    labelReagentOperation.Text = "";
+                    labelQR.Text = "";
+                    labelQR2.Text = "";
+                    labelQRAlert.Text = "";
+                    tabControlMainRight.SelectedTab = tabPageReagentOpen;
+                    ReagentStatus = 1;
+                    var productname = SqlData.SelectTestItemNameById(SqlData.SelectproductidbyTestItemName1(labelNextTestItem.Text).Rows[0][0].ToString());
+                    // ReSharper disable once ResourceItemNotResolved
+                    var str = Resources.labelReagentOperationText;
+                    str = str.Replace("[n]", reagentStoreId);
+                    labelReagentOperation.Text = str;
+
+                }));
+            }
+            catch (Exception)
+            {
+                Log_Add("仓门打开时出错", true);
+            }
+        }*/
+
+        private void ReagentOpenNext(string reagentStoreId)
+        {
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    var productname = SqlData.SelectTestItemNameById(SqlData.SelectproductidbyTestItemName1(labelNextTestItem.Text).Rows[0][0].ToString());
+                    
+                    var productname1 = SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][1].ToString();
+                    var lotno1 = SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][2].ToString();
+                    var lotLeft = int.Parse(SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][3].ToString());
+
+                    if (productname1 != productname)
+                    {
+                        buttonSetFirst.Visible = false;
+                        ReagentClose(reagentStoreId);
+                    }
+                    else
+                    {
+                        buttonSetFirst.Visible = true;
+                        buttonNotChangeStore.Visible = true;
+                    }
+                    // ReSharper disable once ResourceItemNotResolved
+                    var str = Resources.labelReagentInfoText;
                     if (str != null)
                     {
                         str = str.Replace("[n]", productname1);
@@ -4693,11 +4794,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     string[] msgnoparam1 =
                     {
                         "*0199", "*1101", "*2100", "*3153", "*3154", "*3160", "*3161", "*3162", "*3163", "*3190",
-                        "*3191", "*3135",  "!3501", "!3525", "!3526", "!3527",
+                        "*3191", "*3135", "!3501", "!3525", "!3526", "!3527",
                         "*2103", "*2104", "*2107", "*2108", "*2109", "*2113", "*2114", "*2115", "*2116", "*2118",
                         "!2501", "!2502", "!2505", "!2506", "!2510", "!2511", "!2512", "!2513", "!2514", "!2520", "!2521",
                         "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2550", "!2901", "!2902", "!2905", "!2906",
-                        "!2907", "!2910", "!2911", "!2912"
+                        "!2907", "!2910", "!2911", "!2912", "!3911", "!3912"
                     };
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 = 
@@ -4834,11 +4935,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             //清洗液灌注失败
                             case "!3902":
                                 MessageboxShow("清洗液灌注失败，请更换清洗液\r\n之后点击确定进行灌注", true);
+                                Log_Add("清洗液再次灌注",false);
                                 serialPort_DataSend(serialPortMain, "#3051");
                                 break;
                             //稀释液灌注失败
                             case "!3904":
                                 MessageboxShow("稀释液灌注失败，请更换稀释液\r\n之后点击确定进行灌注", true);
+                                Log_Add("稀释液再次灌注", false);
                                 serialPort_DataSend(serialPortMain, "#3051");
                                 break;
                         }
@@ -4895,7 +4998,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 //片仓打开需要提示用于扫码等操作
                                 case "*3130": ReagentOpen(detail[1]); break;
                                 //片仓关闭后得提示用户是否扫码，未扫码需要确认。
-                                case "*3131": ReagentClose(detail[1]); break;
+                                case "*3131":
+                                    ReagentClose(detail[1]); break;
+                                //ReagentOpenNext(detail[1]); break;
                                 //当前片仓设定需要更改数据库
                                 case "*3137":
                                     SqlData.SetDefaultReagentStoreId(detail[1]);
@@ -5640,23 +5745,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
         }
 
-        private void UpdatedataGridViewMainASU()
-        {
-            try
-            {
-                dataGridViewMain.DataSource = SqlData.SelectWorkRunlistASU();
-                      
-                dataGridViewMain.Columns[0].Visible = false;
-                dataGridViewMain.Columns[4].Visible = false;
-                dataGridViewMain.Columns[1].Width = 175;
-                dataGridViewMain.Columns[2].Width = 155;
-                dataGridViewMain.Columns[3].Width = 135;
-            }
-            catch (Exception)
-            {
-                Log_Add("更新主表时出错", true);
-            }
-        }
         /// <summary>
         /// 更新搜索列表
         /// </summary>
@@ -5732,7 +5820,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         var volume1 = ConfigRead("SupplyVolume").Split('-');
                         var count1 = ConfigRead("SupplyLeft").Split('-');
                         count1[3] = (int.Parse(count1[3]) + 1).ToString();
-                        if (count1[3] == volume1[3])
+                        if (int.Parse(count1[3]) >= int.Parse(volume1[3]))
                         {
                             labelFloatBallWasteReagent.BackColor = Color.Red;
                             labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n已满\r\n\r\n请清空";
@@ -6539,8 +6627,29 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             LocationCcd = -1;
             Log_Add(CalTy("0"), false);
+
             LocationCcd = 0;
+            var resultStr = CalTy("0");
             Log_Add(CalTy("0"), false);
+
+            var ty = resultStr.Substring(resultStr.IndexOf("T(", StringComparison.Ordinal) + 2);
+            ty = ty.Substring(ty.IndexOf(",", StringComparison.Ordinal) + 1);
+            ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
+
+            var Basey = resultStr.Substring(resultStr.IndexOf("Min(", StringComparison.Ordinal) + 4);
+            Basey = Basey.Substring(Basey.IndexOf(",") + 1);
+            Basey = Basey.Substring(0, Basey.IndexOf(")"));
+
+            var Thit = int.Parse(ty) - int.Parse(Basey);
+
+            var tyFixStr = ConfigRead("CMOSFix");
+
+            var trueThit = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
+
+            Invoke(new Action(() =>
+            {
+                labelResult.Text = @"TY:" + ty + @" THit:" + trueThit + @" Base:" + Basey;//2017-04-24
+            }));
         }
 
         private int ColBorder(byte[] col)
@@ -7066,15 +7175,17 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
                         Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
                         seqtemp--;
-                        UpdatedataGridViewMainASU();
+                        UpdatedataGridViewMain("Doing");
                     }
                     else
                     {
                         SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "条码长度错误", TyFixStr,
                             ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                        var seq = SqlData.SelectBarcodeError(sampleid1).Rows[0][0].ToString();
+                        DrawResult("-16", seq, "", "", "");
                         Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + "样本号长度不正确", false);
                         seqtemp--;
-                        UpdatedataGridViewMainASU();
+                        UpdatedataGridViewMain("Doing");
                     }
                     break;
                 case "S":
@@ -7300,6 +7411,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 var cleanstatus = str.Split('$')[3];
                                 if (wastestatus == "1")
                                 {
+                                    labelFloatBallWaste.Text = "废液\r\n\r\n" + "警报";
                                     labelWasteStatus.BackColor = Color.Red;
                                     labelFloatBallWaste.BackColor = Color.Red;
                                     labelSupplyLeft3.Text = "废液：×";
@@ -7308,10 +7420,12 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         serialPort_DataSend(serialPortMain, "#3053$1");
                                         labelLock.Text = "仪器锁定";
                                         Log_Add("请清空废液后继续操作，当前仪器锁定", true);
+                                        ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
                                     }
                                 }
                                 else
                                 {
+                                    labelFloatBallWaste.Text = "废液\r\n\r\n" + "正常";
                                     labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
                                     labelFloatBallWaste.BackColor = Color.FromArgb(41, 169, 223);
                                     labelSupplyLeft3.Text = "废液：√";
