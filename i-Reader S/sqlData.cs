@@ -1198,6 +1198,17 @@ namespace i_Reader_S
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }
+
+        public static DataTable SelectReagentStoreLeft(string str)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select reagentleft from ReagentStore  where reagentstoreid ='");
+            strsql.Append(str);
+            strsql.Append("'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
+                    ];
+        }
     }
 
 }

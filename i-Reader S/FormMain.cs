@@ -216,12 +216,6 @@ namespace i_Reader_S
                         ShowMyAlert("QC样本号不可重复");
                     }
                 }
-                else if (btn == buttonNotChangeStore)
-                {
-                    var str2 = labelReagentOperation.Text;
-                    str2 = str2.Substring(str2.IndexOf("#", StringComparison.Ordinal) + 1, 1);
-                    ReagentClose(str2);
-                }
                 else if (btn == buttonAddTestItem)
                 {
                     CounterText = "AddNewItem";
@@ -1904,7 +1898,8 @@ namespace i_Reader_S
             Invoke(new Action(() =>
             {
                 Log_Add(resultStr + "^" + seq, false);
-                labelResult.Text = @"TY:" + ty + @" THit:" + trueThit + @" Base:" + Basey;//2017-04-24
+                labelResult.Text = @"TY:" + ty + @" THit:" + Thit + @" Base:" + Basey;//2017-04-24
+                //labelResult.Text = @"TY:" + ty;
             }));
             DrawResult(string.Format("{0}|{1}", ty, Basey), seq, resultStr, path1, path2);
         }
@@ -3786,7 +3781,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     if (tempSend != "")
                         timerSampleStart.Start();
-                    buttonNotChangeStore.Visible = false;
                     buttonSetFirst.Visible = false;
 
                 }));
@@ -3824,94 +3818,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         buttonSetFirst.Visible = false;
                     else
                         buttonSetFirst.Visible = true;
+
+                    if (SqlData.SelectReagentStoreLeft(reagentStoreId).Rows[0][0].ToString() == "0")
+                        buttonSetFirst.Visible = false;
                     // ReSharper disable once ResourceItemNotResolved
                     str = Resources.labelReagentInfoText;
-                    if (str != null)
-                    {
-                        str = str.Replace("[n]", productname1);
-                        str = str.Replace("[m]", lotno1);
-                    }
-                    labelReagentInfo.Text = str;
-                    labelQR.Text = "";
-                    if (lotLeft > 0)
-                        Log_Add(reagentStoreId + "#片仓有剩余，请注意批号、产品的一致性", true);
-
-                    panelReagent1.Enabled = true;
-                    panelReagent2.Enabled = true;
-                    panelReagent3.Enabled = true;
-                    panelReagent4.Enabled = true;
-                    panelReagent5.Enabled = true;
-
-                    var reagentlock = ConfigRead("ReagentLock").Split('-');
-                    if (reagentlock.Length == 5)
-                    {
-                        panelReagent1.Enabled = reagentlock[0] == "0";
-                        panelReagent2.Enabled = reagentlock[1] == "0";
-                        panelReagent3.Enabled = reagentlock[2] == "0";
-                        panelReagent4.Enabled = reagentlock[3] == "0";
-                        panelReagent5.Enabled = reagentlock[4] == "0";
-                    }
-
-                }));
-            }
-            catch (Exception)
-            {
-                Log_Add("仓门打开时出错", true);
-            }
-        }
-        /*
-        //收到片仓打开命令显示片仓操作panel
-        private void ReagentOpen(string reagentStoreId)
-        {
-            try
-            {
-                Invoke(new Action(() =>
-                {
-                    labelReagentInfo.Text = "";
-                    labelReagentOperation.Text = "";
-                    labelQR.Text = "";
-                    labelQR2.Text = "";
-                    labelQRAlert.Text = "";
-                    tabControlMainRight.SelectedTab = tabPageReagentOpen;
-                    ReagentStatus = 1;
-                    var productname = SqlData.SelectTestItemNameById(SqlData.SelectproductidbyTestItemName1(labelNextTestItem.Text).Rows[0][0].ToString());
-                    // ReSharper disable once ResourceItemNotResolved
-                    var str = Resources.labelReagentOperationText;
-                    str = str.Replace("[n]", reagentStoreId);
-                    labelReagentOperation.Text = str;
-
-                }));
-            }
-            catch (Exception)
-            {
-                Log_Add("仓门打开时出错", true);
-            }
-        }*/
-
-        private void ReagentOpenNext(string reagentStoreId)
-        {
-            try
-            {
-                Invoke(new Action(() =>
-                {
-                    var productname = SqlData.SelectTestItemNameById(SqlData.SelectproductidbyTestItemName1(labelNextTestItem.Text).Rows[0][0].ToString());
-                    
-                    var productname1 = SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][1].ToString();
-                    var lotno1 = SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][2].ToString();
-                    var lotLeft = int.Parse(SqlData.SelectReagentinfo().Rows[int.Parse(reagentStoreId) - 1][3].ToString());
-
-                    if (productname1 != productname)
-                    {
-                        buttonSetFirst.Visible = false;
-                        ReagentClose(reagentStoreId);
-                    }
-                    else
-                    {
-                        buttonSetFirst.Visible = true;
-                        buttonNotChangeStore.Visible = true;
-                    }
-                    // ReSharper disable once ResourceItemNotResolved
-                    var str = Resources.labelReagentInfoText;
                     if (str != null)
                     {
                         str = str.Replace("[n]", productname1);
@@ -6648,7 +6559,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
             Invoke(new Action(() =>
             {
-                labelResult.Text = @"TY:" + ty + @" THit:" + trueThit + @" Base:" + Basey;//2017-04-24
+                labelResult.Text = @"TY:" + ty + @" THit:" + Thit + @" Base:" + Basey;//2017-04-24
+                //labelResult.Text = @"TY:" + ty;
             }));
         }
 
