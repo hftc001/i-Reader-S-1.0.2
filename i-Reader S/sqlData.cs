@@ -1209,6 +1209,65 @@ namespace i_Reader_S
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
                     ];
         }
+
+        public static DataTable SwitchReagentStoreForFail()
+        {
+            var strsql = new StringBuilder();
+            // strsql.Append(
+            //"select top 1 reagentstoreid from ReagentStore a,CalibData b where a.CalibDataID=b.CalibDataid and a.ReagentLeft>0 and b.ProductID=(select d.ProductID from ReagentStore c,CalibData d where c.CalibDataID=d.CalibDataid and c.ISWorkStore=1) order by ExpireDate,LoadTime");
+            strsql.Append(
+                "select top 2 reagentstoreid from ReagentStore a,CalibData b where a.CalibDataID=b.CalibDataid and a.ReagentLeft>0 and b.ProductID=(select d.ProductID from ReagentStore c,CalibData d where c.CalibDataID=d.CalibDataid and c.ISWorkStore=1) order by LoadTime,ExpireDate");//2017-2-24
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
+                    ];
+        }
+        public static DataTable SelectReagentStore()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select reagentstoreid from ReagentStore  where ISWorkStore=1");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0
+                    ];
+        }
+
+        public static void DeleteFromWrokrunlistForASU()
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("delete from workrunlist where  WorkingStatus = 'ASU传送'");
+            ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
+        }
+
+        public static void UpdateWorkRunlistForBarcode(string sampleNo,string Barcode)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("update workrunlist set shelfID ='");
+            strsql.Append(Barcode);
+            strsql.Append("' where sampleNo = '");
+            strsql.Append(sampleNo);
+            strsql.Append("'");
+            ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
+        }
+
+        public static DataTable SelectWorkRunlistforASUwithSeq(string seq)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select WorkingStatus,sampleno from WorkRunList where sequence = '");
+            strsql.Append(seq);
+            strsql.Append("'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+        }
+        
+
+        public static DataTable SelectWorkRunlistforBarcodeChangeNo(string ShelfID)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select sampleno from WorkRunList where ShelfID = '");
+            strsql.Append(ShelfID);
+            strsql.Append("'");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+        }
     }
 
 }

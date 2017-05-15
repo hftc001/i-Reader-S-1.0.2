@@ -6756,6 +6756,72 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
   <data name="&gt;&gt;tabPageSearch.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="buttonBarcodeEnable.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
+  <data name="buttonBarcodeEnable.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonBarcodeEnable.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 16pt</value>
+  </data>
+  <data name="buttonBarcodeEnable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonBarcodeEnable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>150, 18</value>
+  </data>
+  <data name="buttonBarcodeEnable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 65</value>
+  </data>
+  <data name="buttonBarcodeEnable.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;buttonBarcodeEnable.Name" xml:space="preserve">
+    <value>buttonBarcodeEnable</value>
+  </data>
+  <data name="&gt;&gt;buttonBarcodeEnable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonBarcodeEnable.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;buttonBarcodeEnable.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label44.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label44.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 20pt, style=Bold</value>
+  </data>
+  <data name="label44.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label44.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 30</value>
+  </data>
+  <data name="label44.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 36</value>
+  </data>
+  <data name="label44.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="label44.Text" xml:space="preserve">
+    <value>启用条码</value>
+  </data>
+  <data name="&gt;&gt;label44.Name" xml:space="preserve">
+    <value>label44</value>
+  </data>
+  <data name="&gt;&gt;label44.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label44.Parent" xml:space="preserve">
+    <value>groupBox5</value>
+  </data>
+  <data name="&gt;&gt;label44.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="label43.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -6766,7 +6832,7 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
     <value>NoControl</value>
   </data>
   <data name="label43.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 30</value>
+    <value>21, 120</value>
   </data>
   <data name="label43.Size" type="System.Drawing.Size, System.Drawing">
     <value>123, 36</value>
@@ -6787,13 +6853,13 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;label43.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="textBoxBarcodeLength.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft YaHei UI, 21pt</value>
   </data>
   <data name="textBoxBarcodeLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 30</value>
+    <value>167, 120</value>
   </data>
   <data name="textBoxBarcodeLength.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 43</value>
@@ -6814,13 +6880,13 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
     <value>groupBox5</value>
   </data>
   <data name="&gt;&gt;textBoxBarcodeLength.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="groupBox5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 203</value>
+    <value>397, 192</value>
   </data>
   <data name="groupBox5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>275, 98</value>
+    <value>275, 180</value>
   </data>
   <data name="groupBox5.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
@@ -7189,7 +7255,7 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
     <value>Flat</value>
   </data>
   <data name="buttonWasteMode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 16pt</value>
+    <value>Microsoft YaHei UI, 15.75pt</value>
   </data>
   <data name="buttonWasteMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -9965,7 +10031,7 @@ Copyright © 2016 SIBT All Rights Reserved
   <metadata name="timerSampleStart.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>601, 55</value>
   </metadata>
-  <metadata name="timerReagentClose.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="timerConfigBackup.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>708, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -14830,10 +14896,10 @@ Copyright © 2016 SIBT All Rights Reserved
   <data name="&gt;&gt;timerSampleStart.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;timerReagentClose.Name" xml:space="preserve">
-    <value>timerReagentClose</value>
+  <data name="&gt;&gt;timerConfigBackup.Name" xml:space="preserve">
+    <value>timerConfigBackup</value>
   </data>
-  <data name="&gt;&gt;timerReagentClose.Type" xml:space="preserve">
+  <data name="&gt;&gt;timerConfigBackup.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

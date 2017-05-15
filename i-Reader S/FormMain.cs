@@ -66,8 +66,8 @@ namespace i_Reader_S
         //searchcondition 查询列表条件
         private string _searchcondition = string.Format(" and createtime between '{0:yyyy-MM-dd 00:00:00}' and '{1:yyyy-MM-dd 23:59:59}' ", DateTime.Today.AddDays(-7), DateTime.Now);
 
-        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗
-        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗,取片失败次数
+        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         
         //用户权限
         public string UserType = "";//2017-2-24
@@ -102,13 +102,6 @@ namespace i_Reader_S
             config.AppSettings.Settings.Add(newKey, newValue);
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
-
-            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config"))
-            {
-                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
-            }
-            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
-
         }
 
         /// <summary>
@@ -225,6 +218,14 @@ namespace i_Reader_S
                     var autoPrint = ConfigRead("AutoPrint");
                     UpdateAppConfig("AutoPrint", (1 - int.Parse(autoPrint)).ToString());
                     buttonAutoPrint.BackgroundImage = ConfigRead("AutoPrint") == "0"
+                        ? Resources.switch_off
+                        : Resources.switch_on;
+                }
+                else if (btn == buttonBarcodeEnable)
+                {
+                    var BarcodeEnable = ConfigRead("BarcodeEnable");
+                    UpdateAppConfig("BarcodeEnable", (1 - int.Parse(BarcodeEnable)).ToString());
+                    buttonBarcodeEnable.BackgroundImage = ConfigRead("BarcodeEnable") == "0"
                         ? Resources.switch_off
                         : Resources.switch_on;
                 }
@@ -609,9 +610,13 @@ namespace i_Reader_S
                 }
                 else if (btn == buttonWasteMode)
                 {
-                    var wasteMode = int.Parse(ConfigRead("WasteMode"));
-                    UpdateAppConfig("WasteMode", (1 - wasteMode).ToString());
-                    UpdateSupplyUi();
+                    if (ConfigRead("FloatBallEnable") != "1")
+                    {
+                        var wasteMode = int.Parse(ConfigRead("WasteMode"));
+                        UpdateAppConfig("WasteMode", (1 - wasteMode).ToString());
+                        UpdateSupplyUi();
+                    }
+                    else { }
                 }
                 else if (btn == buttonDilution1)
                 {
@@ -1182,6 +1187,9 @@ namespace i_Reader_S
                             serialPortME.Open();
                             serialPort_DataSend(serialPortMain, "#3024$0");
                         }
+
+                        var reagentId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
+                        SwitchTestItem(reagentId);
                         return;
                     } 
                     if (ConfigRead("ASUEnable") == "1")
@@ -1194,6 +1202,10 @@ namespace i_Reader_S
                                 if (dt.Rows.Count == 0)
                                 {
                                     ASUComplete = true;
+                                }
+                                else
+                                {
+                                    ASUComplete = false;
                                 }
                                 if (ASUComplete == false)
                                 {
@@ -1428,6 +1440,14 @@ namespace i_Reader_S
                     }
                     else
                     {
+                        if (ConfigRead("ASUEnable") == "1")
+                        {
+                            if (SqlData.SelectWorkRunlistforASU().Rows.Count > 0)
+                            {
+                                MessageboxShow("ASU正在传送，请勿修改样本号");
+                                return;
+                            }
+                        }
                         CounterText = string.Format("AllnoDot|{0}|18|92", labelNextSampleNo.Text);
                         var str = VirtualKeyBoard();
                         if (str == "Cancel") return;
@@ -1989,6 +2009,7 @@ namespace i_Reader_S
             if (comboBox2.Items.Count > 0)
                 comboBox2.SelectedIndex = 0;
         }
+        
 
         private void dataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -1998,7 +2019,14 @@ namespace i_Reader_S
                 {
                     dataGridViewMain.Rows[e.RowIndex].Selected = true;
                     var seq = dataGridViewMain.Rows[e.RowIndex].Cells[0].Value.ToString();
-                    CounterText = string.Format("Del|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
+                    if (SqlData.SelectWorkRunlistforASUwithSeq(seq).Rows[0][0].ToString() != "ASU传送")
+                    {
+                        CounterText = string.Format("Del|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
+                    }
+                    else
+                    {
+                        CounterText = string.Format("Int|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
+                    }
                     _otherInt[0] = 2;
                     var str = VirtualKeyBoard();
                     if (str == "Cancel") return;
@@ -2022,6 +2050,7 @@ namespace i_Reader_S
                     else if (sampleno != "")
                     {
                         SqlData.UpdateWorkRunlistSampleNobySeq(seq, sampleno);
+
                         Invoke(new Action(() => UpdatedataGridViewMain("Doing")));
                         dataGridViewMain.CurrentCell = null;
                         // ReSharper disable once ResourceItemNotResolved
@@ -2267,14 +2296,18 @@ namespace i_Reader_S
                     if (dtparam.Rows[0][0].ToString() == "0")
                     {
                         value = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
+                        /*var basey = oddata.Split('|')[1];
+                        value = double.Parse(ty) - double.Parse(basey);
+                        value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
+                        //value = value * double.Parse(tyFixStr.Split('|')[0]);*/
                     }
                     //Thit计算
                     else
                     {
                         var basey = oddata.Split('|')[1];
                         value = double.Parse(ty) - double.Parse(basey);
-                        //value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
-                        value = value * double.Parse(tyFixStr.Split('|')[0]);
+                        value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
+                        //value = value * double.Parse(tyFixStr.Split('|')[0]);
                     }
 
                     result =
@@ -3004,6 +3037,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 else
                 {
                     var sampleNo = tempSend.Substring(7, 20).Replace(" ", "");
+                        sampleNo = SqlData.SelectWorkRunlistforBarcodeChangeNo(sampleNo).Rows[0][0].ToString();
+                    
                     var testItemName = "";
                     Invoke(new Action(() =>
                     {
@@ -3055,10 +3090,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         if (labelNextTestItem.Text.IndexOf("QC", StringComparison.Ordinal) == -1)
                         {
-                            int aa;
-                            var bb = int.TryParse(labelNextSampleNo.Text, out aa);
-                            if (bb)
-                                labelNextSampleNo.Text = (aa + 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
+                            if (ConfigRead("BarcodeEnable") == "1")
+                            {
+                                int aa;
+                                var bb = int.TryParse(labelNextSampleNo.Text, out aa);
+                                if (bb)
+                                    labelNextSampleNo.Text = (aa + 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
+                            }
                         }
                     }
                         ));
@@ -3107,7 +3145,28 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         Log_Add(sampleNo + msgLog, true);
                     }
                     if (msgType == "!3540")
-                        Log_Add(sampleNo + msgLog, true);
+                    {
+                        if (_otherInt[9] != 3)
+                        {
+                            _otherInt[9] = _otherInt[9] + 1;
+                            Log_Add(sampleNo + msgLog, true);
+                        }
+                        else
+                        {
+                            _otherInt[9] = 0;
+                            Log_Add(sampleNo + msgLog + ",切换片仓", true);
+                            var dtreagentStoreId = SqlData.SwitchReagentStoreForFail();
+                            if (dtreagentStoreId.Rows.Count > 1)
+                            {
+                                if (SqlData.SelectReagentStore().Rows[0][0].ToString() == dtreagentStoreId.Rows[0][0].ToString())
+                                    serialPort_DataSend(serialPortMain, "#3002$" + dtreagentStoreId.Rows[1][0]);
+                            }
+                            else
+                            {
+                                MessageboxShow("取片失败，且无可切换片仓");
+                            }
+                        }
+                    }
                 }));
             }
             Invoke(new Action(() => Log_Add(msgType + msgLog, false, Color.FromArgb(128, 128, 128))));
@@ -3230,8 +3289,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         serialPort_DataSend(serialPortMain, "#3024$0");
                     }
-                    var reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
-                    SwitchTestItem(reagentstoreid);
+                    //var reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
+                    //SwitchTestItem(reagentstoreid);
                     ReagentCloseTime = DateTime.Now.AddSeconds(+10);
                     serialPort_DataSend(serialPortMain, "#3011$0");
 
@@ -3244,8 +3303,19 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     UpdateSupplyUi();
 
 
-
+                    var reagentstoreid = "";
                     labelNextTestItem.Text = ConfigRead("TestItem");
+                    if (SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows.Count > 0)
+                    {
+                        reagentstoreid = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
+                    }
+                    else
+                    {
+                        reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
+                    }
+                    SwitchTestItem(reagentstoreid);
+                    
+                    
                     labelNextSampleNo.Text = ConfigRead("StartSampleNo");
                     var dtrunlist = SqlData.SelectWorkRunlist();
                     for (var i = 0; i < dtrunlist.Rows.Count; i++)
@@ -3301,7 +3371,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 }
                 catch (Exception)
                 {
-
                     if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S.exe.config"))
                     {
                         File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
@@ -3321,18 +3390,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         MessageboxShow("配置文件已损坏，请检查");
                         Close();
                     }
-                    MessageBox.Show("4");
 
                     return "";
                 }
             }
             catch(Exception ee)
             {
-                MessageBox.Show("5");
-
-                MessageBox.Show("完全出错" + ee.ToString());
-                MessageBox.Show("6");
-
+                MessageBox.Show("配置文件完全出错" + ee.ToString());
             }
             return "";
         }
@@ -3962,8 +4026,32 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         }
                     }
                 }
+                
+                
                 if (_fluoData.Count == fluoPointCount)
                 {
+                    /*
+                    fluoPointCount = 180;
+                    List<double> list = new List<double>();
+                    if (_fluoData.Take(20).Average() > 35)
+                    {
+                        list = _fluoData.Take(180).ToList();
+                        _fluoData.Clear();
+                        for (int i = 0; i < 180; i++)
+                        {
+                            _fluoData.Add(list[i]);
+                        }
+                    }
+                    else
+                    {
+                        list = _fluoData.Take(_fluoData.Count).Reverse().Take(180).Reverse().ToList();
+                        _fluoData.Clear();
+                        for (int i = 0; i < 180; i++)
+                        {
+                            _fluoData.Add(list[i]);
+                        }
+                    }*/
+
                     Invoke(new Action(() => { chartFluo.Series[0].Points.Clear(); }));
                     var str = "";
                     for (var i = 0; i < _fluoData.Count; i++)
@@ -3983,7 +4071,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     sw.Write(str);
                     sw.Flush();
                     sw.Close();
-
+                    
                     //提取完毕对数据进行运算，得到荧光OD详细数据
                     var odData = CalMethods.CalFluo(_fluoData);
                     //清空荧光数据
@@ -4012,6 +4100,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
                     sumCBase = sumCBase.Substring(0, sumCBase.IndexOf(")", StringComparison.Ordinal));
                     sumTBase = sumTBase.Substring(0, sumTBase.IndexOf(")", StringComparison.Ordinal));
+                    
                     Invoke(new Action(() =>
                     {
                         // ReSharper disable once LocalizableElement
@@ -4034,6 +4123,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             }
                         }
                     }));
+                    
                     //进行结果计算与存储
                     DrawFluoResult(cy, sumCBase, sumTBase, _otherStr[0], odData, path, path2);
                 }
@@ -4713,7 +4803,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     };
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 = 
-                    { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904"};
+                    { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904", "!3906"};
                   
                     //无需特殊处理的含参数信息
                     string[] msgwithparam =
@@ -4772,7 +4862,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     }
                                 }));
                                 break;
-                            //休眠中恢复
+                            //休眠
                             case "*0106":
                                 Invoke(new Action(() =>
                                 {
@@ -4788,7 +4878,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     labelStopStatus.Text = Resources.StopTip2;
                                 }));
                                 break;
-                            //休眠
+                            //休眠中恢复
                             case "*0105":
                                 Invoke(new Action(() =>
                                 {
@@ -4854,6 +4944,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 MessageboxShow("稀释液灌注失败，请更换稀释液\r\n之后点击确定进行灌注", true);
                                 Log_Add("稀释液再次灌注", false);
                                 serialPort_DataSend(serialPortMain, "#3051");
+                                break;
+                            case "!3906":
+                                MessageboxShow("请关闭废片仓");
                                 break;
                         }
                     }
@@ -5212,10 +5305,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             SampleNormal = false;
                             Invoke(new Action(() => timerSampleReady.Start()));
                             var sampleNo = tempSend.Substring(7, 20).Replace(" ", "");
+                                sampleNo = SqlData.SelectWorkRunlistforBarcodeChangeNo(sampleNo).Rows[0][0].ToString();
                             var seqdel = SqlData.SelectSeq(sampleNo);
                             var seq2 = seqdel.Rows[0][0].ToString();
                             OperationAfterDealMsgWithSeq(msgType, seq2, "");
-
                         }
                         catch (Exception)
                         {
@@ -5741,6 +5834,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             serialPort_DataSend(serialPortMain, "#3053$1");
                             labelLock.Text = "仪器锁定";
                             Log_Add("请清空废片仓后继续测试，当前仪器锁定", true);
+                            MessageboxShow("请清空废片仓后继续测试，当前仪器锁定");
                         }
                         else
                         {
@@ -5767,6 +5861,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             serialPort_DataSend(serialPortMain, "#3053$1");
                             labelLock.Text = "仪器锁定";
                             Log_Add("请更换稀释液后继续操作，当前仪器锁定", true);
+                            MessageboxShow("请更换稀释液后继续操作，当前仪器锁定");
                         }
                     }
                     else
@@ -5789,6 +5884,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             serialPort_DataSend(serialPortMain, "#3053$1");
                             labelLock.Text = "仪器锁定";
                             Log_Add("请更换清洗液后继续操作，当前仪器锁定", true);
+                            MessageboxShow("请更换清洗液后继续操作，当前仪器锁定");
                         }
                     }
                     else
@@ -5899,7 +5995,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 var supplyLeft1 = ConfigRead("SupplyLeft").Split('-');
                 var supplyVolume1 = ConfigRead("SupplyVolume").Split('-');
 
-                if (supplyLeft1[3] == supplyVolume1[3])
+                if (int.Parse(supplyLeft1[3]) >= int.Parse(supplyVolume1[3]))
                 {
                     labelReagentStatus.BackColor = Color.Red;
                     labelFloatBallWasteReagent.BackColor = Color.Red;
@@ -5944,8 +6040,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
                     labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);
                     labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                    labelSupplyLeft2.Text = "清洗液：×";
+                    labelSupplyLeft2.Text = "清洗液：√";
                 }
+
+                buttonWasteMode.BackgroundImage = Resources.button_Black1;
+                buttonWasteMode.Text = "禁用";
                 return;
             }
             try
@@ -6299,6 +6398,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             buttonCRPDebug.BackgroundImage = ConfigRead("CRPDebug") == "0"
 ? Resources.switch_off
 : Resources.switch_on;
+            buttonBarcodeEnable.BackgroundImage = ConfigRead("BarcodeEnable") == "0"
+? Resources.switch_off
+: Resources.switch_on;
             textBoxSleepTime.Text = ConfigRead("SleepTime");
             textBoxStartSample.Text = ConfigRead("StartSampleNo");
             textBoxBarcodeLength.Text = ConfigRead("BarcodeLength");
@@ -6623,8 +6725,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             try
             {
-
-
                 //灰度化处理，人眼对绿色敏感度最高，蓝色敏感度最低，所以权重侧重绿色
                 bit = new Grayscale(0.2125, 0.7154, 0.0721).Apply(bit);
                 //bit.Save("img/" + DateTime.Now.ToString("yyMMddHHmmss") + ".jpg", ImageFormat.Jpeg);
@@ -7022,6 +7122,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
         }
 
+        string NextSampleNo = "";
+
         private void DealLater(string strTemp)
         {
             _mEseq = strTemp.Substring(6, 3);
@@ -7031,6 +7133,15 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 case "I":
                     //当进入测试阶段方可判定为连接ok，可以进行后续测试
                     //要求种别
+                    if (SqlData.SelectWorkRunlistforASU().Rows.Count > 0)
+                    {
+                        SqlData.DeleteFromWrokrunlistForASU();
+                        Invoke(new Action(() =>
+                        {
+                            if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                UpdatedataGridViewMain("Doing");
+                        }));
+                    }
                     var type = strTemp.Substring(9, 2);
                     var str = "\x02" + "i" + _mEseq + (type == "01" ? "00" : "01") + "\x03";
                     str = str + LeftCheck(str.Substring(1));
@@ -7042,7 +7153,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     break;
                 case "A":
                     ASUComplete = false;
-                    if (SqlData.SelectWorkRunlistforASUNum().Rows.Count == 0)
+                    if (SqlData.SelectWorkRunlistforASUNum().Rows.Count == 0 & SqlData.SwitchReagentStore().Rows.Count > 0 )
                     {
                         var ReagentID = SqlData.SwitchReagentStore().Rows[0][0].ToString();
                         serialPort_DataSend(serialPortMain,"#3011$" + ReagentID);
@@ -7063,7 +7174,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var sampleid1 = strTemp.Substring(11, 20).Replace(" ", "");
                     var shelfid1 = strTemp.Substring(31, 10);
                     var locationid1 = strTemp.Substring(41, 2);
-                    if (sampleid1.Length != int.Parse(ConfigRead("BarcodeLength")))
+                    if (sampleid1.Length != int.Parse(ConfigRead("BarcodeLength")) & ConfigRead("BarcodeLength") != "0")
                     {
                         type1 = "01";
                     }
@@ -7081,23 +7192,70 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var ReactionTime = ASU.Rows[0][2].ToString();
                     var CalibDataID = ASU.Rows[0][3].ToString();
                     //写入待测列表中
-                    if (sampleid1.Length == int.Parse(ConfigRead("BarcodeLength")))
+                    if (ConfigRead("BarcodeEnable") == "1")
                     {
-                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
-                            ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                        Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
-                        seqtemp--;
-                        UpdatedataGridViewMain("Doing");
+                        if (ConfigRead("BarcodeLength") != "0")
+                        {
+                            if (sampleid1.Length == int.Parse(ConfigRead("BarcodeLength")))
+                            {
+                                SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                                SqlData.UpdateWorkRunlistForBarcode(sampleid1, sampleid1);
+                                Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
+                                seqtemp--;
+                                Invoke(new Action(() =>
+                                {
+                                    if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                        UpdatedataGridViewMain("Doing");
+                                }));
+                            }
+                            else
+                            {
+                                SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "条码长度错误", TyFixStr,
+                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                                var seq = SqlData.SelectBarcodeError(sampleid1).Rows[0][0].ToString();
+                                DrawResult("-16", seq, "", "", "");
+                                Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + ",样本号长度不正确", false);
+                                seqtemp--;
+                                Invoke(new Action(() =>
+                                {
+                                    if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                        UpdatedataGridViewMain("Doing");
+                                }));
+                            }
+                        }
+                        else
+                        {
+                            SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                            SqlData.UpdateWorkRunlistForBarcode(sampleid1, sampleid1);
+                            Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
+                            seqtemp--;
+                            Invoke(new Action(() =>
+                            {
+                                if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                    UpdatedataGridViewMain("Doing");
+                            }));
+                        }
                     }
                     else
                     {
-                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "条码长度错误", TyFixStr,
-                            ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                        var seq = SqlData.SelectBarcodeError(sampleid1).Rows[0][0].ToString();
-                        DrawResult("-16", seq, "", "", "");
-                        Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + "样本号长度不正确", false);
+                        if (SqlData.SelectWorkRunlistforASU().Rows.Count == 0)
+                        {
+                            NextSampleNo = labelNextSampleNo.Text;
+                        }
+                        var sampleNo = (int.Parse(NextSampleNo) + int.Parse(locationid1) - 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0'); 
+                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleNo, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                        SqlData.UpdateWorkRunlistForBarcode(sampleNo, sampleid1);
+                        Log_Add("接收到ASU样本信息，样本号为" + sampleNo, false);
                         seqtemp--;
-                        UpdatedataGridViewMain("Doing");
+                        Invoke(new Action(() => 
+                        {
+                            if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                UpdatedataGridViewMain("Doing");
+                        }));
+                        labelNextSampleNo.Text = (int.Parse(NextSampleNo) + int.Parse(locationid1)).ToString().PadLeft(labelNextSampleNo.Text.Length, '0'); ;
                     }
                     break;
                 case "S":
@@ -7333,6 +7491,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         labelLock.Text = "仪器锁定";
                                         Log_Add("请清空废液后继续操作，当前仪器锁定", true);
                                         ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
+                                        MessageboxShow("请清空废液后继续操作，当前仪器锁定");
                                     }
                                 }
                                 else
@@ -7385,7 +7544,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
                                 if (labelLock.Text != "")
                                 {
-                                    if (wastestatus == "0" & count[0] != "0" & count[1] != "0" & ConfigRead("SupplyVolume").Split('-')[3] != ConfigRead("SupplyLeft").Split('-')[3])
+                                    if (wastestatus == "0" & count[0] != "0" & count[1] != "0" & int.Parse(ConfigRead("SupplyVolume").Split('-')[3]) >= int.Parse(ConfigRead("SupplyLeft").Split('-')[3]))
                                     {
                                         serialPort_DataSend(serialPortMain, "#3053$0");
                                         labelLock.Text = "";
@@ -7540,6 +7699,15 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             timerSampleStart.Stop();
             serialPort_DataSend(serialPortMain, "#3051");
+        }
+
+        private void timerConfigBackup_Tick(object sender, EventArgs e)
+        {
+            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config"))
+            {
+                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
+            }
+            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
         }
     }
 

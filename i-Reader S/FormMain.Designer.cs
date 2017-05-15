@@ -301,6 +301,8 @@
             this.tabControlSetting = new System.Windows.Forms.TabControl();
             this.tabPageGeneralSetting = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.buttonBarcodeEnable = new System.Windows.Forms.Button();
+            this.label44 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
             this.textBoxBarcodeLength = new System.Windows.Forms.TextBox();
             this.buttonCheckAllUsers = new System.Windows.Forms.Button();
@@ -422,7 +424,7 @@
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.labeluser = new System.Windows.Forms.Label();
             this.timerSampleStart = new System.Windows.Forms.Timer(this.components);
-            this.timerReagentClose = new System.Windows.Forms.Timer(this.components);
+            this.timerConfigBackup = new System.Windows.Forms.Timer(this.components);
             this.tabControlMain.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
             this.panelLogin.SuspendLayout();
@@ -2439,11 +2441,33 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.buttonBarcodeEnable);
+            this.groupBox5.Controls.Add(this.label44);
             this.groupBox5.Controls.Add(this.label43);
             this.groupBox5.Controls.Add(this.textBoxBarcodeLength);
             resources.ApplyResources(this.groupBox5, "groupBox5");
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // buttonBarcodeEnable
+            // 
+            this.buttonBarcodeEnable.BackColor = System.Drawing.Color.White;
+            this.buttonBarcodeEnable.BackgroundImage = global::i_Reader_S.Properties.Resources.switch_on;
+            resources.ApplyResources(this.buttonBarcodeEnable, "buttonBarcodeEnable");
+            this.buttonBarcodeEnable.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
+            this.buttonBarcodeEnable.FlatAppearance.BorderSize = 0;
+            this.buttonBarcodeEnable.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
+            this.buttonBarcodeEnable.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
+            this.buttonBarcodeEnable.ForeColor = System.Drawing.SystemColors.Control;
+            this.buttonBarcodeEnable.Name = "buttonBarcodeEnable";
+            this.buttonBarcodeEnable.UseVisualStyleBackColor = false;
+            this.buttonBarcodeEnable.Click += new System.EventHandler(this.button_Click);
+            // 
+            // label44
+            // 
+            resources.ApplyResources(this.label44, "label44");
+            this.label44.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(119)))), ((int)(((byte)(114)))), ((int)(((byte)(105)))));
+            this.label44.Name = "label44";
             // 
             // label43
             // 
@@ -3477,9 +3501,10 @@
             this.timerSampleStart.Interval = 2000;
             this.timerSampleStart.Tick += new System.EventHandler(this.timerSampleStart_Tick);
             // 
-            // timerReagentClose
+            // timerConfigBackup
             // 
-            this.timerReagentClose.Interval = 1000;
+            this.timerConfigBackup.Interval = 300000;
+            this.timerConfigBackup.Tick += new System.EventHandler(this.timerConfigBackup_Tick);
             // 
             // ReaderS
             // 
@@ -3979,7 +4004,9 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.TextBox textBoxBarcodeLength;
-        private System.Windows.Forms.Timer timerReagentClose;
+        private System.Windows.Forms.Timer timerConfigBackup;
+        private System.Windows.Forms.Button buttonBarcodeEnable;
+        private System.Windows.Forms.Label label44;
     }
 }
 

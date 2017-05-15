@@ -1055,7 +1055,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 仪器暂停 的本地化字符串。
+        ///   查找类似 仪器恢复 的本地化字符串。
         /// </summary>
         internal static string I0105 {
             get {
@@ -1064,7 +1064,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 仪器恢复 的本地化字符串。
+        ///   查找类似 仪器暂停 的本地化字符串。
         /// </summary>
         internal static string I0106 {
             get {
