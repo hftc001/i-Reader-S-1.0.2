@@ -60,13 +60,42 @@ namespace i_Reader_S
                 }
                 //有效区域取平均
                 int[] data2 = new int[data.GetLength(1)];
-                for (int i = 0; i < data2.Length; i++)
+
+                if (Math.Abs(midY) - 428 < 45 & Math.Abs(midY) - 428 > 30)
                 {
-                    for (int j = midY; j < midY + 160; j++)
+                    if (midY - 428 > 0)
                     {
-                        data2[i] += data[j, i];
+                        for (int i = 0; i < data2.Length; i++)
+                        {
+                            for (int j = midY - 15; j < midY + 160; j++)
+                            {
+                                data2[i] += data[j, i];
+                            }
+                            data2[i] /= 160;
+                        }
                     }
-                    data2[i] /= 160;
+                    if (midY - 428 < 0)
+                    {
+                        for (int i = 0; i < data2.Length; i++)
+                        {
+                            for (int j = midY + 15; j < midY + 160; j++)
+                            {
+                                data2[i] += data[j, i];
+                            }
+                            data2[i] /= 160;
+                        }
+                    }
+                }
+                else if (Math.Abs(midY) - 428 < 30 | Math.Abs(midY) - 428 > 45)
+                {
+                    for (int i = 0; i < data2.Length; i++)
+                    {
+                        for (int j = midY; j < midY + 160; j++)
+                        {
+                            data2[i] += data[j, i];
+                        }
+                        data2[i] /= 160;
+                    }
                 }
 
                 int c1X = 0;
@@ -322,6 +351,7 @@ namespace i_Reader_S
                 }
                 else if (cx < dataCount / 2 & cy >= fluodata[cx - 1])
                 {
+                    
                     for (var i = cx + tcspan - 2 * point; i < Math.Min(cx + tcspan + 2 * point, fluodata.Count); i++)
                     {
                         if (fluodata[i] > ty)
@@ -335,6 +365,24 @@ namespace i_Reader_S
                         tx = cx + tcspan;
                         ty = fluodata[tx];
                     }
+                    /*
+                    for (var i = cx + tcspan - 2 * point; i < Math.Min(cx + tcspan + 2 * point, fluodata.Count); i++)
+                    {
+                        if (fluodata[i] > ty)
+                        {
+                            ty = fluodata[i];
+                            tx = i;
+                        }
+                        if (fluodata[i] < ty)
+                        {
+                            break;
+                        }
+                    }
+                    if (cx == tx - tcspan - 2 * point | cx == Math.Min(cx + tcspan + 2 * point, fluodata.Count) - 1)
+                    {
+                        tx = cx + tcspan;
+                        ty = fluodata[tx];
+                    }*/
                 }
                 double sumC = 0;
                 double sumT = 0;

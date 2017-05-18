@@ -425,6 +425,7 @@
             this.labeluser = new System.Windows.Forms.Label();
             this.timerSampleStart = new System.Windows.Forms.Timer(this.components);
             this.timerConfigBackup = new System.Windows.Forms.Timer(this.components);
+            this.timerConfigBackup1 = new System.Windows.Forms.Timer(this.components);
             this.tabControlMain.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
             this.panelLogin.SuspendLayout();
@@ -3470,7 +3471,7 @@
             // 
             // timerSampleReady
             // 
-            this.timerSampleReady.Interval = 5000;
+            this.timerSampleReady.Interval = 10000;
             this.timerSampleReady.Tick += new System.EventHandler(this.timerSampleReady_Tick);
             // 
             // timerMainPort
@@ -3503,8 +3504,15 @@
             // 
             // timerConfigBackup
             // 
+            this.timerConfigBackup.Enabled = true;
             this.timerConfigBackup.Interval = 300000;
             this.timerConfigBackup.Tick += new System.EventHandler(this.timerConfigBackup_Tick);
+            // 
+            // timerConfigBackup1
+            // 
+            this.timerConfigBackup1.Enabled = true;
+            this.timerConfigBackup1.Interval = 780000;
+            this.timerConfigBackup1.Tick += new System.EventHandler(this.timerConfigBackup1_Tick);
             // 
             // ReaderS
             // 
@@ -4007,6 +4015,7 @@
         private System.Windows.Forms.Timer timerConfigBackup;
         private System.Windows.Forms.Button buttonBarcodeEnable;
         private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Timer timerConfigBackup1;
     }
 }
 

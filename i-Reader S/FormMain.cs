@@ -1891,7 +1891,8 @@ namespace i_Reader_S
             if (resultinfo.Rows.Count <= 0) return;
             var midY = resultStr.Substring(resultStr.IndexOf("nstartY", StringComparison.Ordinal) + 8);
             midY = midY.Substring(0, midY.IndexOf(")", StringComparison.Ordinal));
-            if (Math.Abs(int.Parse(midY) - 428) > 30)
+            //if (Math.Abs(int.Parse(midY) - 428) > 30)
+            if (Math.Abs(int.Parse(midY) - 428) > 45)
             {
                 if (_otherInt[1] == 1)
                     DrawResult("-4", seq, "", "", "");
@@ -2296,18 +2297,14 @@ namespace i_Reader_S
                     if (dtparam.Rows[0][0].ToString() == "0")
                     {
                         value = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
-                        /*var basey = oddata.Split('|')[1];
-                        value = double.Parse(ty) - double.Parse(basey);
-                        value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
-                        //value = value * double.Parse(tyFixStr.Split('|')[0]);*/
                     }
                     //Thit计算
                     else
                     {
+                        var PCT_FixStr = ConfigRead("PCTFix");
                         var basey = oddata.Split('|')[1];
                         value = double.Parse(ty) - double.Parse(basey);
-                        value = value * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
-                        //value = value * double.Parse(tyFixStr.Split('|')[0]);
+                        value = value * double.Parse(PCT_FixStr.Split('|')[0]) + double.Parse(PCT_FixStr.Split('|')[1]);
                     }
 
                     result =
@@ -2859,6 +2856,37 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 MessageBox.Show("检测到已经有i-Reader S在运行");
                 Close();  
             }
+
+            try
+            {
+                if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
+                {
+                    File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
+                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                    File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
+                }
+                else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
+                {
+                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                    File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
+                }
+                else if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
+                {
+                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                }
+                else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
+                {
+                    File.Move(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("配置文件彻底损坏，请联系工程师");
+            }
+            
+            
+            
+
 
             _mEstr[0] = "<STX>i[ｼｰｹﾝｽ No]00<ETX>";
             _mEstr[1] = "<STX>i[ｼｰｹﾝｽ No]01<ETX>";
@@ -3808,6 +3836,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             videoSourcePlayer1.Stop();
             //关闭软件时保存日志
             button_Click(buttonSaveLog, null);
+
+            //关闭前备份日志
+            if (!File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config"))
+            {
+                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
+            }
+            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
         }
 
         DateTime ReagentCloseTime = DateTime.Now.AddMinutes(10);
@@ -3841,7 +3876,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         tabControlMainRight.SelectedTab = tabPageReagent;
                         ReagentStatus = 0;
-
                     }
                     if (tempSend != "")
                         timerSampleStart.Start();
@@ -4030,7 +4064,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 
                 if (_fluoData.Count == fluoPointCount)
                 {
-                    /*
+                 /*   
                     fluoPointCount = 180;
                     List<double> list = new List<double>();
                     if (_fluoData.Take(20).Average() > 35)
@@ -7708,6 +7742,15 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
             }
             File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
+        }
+
+        private void timerConfigBackup1_Tick(object sender, EventArgs e)
+        {
+            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config"))
+            {
+                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
+            }
+            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
         }
     }
 
