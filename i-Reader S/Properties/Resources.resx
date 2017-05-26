@@ -288,7 +288,7 @@
     <value>..\Resources\button_Black21.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ResultError3" xml:space="preserve">
-    <value>清洗馆有气泡</value>
+    <value>清洗管有气泡</value>
     <comment>-3</comment>
   </data>
   <data name="I3115" xml:space="preserve">

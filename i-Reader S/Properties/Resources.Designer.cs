@@ -2053,7 +2053,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 清洗馆有气泡 的本地化字符串。
+        ///   查找类似 清洗管有气泡 的本地化字符串。
         /// </summary>
         internal static string ResultError3 {
             get {
