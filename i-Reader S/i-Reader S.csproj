@@ -344,6 +344,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
+    <None Include="Resources\shutdown.png" />
+    <None Include="Resources\Sun.png" />
+    <None Include="Resources\i-Reader.png" />
+    <None Include="Resources\sleep48.png" />
+    <None Include="Resources\sleep72.png" />
+    <None Include="Resources\Image1.bmp" />
     <None Include="Resources\Button_Press1.png" />
     <None Include="Resources\Button_Normal11.png" />
     <None Include="Resources\Button_Normal1.png" />

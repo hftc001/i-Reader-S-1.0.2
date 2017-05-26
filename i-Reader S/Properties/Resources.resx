@@ -140,7 +140,7 @@
     <value>机械部件准备就绪</value>
   </data>
   <data name="E2905" xml:space="preserve">
-    <value>清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新调试清洗液传感器（1号液路传感器）后重新运行液路自检程序</value>
+    <value>清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新进行液路光耦校准后重新运行液路自检程序</value>
   </data>
   <data name="C3053_1" xml:space="preserve">
     <value>禁用取样开关</value>
@@ -215,7 +215,7 @@
     <value>..\Resources\Message_Press.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="E3902" xml:space="preserve">
-    <value>自动灌注清洗液失败, 请检查清洗液供给后按开始键继续</value>
+    <value>清洗液管中有气泡, 请检查清洗液供给后按开始键继续</value>
   </data>
   <data name="E3520" xml:space="preserve">
     <value>片仓#[n]已空, 请添加测试卡后再继续测试</value>
@@ -270,7 +270,7 @@
     <value>..\Resources\Message_Normal1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="E2906" xml:space="preserve">
-    <value>在进行稀释液灌注时，液面探测自检出现异常</value>
+    <value>在进行清洗液灌注前，液面探测自检出现异常，电极异常偏低</value>
   </data>
   <data name="I3139" xml:space="preserve">
     <value>当前读取时间2为[n]秒</value>
@@ -288,17 +288,17 @@
     <value>..\Resources\button_Black21.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ResultError3" xml:space="preserve">
-    <value>清洗液不足</value>
+    <value>清洗馆有气泡</value>
     <comment>-3</comment>
   </data>
   <data name="I3115" xml:space="preserve">
     <value>测试结束</value>
   </data>
   <data name="E2910" xml:space="preserve">
-    <value>稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新调试稀释液传感器（0号液路传感器）后重新运行液路自检程序</value>
+    <value>稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新进行液路校准后重新运行液路自检程序</value>
   </data>
   <data name="E3903" xml:space="preserve">
-    <value>稀释液不足</value>
+    <value>稀释液管有气泡</value>
   </data>
   <data name="MeachineStatus4" xml:space="preserve">
     <value>维护</value>
@@ -381,7 +381,7 @@
     <value>..\Resources\ReagentFull.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="E2901" xml:space="preserve">
-    <value>液体探测电极未连接, 请检查液体探测电极连接是否完好</value>
+    <value>液体探测电极受影响, 请检查液体探测电极连接是否完好，电极初始值过高</value>
   </data>
   <data name="Search_Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Search_Normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -506,7 +506,7 @@
     <value>恢复正常状态</value>
   </data>
   <data name="E2902" xml:space="preserve">
-    <value>液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物</value>
+    <value>液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物，电极初始值过低</value>
   </data>
   <data name="I0111" xml:space="preserve">
     <value>片仓湿度：[n]% 片仓温度：[m]℃ 仪器内部温度：[s]℃</value>
@@ -567,7 +567,7 @@
     <value>在稀释液流量定标起始液面高度测量时，检测出液面高度超高，请检重新调整取样针高度后重新运行液路自检程序</value>
   </data>
   <data name="E3904" xml:space="preserve">
-    <value>自动灌注稀释液失败, 请检查稀释液供给后按开始键继续</value>
+    <value>稀释液管中有气泡, 请检查稀释液供给后按开始键继续</value>
   </data>
   <data name="E3521" xml:space="preserve">
     <value>片仓#[n]打开, 请关闭后再继续测试</value>
@@ -582,7 +582,7 @@
     <value>清洗液泵流量检查时，出现清洗液供应中断，请更换清洗液后重新运行液路自检程序</value>
   </data>
   <data name="E2514" xml:space="preserve">
-    <value>清洗液泵流量检查在检测流量时，未检测到液体注入，请检查稀释液泵后重新运行液路自检程序</value>
+    <value>清洗液泵流量检查在检测流量时，未检测到液体注入，请检查清洗液泵后重新运行液路自检程序</value>
   </data>
   <data name="E2502" xml:space="preserve">
     <value>开始液路自检，在检查混匀池时发现混匀池中有残留水，请检查废液泵以及排液管道</value>
@@ -691,14 +691,14 @@
     <value>液路自检</value>
   </data>
   <data name="ResultError2" xml:space="preserve">
-    <value>稀释液不足</value>
+    <value>稀释管有气泡</value>
     <comment>-2</comment>
   </data>
   <data name="E2501" xml:space="preserve">
     <value>开始液路自检，在进行液面探测功能检验时发生错误</value>
   </data>
   <data name="MenuText" xml:space="preserve">
-    <value>[Home]主菜单^[Search]查  询^[QC]质  控^[Setting]设  置^[Message]日  志^[Stop]紧急停止^</value>
+    <value>[Home]主菜单^[Search]查  询^[QC]质  控^[Setting]设  置^[Message]日  志^[Stop]紧急停止^[Sleep]等待^[ShutDown]关机^</value>
     <comment>点击菜单按钮所显示的当前菜单名称</comment>
   </data>
   <data name="I0106" xml:space="preserve">
@@ -724,7 +724,7 @@
     <value>稀释液灌注过程中检测到混匀池中液体水位超高，请检查废液泵排液状态</value>
   </data>
   <data name="E3901" xml:space="preserve">
-    <value>清洗液不足</value>
+    <value>清洗液管有气泡</value>
   </data>
   <data name="C3006" xml:space="preserve">
     <value>选择#[n]检测头</value>
@@ -752,7 +752,7 @@
     <value>卡片就绪</value>
   </data>
   <data name="E2911" xml:space="preserve">
-    <value>在进行稀释液灌注时，液面探测自检出现异常</value>
+    <value>在进行稀释液灌注时，液面探测自检出现异常，电极异常偏低</value>
   </data>
   <data name="E2520" xml:space="preserve">
     <value>开始废液泵流量检查时，液面探测功能自检出现错误</value>
@@ -798,7 +798,7 @@
     <value>再次混匀</value>
   </data>
   <data name="ResultError14" xml:space="preserve">
-    <value>未探测液面</value>
+    <value>样本过少</value>
   </data>
   <data name="Reagentopen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Reagentopen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -844,5 +844,35 @@
   </data>
   <data name="ResultError16" xml:space="preserve">
     <value>条码长度错误</value>
+  </data>
+  <data name="i_Reader" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\i-Reader.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sleep48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sleep48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sleep72" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sleep72.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Awake" xml:space="preserve">
+    <value>正在唤醒，请稍等五分钟</value>
+  </data>
+  <data name="ShutDown" xml:space="preserve">
+    <value>正在关机，请稍等五分钟</value>
+  </data>
+  <data name="Sun" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sun.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MeachineStatus5" xml:space="preserve">
+    <value>休眠</value>
+  </data>
+  <data name="E3911" xml:space="preserve">
+    <value>手动灌注清洗液失败</value>
+  </data>
+  <data name="E3912" xml:space="preserve">
+    <value>手动灌注稀释液失败</value>
+  </data>
+  <data name="shutdown1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\shutdown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -43,29 +43,29 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReaderS));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle63 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle64 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle65 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle66 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle67 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle68 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle69 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle70 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle71 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle72 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle73 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle74 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle75 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle76 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle77 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonMessage = new System.Windows.Forms.Button();
             this.buttonSetting = new System.Windows.Forms.Button();
@@ -94,6 +94,7 @@
             this.panelLoding1 = new System.Windows.Forms.Panel();
             this.labelStep = new System.Windows.Forms.Label();
             this.tabPageUserMode = new System.Windows.Forms.TabPage();
+            this.buttonNewLiquidSensor = new System.Windows.Forms.Button();
             this.labelUserStep = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.buttonUserLiquidCheck = new System.Windows.Forms.Button();
@@ -218,10 +219,27 @@
             this.labelQRAlert = new System.Windows.Forms.Label();
             this.buttonQRAlertOK = new System.Windows.Forms.Button();
             this.tabPageSupplyFloatBall = new System.Windows.Forms.TabPage();
-            this.labelFloatBallWasteReagent = new System.Windows.Forms.Label();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.label52 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label51 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label50 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.label48 = new System.Windows.Forms.Label();
+            this.panelWasteStore = new System.Windows.Forms.Panel();
+            this.labelFloatBallWasteCard = new System.Windows.Forms.Label();
+            this.labelFloatBallWasteCard1 = new System.Windows.Forms.Label();
+            this.panelFloatBallWaste = new System.Windows.Forms.Panel();
             this.labelFloatBallWaste = new System.Windows.Forms.Label();
-            this.labelFloatBallClean = new System.Windows.Forms.Label();
-            this.labelFloatBallDilution = new System.Windows.Forms.Label();
+            this.labelFloatBallWaste1 = new System.Windows.Forms.Label();
+            this.labelFloatBallWork = new System.Windows.Forms.Label();
+            this.panelFloatBallDillution = new System.Windows.Forms.Panel();
+            this.labelFloatBallDillution1 = new System.Windows.Forms.Label();
+            this.buttonFloatBallDilution = new System.Windows.Forms.Button();
+            this.panelFloatBallClean = new System.Windows.Forms.Panel();
+            this.labelFloatBallClean1 = new System.Windows.Forms.Label();
+            this.buttonFloatBallClean = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelExceptionNo = new System.Windows.Forms.Label();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
@@ -388,6 +406,12 @@
             this.buttonStopRecovery = new System.Windows.Forms.Button();
             this.buttonStopConfirm = new System.Windows.Forms.Button();
             this.labelStopStatus = new System.Windows.Forms.Label();
+            this.tabPageWaiting = new System.Windows.Forms.TabPage();
+            this.labelWaitingMessage = new System.Windows.Forms.Label();
+            this.labelwait = new System.Windows.Forms.Label();
+            this.buttonAwake = new System.Windows.Forms.Button();
+            this.panelZZZ = new System.Windows.Forms.Panel();
+            this.panel10 = new System.Windows.Forms.Panel();
             this.panelTopBack = new System.Windows.Forms.Panel();
             this.labelLock = new System.Windows.Forms.Label();
             this.panelOther = new System.Windows.Forms.Panel();
@@ -426,6 +450,9 @@
             this.timerSampleStart = new System.Windows.Forms.Timer(this.components);
             this.timerConfigBackup = new System.Windows.Forms.Timer(this.components);
             this.timerConfigBackup1 = new System.Windows.Forms.Timer(this.components);
+            this.timerWaiting = new System.Windows.Forms.Timer(this.components);
+            this.timerFloatCommandCheck = new System.Windows.Forms.Timer(this.components);
+            this.timerTHCheck = new System.Windows.Forms.Timer(this.components);
             this.tabControlMain.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
             this.panelLogin.SuspendLayout();
@@ -463,6 +490,14 @@
             this.tabPageReagentOpen.SuspendLayout();
             this.tabPageQRAlert.SuspendLayout();
             this.tabPageSupplyFloatBall.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panelWasteStore.SuspendLayout();
+            this.panelFloatBallWaste.SuspendLayout();
+            this.panelFloatBallDillution.SuspendLayout();
+            this.panelFloatBallClean.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.panel2.SuspendLayout();
@@ -496,6 +531,7 @@
             this.tabPageMessage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLog)).BeginInit();
             this.tabPageStop.SuspendLayout();
+            this.tabPageWaiting.SuspendLayout();
             this.panelTopBack.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -582,6 +618,7 @@
             this.tabControlMain.Controls.Add(this.tabPageSetting);
             this.tabControlMain.Controls.Add(this.tabPageMessage);
             this.tabControlMain.Controls.Add(this.tabPageStop);
+            this.tabControlMain.Controls.Add(this.tabPageWaiting);
             resources.ApplyResources(this.tabControlMain, "tabControlMain");
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
@@ -747,6 +784,7 @@
             // 
             // tabPageUserMode
             // 
+            this.tabPageUserMode.Controls.Add(this.buttonNewLiquidSensor);
             this.tabPageUserMode.Controls.Add(this.labelUserStep);
             this.tabPageUserMode.Controls.Add(this.label6);
             this.tabPageUserMode.Controls.Add(this.buttonUserLiquidCheck);
@@ -757,6 +795,13 @@
             resources.ApplyResources(this.tabPageUserMode, "tabPageUserMode");
             this.tabPageUserMode.Name = "tabPageUserMode";
             this.tabPageUserMode.UseVisualStyleBackColor = true;
+            // 
+            // buttonNewLiquidSensor
+            // 
+            resources.ApplyResources(this.buttonNewLiquidSensor, "buttonNewLiquidSensor");
+            this.buttonNewLiquidSensor.Name = "buttonNewLiquidSensor";
+            this.buttonNewLiquidSensor.UseVisualStyleBackColor = true;
+            this.buttonNewLiquidSensor.Click += new System.EventHandler(this.buttonLiquidSensor_Click);
             // 
             // labelUserStep
             // 
@@ -1050,18 +1095,18 @@
             // 
             this.chartFluo.BorderlineColor = System.Drawing.Color.Black;
             this.chartFluo.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.Name = "ChartArea1";
-            this.chartFluo.ChartAreas.Add(chartArea1);
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            this.chartFluo.Legends.Add(legend1);
+            chartArea9.Name = "ChartArea1";
+            this.chartFluo.ChartAreas.Add(chartArea9);
+            legend9.Enabled = false;
+            legend9.Name = "Legend1";
+            this.chartFluo.Legends.Add(legend9);
             resources.ApplyResources(this.chartFluo, "chartFluo");
             this.chartFluo.Name = "chartFluo";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chartFluo.Series.Add(series1);
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chartFluo.Series.Add(series9);
             // 
             // buttonSaveLog
             // 
@@ -1752,42 +1797,184 @@
             // tabPageSupplyFloatBall
             // 
             this.tabPageSupplyFloatBall.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
-            this.tabPageSupplyFloatBall.Controls.Add(this.labelFloatBallWasteReagent);
-            this.tabPageSupplyFloatBall.Controls.Add(this.labelFloatBallWaste);
-            this.tabPageSupplyFloatBall.Controls.Add(this.labelFloatBallClean);
-            this.tabPageSupplyFloatBall.Controls.Add(this.labelFloatBallDilution);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panel8);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panel7);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panel6);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panel4);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panelWasteStore);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panelFloatBallWaste);
+            this.tabPageSupplyFloatBall.Controls.Add(this.labelFloatBallWork);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panelFloatBallDillution);
+            this.tabPageSupplyFloatBall.Controls.Add(this.panelFloatBallClean);
             resources.ApplyResources(this.tabPageSupplyFloatBall, "tabPageSupplyFloatBall");
             this.tabPageSupplyFloatBall.Name = "tabPageSupplyFloatBall";
             // 
-            // labelFloatBallWasteReagent
+            // panel8
             // 
-            this.labelFloatBallWasteReagent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(169)))), ((int)(((byte)(223)))));
-            resources.ApplyResources(this.labelFloatBallWasteReagent, "labelFloatBallWasteReagent");
-            this.labelFloatBallWasteReagent.ForeColor = System.Drawing.Color.White;
-            this.labelFloatBallWasteReagent.Name = "labelFloatBallWasteReagent";
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(89)))), ((int)(((byte)(143)))));
+            this.panel8.Controls.Add(this.label52);
+            resources.ApplyResources(this.panel8, "panel8");
+            this.panel8.Name = "panel8";
+            // 
+            // label52
+            // 
+            resources.ApplyResources(this.label52, "label52");
+            this.label52.BackColor = System.Drawing.Color.Transparent;
+            this.label52.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label52.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label52.Name = "label52";
+            this.label52.Tag = "";
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(89)))), ((int)(((byte)(143)))));
+            this.panel7.Controls.Add(this.label51);
+            resources.ApplyResources(this.panel7, "panel7");
+            this.panel7.Name = "panel7";
+            // 
+            // label51
+            // 
+            resources.ApplyResources(this.label51, "label51");
+            this.label51.BackColor = System.Drawing.Color.Transparent;
+            this.label51.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label51.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label51.Name = "label51";
+            this.label51.Tag = "";
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(89)))), ((int)(((byte)(143)))));
+            this.panel6.Controls.Add(this.label50);
+            resources.ApplyResources(this.panel6, "panel6");
+            this.panel6.Name = "panel6";
+            // 
+            // label50
+            // 
+            resources.ApplyResources(this.label50, "label50");
+            this.label50.BackColor = System.Drawing.Color.Transparent;
+            this.label50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label50.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label50.Name = "label50";
+            this.label50.Tag = "";
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(89)))), ((int)(((byte)(143)))));
+            this.panel4.Controls.Add(this.label48);
+            resources.ApplyResources(this.panel4, "panel4");
+            this.panel4.Name = "panel4";
+            // 
+            // label48
+            // 
+            resources.ApplyResources(this.label48, "label48");
+            this.label48.BackColor = System.Drawing.Color.Transparent;
+            this.label48.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label48.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label48.Name = "label48";
+            this.label48.Tag = "";
+            // 
+            // panelWasteStore
+            // 
+            this.panelWasteStore.BackgroundImage = global::i_Reader_S.Properties.Resources.ReagentFull;
+            resources.ApplyResources(this.panelWasteStore, "panelWasteStore");
+            this.panelWasteStore.Controls.Add(this.labelFloatBallWasteCard);
+            this.panelWasteStore.Controls.Add(this.labelFloatBallWasteCard1);
+            this.panelWasteStore.Name = "panelWasteStore";
+            // 
+            // labelFloatBallWasteCard
+            // 
+            this.labelFloatBallWasteCard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(190)))), ((int)(((byte)(188)))));
+            resources.ApplyResources(this.labelFloatBallWasteCard, "labelFloatBallWasteCard");
+            this.labelFloatBallWasteCard.ForeColor = System.Drawing.Color.White;
+            this.labelFloatBallWasteCard.Name = "labelFloatBallWasteCard";
+            // 
+            // labelFloatBallWasteCard1
+            // 
+            resources.ApplyResources(this.labelFloatBallWasteCard1, "labelFloatBallWasteCard1");
+            this.labelFloatBallWasteCard1.BackColor = System.Drawing.Color.Transparent;
+            this.labelFloatBallWasteCard1.Name = "labelFloatBallWasteCard1";
+            // 
+            // panelFloatBallWaste
+            // 
+            this.panelFloatBallWaste.BackgroundImage = global::i_Reader_S.Properties.Resources.BottleFull4;
+            resources.ApplyResources(this.panelFloatBallWaste, "panelFloatBallWaste");
+            this.panelFloatBallWaste.Controls.Add(this.labelFloatBallWaste);
+            this.panelFloatBallWaste.Controls.Add(this.labelFloatBallWaste1);
+            this.panelFloatBallWaste.Name = "panelFloatBallWaste";
             // 
             // labelFloatBallWaste
             // 
-            this.labelFloatBallWaste.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(169)))), ((int)(((byte)(223)))));
+            this.labelFloatBallWaste.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(190)))), ((int)(((byte)(188)))));
             resources.ApplyResources(this.labelFloatBallWaste, "labelFloatBallWaste");
             this.labelFloatBallWaste.ForeColor = System.Drawing.Color.White;
             this.labelFloatBallWaste.Name = "labelFloatBallWaste";
             // 
-            // labelFloatBallClean
+            // labelFloatBallWaste1
             // 
-            this.labelFloatBallClean.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(169)))), ((int)(((byte)(223)))));
-            resources.ApplyResources(this.labelFloatBallClean, "labelFloatBallClean");
-            this.labelFloatBallClean.ForeColor = System.Drawing.Color.White;
-            this.labelFloatBallClean.Name = "labelFloatBallClean";
-            this.labelFloatBallClean.Click += new System.EventHandler(this.labelFloatBallClean_Click);
+            resources.ApplyResources(this.labelFloatBallWaste1, "labelFloatBallWaste1");
+            this.labelFloatBallWaste1.BackColor = System.Drawing.Color.Transparent;
+            this.labelFloatBallWaste1.Name = "labelFloatBallWaste1";
             // 
-            // labelFloatBallDilution
+            // labelFloatBallWork
             // 
-            this.labelFloatBallDilution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(169)))), ((int)(((byte)(223)))));
-            resources.ApplyResources(this.labelFloatBallDilution, "labelFloatBallDilution");
-            this.labelFloatBallDilution.ForeColor = System.Drawing.Color.White;
-            this.labelFloatBallDilution.Name = "labelFloatBallDilution";
-            this.labelFloatBallDilution.Click += new System.EventHandler(this.labelFloatBallDilution_Click);
+            this.labelFloatBallWork.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(169)))), ((int)(((byte)(223)))));
+            resources.ApplyResources(this.labelFloatBallWork, "labelFloatBallWork");
+            this.labelFloatBallWork.ForeColor = System.Drawing.Color.White;
+            this.labelFloatBallWork.Name = "labelFloatBallWork";
+            // 
+            // panelFloatBallDillution
+            // 
+            this.panelFloatBallDillution.BackgroundImage = global::i_Reader_S.Properties.Resources.BottleFull4;
+            resources.ApplyResources(this.panelFloatBallDillution, "panelFloatBallDillution");
+            this.panelFloatBallDillution.Controls.Add(this.labelFloatBallDillution1);
+            this.panelFloatBallDillution.Controls.Add(this.buttonFloatBallDilution);
+            this.panelFloatBallDillution.Name = "panelFloatBallDillution";
+            // 
+            // labelFloatBallDillution1
+            // 
+            resources.ApplyResources(this.labelFloatBallDillution1, "labelFloatBallDillution1");
+            this.labelFloatBallDillution1.BackColor = System.Drawing.Color.Transparent;
+            this.labelFloatBallDillution1.Name = "labelFloatBallDillution1";
+            // 
+            // buttonFloatBallDilution
+            // 
+            this.buttonFloatBallDilution.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(190)))), ((int)(((byte)(188)))));
+            this.buttonFloatBallDilution.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            this.buttonFloatBallDilution.FlatAppearance.BorderSize = 0;
+            this.buttonFloatBallDilution.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            this.buttonFloatBallDilution.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            resources.ApplyResources(this.buttonFloatBallDilution, "buttonFloatBallDilution");
+            this.buttonFloatBallDilution.ForeColor = System.Drawing.Color.White;
+            this.buttonFloatBallDilution.Name = "buttonFloatBallDilution";
+            this.buttonFloatBallDilution.UseVisualStyleBackColor = false;
+            this.buttonFloatBallDilution.Click += new System.EventHandler(this.buttonFloatBallDilution_Click);
+            // 
+            // panelFloatBallClean
+            // 
+            this.panelFloatBallClean.BackgroundImage = global::i_Reader_S.Properties.Resources.BottleFull4;
+            resources.ApplyResources(this.panelFloatBallClean, "panelFloatBallClean");
+            this.panelFloatBallClean.Controls.Add(this.labelFloatBallClean1);
+            this.panelFloatBallClean.Controls.Add(this.buttonFloatBallClean);
+            this.panelFloatBallClean.Name = "panelFloatBallClean";
+            // 
+            // labelFloatBallClean1
+            // 
+            resources.ApplyResources(this.labelFloatBallClean1, "labelFloatBallClean1");
+            this.labelFloatBallClean1.BackColor = System.Drawing.Color.Transparent;
+            this.labelFloatBallClean1.Name = "labelFloatBallClean1";
+            // 
+            // buttonFloatBallClean
+            // 
+            this.buttonFloatBallClean.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(190)))), ((int)(((byte)(188)))));
+            this.buttonFloatBallClean.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            this.buttonFloatBallClean.FlatAppearance.BorderSize = 0;
+            this.buttonFloatBallClean.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            this.buttonFloatBallClean.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(242)))), ((int)(((byte)(233)))));
+            resources.ApplyResources(this.buttonFloatBallClean, "buttonFloatBallClean");
+            this.buttonFloatBallClean.ForeColor = System.Drawing.Color.White;
+            this.buttonFloatBallClean.Name = "buttonFloatBallClean";
+            this.buttonFloatBallClean.UseVisualStyleBackColor = false;
+            this.buttonFloatBallClean.Click += new System.EventHandler(this.buttonFloatBallClean_Click);
             // 
             // panel1
             // 
@@ -1815,27 +2002,27 @@
             // dataGridViewMain
             // 
             this.dataGridViewMain.AllowUserToAddRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewMain.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle63.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle63.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewMain.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle63;
             this.dataGridViewMain.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
             this.dataGridViewMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewMain.ColumnHeadersVisible = false;
             resources.ApplyResources(this.dataGridViewMain, "dataGridViewMain");
             this.dataGridViewMain.Name = "dataGridViewMain";
             this.dataGridViewMain.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMain.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle64.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle64.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle64.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle64.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle64.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMain.RowHeadersDefaultCellStyle = dataGridViewCellStyle64;
             this.dataGridViewMain.RowHeadersVisible = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewMain.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle65.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle65.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewMain.RowsDefaultCellStyle = dataGridViewCellStyle65;
             this.dataGridViewMain.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dataGridViewMain.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dataGridViewMain.RowTemplate.Height = 54;
@@ -2182,34 +2369,34 @@
             // 
             this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.chart1.BorderlineColor = System.Drawing.Color.WhiteSmoke;
-            chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisX.MajorGrid.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisX.MajorTickMark.LineColor = System.Drawing.Color.WhiteSmoke;
-            chartArea2.AxisX.MinorGrid.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisX.MinorTickMark.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisX.Title = "时间";
-            chartArea2.AxisX.TitleForeColor = System.Drawing.Color.White;
-            chartArea2.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
-            chartArea2.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisY.MajorTickMark.LineColor = System.Drawing.Color.White;
-            chartArea2.AxisY.Title = "SD";
-            chartArea2.AxisY.TitleForeColor = System.Drawing.Color.White;
-            chartArea2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            legend2.ForeColor = System.Drawing.Color.White;
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea10.AxisX.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea10.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisX.MajorGrid.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisX.MajorTickMark.LineColor = System.Drawing.Color.WhiteSmoke;
+            chartArea10.AxisX.MinorGrid.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisX.MinorTickMark.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisX.Title = "时间";
+            chartArea10.AxisX.TitleForeColor = System.Drawing.Color.White;
+            chartArea10.AxisY.LabelStyle.ForeColor = System.Drawing.Color.White;
+            chartArea10.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisY.MajorGrid.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisY.MajorTickMark.LineColor = System.Drawing.Color.White;
+            chartArea10.AxisY.Title = "SD";
+            chartArea10.AxisY.TitleForeColor = System.Drawing.Color.White;
+            chartArea10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            chartArea10.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea10);
+            legend10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            legend10.ForeColor = System.Drawing.Color.White;
+            legend10.Name = "Legend1";
+            this.chart1.Legends.Add(legend10);
             resources.ApplyResources(this.chart1, "chart1");
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chart1.Series.Add(series10);
             // 
             // tabPageSearch
             // 
@@ -2359,20 +2546,20 @@
             this.dataGridViewSearch.AllowUserToDeleteRows = false;
             this.dataGridViewSearch.AllowUserToResizeColumns = false;
             this.dataGridViewSearch.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewSearch.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle66.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
+            dataGridViewCellStyle66.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewSearch.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle66;
             this.dataGridViewSearch.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewSearch.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewSearch.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle67.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle67.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle67.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle67.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle67.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle67.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle67.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewSearch.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle67;
             resources.ApplyResources(this.dataGridViewSearch, "dataGridViewSearch");
             this.dataGridViewSearch.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewSearch.ContextMenuStrip = this.contextMenuStrip1;
@@ -2753,35 +2940,35 @@
             // dataGridViewTestItem
             // 
             this.dataGridViewTestItem.AllowUserToAddRows = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewTestItem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle51.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle51.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewTestItem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle51;
             this.dataGridViewTestItem.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewTestItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTestItem.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle52.BackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle52.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle52.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle52.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle52.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle52.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTestItem.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle52;
             resources.ApplyResources(this.dataGridViewTestItem, "dataGridViewTestItem");
             this.dataGridViewTestItem.MultiSelect = false;
             this.dataGridViewTestItem.Name = "dataGridViewTestItem";
             this.dataGridViewTestItem.ReadOnly = true;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTestItem.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle68.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle68.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle68.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle68.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle68.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle68.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle68.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTestItem.RowHeadersDefaultCellStyle = dataGridViewCellStyle68;
             this.dataGridViewTestItem.RowHeadersVisible = false;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewTestItem.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle69.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle69.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewTestItem.RowsDefaultCellStyle = dataGridViewCellStyle69;
             this.dataGridViewTestItem.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dataGridViewTestItem.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dataGridViewTestItem.RowTemplate.Height = 54;
@@ -2898,35 +3085,35 @@
             // dataGridViewQCSetting
             // 
             this.dataGridViewQCSetting.AllowUserToAddRows = false;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewQCSetting.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle70.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle70.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewQCSetting.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle70;
             this.dataGridViewQCSetting.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewQCSetting.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewQCSetting.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle71.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle71.BackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle71.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle71.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle71.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle71.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle71.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewQCSetting.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle71;
             this.dataGridViewQCSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             resources.ApplyResources(this.dataGridViewQCSetting, "dataGridViewQCSetting");
             this.dataGridViewQCSetting.Name = "dataGridViewQCSetting";
             this.dataGridViewQCSetting.ReadOnly = true;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewQCSetting.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle72.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle72.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle72.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle72.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle72.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle72.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle72.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewQCSetting.RowHeadersDefaultCellStyle = dataGridViewCellStyle72;
             this.dataGridViewQCSetting.RowHeadersVisible = false;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewQCSetting.RowsDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle73.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle73.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewQCSetting.RowsDefaultCellStyle = dataGridViewCellStyle73;
             this.dataGridViewQCSetting.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White;
             this.dataGridViewQCSetting.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dataGridViewQCSetting.RowTemplate.Height = 54;
@@ -3122,9 +3309,9 @@
             // 
             // dataGridViewAllUsers
             // 
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewAllUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle74.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle74.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewAllUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle74;
             this.dataGridViewAllUsers.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewAllUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewAllUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -3134,9 +3321,9 @@
             this.dataGridViewAllUsers.Name = "dataGridViewAllUsers";
             this.dataGridViewAllUsers.ReadOnly = true;
             this.dataGridViewAllUsers.RowHeadersVisible = false;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewAllUsers.RowsDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle75.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle75.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewAllUsers.RowsDefaultCellStyle = dataGridViewCellStyle75;
             this.dataGridViewAllUsers.RowTemplate.Height = 60;
             this.dataGridViewAllUsers.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAllUsers_CellClick);
             // 
@@ -3153,20 +3340,20 @@
             this.dataGridViewLog.AllowUserToDeleteRows = false;
             this.dataGridViewLog.AllowUserToResizeColumns = false;
             this.dataGridViewLog.AllowUserToResizeRows = false;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dataGridViewLog.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle76.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(242)))), ((int)(((byte)(231)))));
+            dataGridViewCellStyle76.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dataGridViewLog.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle76;
             this.dataGridViewLog.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewLog.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.Transparent;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewLog.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle77.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle77.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle77.Font = new System.Drawing.Font("SimSun-ExtB", 9F);
+            dataGridViewCellStyle77.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle77.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle77.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle77.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewLog.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle77;
             resources.ApplyResources(this.dataGridViewLog, "dataGridViewLog");
             this.dataGridViewLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridViewLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3254,6 +3441,55 @@
             this.labelStopStatus.ForeColor = System.Drawing.Color.Red;
             this.labelStopStatus.Name = "labelStopStatus";
             this.labelStopStatus.Tag = "";
+            // 
+            // tabPageWaiting
+            // 
+            this.tabPageWaiting.Controls.Add(this.labelWaitingMessage);
+            this.tabPageWaiting.Controls.Add(this.labelwait);
+            this.tabPageWaiting.Controls.Add(this.buttonAwake);
+            this.tabPageWaiting.Controls.Add(this.panelZZZ);
+            this.tabPageWaiting.Controls.Add(this.panel10);
+            resources.ApplyResources(this.tabPageWaiting, "tabPageWaiting");
+            this.tabPageWaiting.Name = "tabPageWaiting";
+            this.tabPageWaiting.UseVisualStyleBackColor = true;
+            // 
+            // labelWaitingMessage
+            // 
+            resources.ApplyResources(this.labelWaitingMessage, "labelWaitingMessage");
+            this.labelWaitingMessage.ForeColor = System.Drawing.Color.Red;
+            this.labelWaitingMessage.Name = "labelWaitingMessage";
+            this.labelWaitingMessage.Tag = "";
+            // 
+            // labelwait
+            // 
+            resources.ApplyResources(this.labelwait, "labelwait");
+            this.labelwait.ForeColor = System.Drawing.Color.Red;
+            this.labelwait.Name = "labelwait";
+            this.labelwait.Tag = "";
+            // 
+            // buttonAwake
+            // 
+            this.buttonAwake.BackColor = System.Drawing.Color.White;
+            this.buttonAwake.BackgroundImage = global::i_Reader_S.Properties.Resources.button_Black1;
+            resources.ApplyResources(this.buttonAwake, "buttonAwake");
+            this.buttonAwake.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonAwake.FlatAppearance.BorderSize = 0;
+            this.buttonAwake.ForeColor = System.Drawing.Color.White;
+            this.buttonAwake.Name = "buttonAwake";
+            this.buttonAwake.UseVisualStyleBackColor = false;
+            this.buttonAwake.Click += new System.EventHandler(this.button_Click);
+            // 
+            // panelZZZ
+            // 
+            this.panelZZZ.BackgroundImage = global::i_Reader_S.Properties.Resources.sleep72;
+            resources.ApplyResources(this.panelZZZ, "panelZZZ");
+            this.panelZZZ.Name = "panelZZZ";
+            // 
+            // panel10
+            // 
+            this.panel10.BackgroundImage = global::i_Reader_S.Properties.Resources.i_Reader;
+            resources.ApplyResources(this.panel10, "panel10");
+            this.panel10.Name = "panel10";
             // 
             // panelTopBack
             // 
@@ -3514,6 +3750,22 @@
             this.timerConfigBackup1.Interval = 780000;
             this.timerConfigBackup1.Tick += new System.EventHandler(this.timerConfigBackup1_Tick);
             // 
+            // timerWaiting
+            // 
+            this.timerWaiting.Interval = 1000;
+            this.timerWaiting.Tick += new System.EventHandler(this.timerWaiting_Tick);
+            // 
+            // timerFloatCommandCheck
+            // 
+            this.timerFloatCommandCheck.Interval = 300000;
+            this.timerFloatCommandCheck.Tick += new System.EventHandler(this.timerFloatCommandCheck_Tick);
+            // 
+            // timerTHCheck
+            // 
+            this.timerTHCheck.Enabled = true;
+            this.timerTHCheck.Interval = 300000;
+            this.timerTHCheck.Tick += new System.EventHandler(this.timerTHCheck_Tick);
+            // 
             // ReaderS
             // 
             resources.ApplyResources(this, "$this");
@@ -3596,6 +3848,22 @@
             this.tabPageReagentOpen.ResumeLayout(false);
             this.tabPageQRAlert.ResumeLayout(false);
             this.tabPageSupplyFloatBall.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panelWasteStore.ResumeLayout(false);
+            this.panelWasteStore.PerformLayout();
+            this.panelFloatBallWaste.ResumeLayout(false);
+            this.panelFloatBallWaste.PerformLayout();
+            this.panelFloatBallDillution.ResumeLayout(false);
+            this.panelFloatBallDillution.PerformLayout();
+            this.panelFloatBallClean.ResumeLayout(false);
+            this.panelFloatBallClean.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).EndInit();
@@ -3648,6 +3916,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLog)).EndInit();
             this.tabPageStop.ResumeLayout(false);
             this.tabPageStop.PerformLayout();
+            this.tabPageWaiting.ResumeLayout(false);
+            this.tabPageWaiting.PerformLayout();
             this.panelTopBack.ResumeLayout(false);
             this.panelTopBack.PerformLayout();
             this.ResumeLayout(false);
@@ -3839,7 +4109,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Button buttonCRPDebug;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TabPage tabPageDetail;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.IO.Ports.SerialPort serialPortMain;
@@ -3858,7 +4127,6 @@
         private System.Windows.Forms.Button buttonTest;
         private System.Windows.Forms.Button buttonMinWindow;
         private System.Windows.Forms.Label labelResult;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.Button buttonCMDSend;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
@@ -3930,7 +4198,6 @@
         private System.IO.Ports.SerialPort serialPortME;
         private System.Windows.Forms.Timer timerSampleReady;
         private System.Windows.Forms.TextBox textBoxASU;
-        private System.Windows.Forms.ToolStripMenuItem 修改压积ToolStripMenuItem;
         private System.Windows.Forms.DataGridView dataGridViewQC2;
         private System.Windows.Forms.DataGridView dataGridViewQC1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
@@ -3972,13 +4239,9 @@
         private System.Windows.Forms.Label labelPreDilu;
         private System.IO.Ports.SerialPort serialPortFloatBall;
         private System.Windows.Forms.TabPage tabPageSupplyFloatBall;
-        private System.Windows.Forms.Label labelFloatBallDilution;
-        private System.Windows.Forms.Label labelFloatBallWasteReagent;
-        private System.Windows.Forms.Label labelFloatBallWaste;
-        private System.Windows.Forms.Label labelFloatBallClean;
+        private System.Windows.Forms.Label labelFloatBallWork;
         private System.Windows.Forms.Label labelLock;
         private System.Windows.Forms.Label labelUserStep;
-        private System.Windows.Forms.ToolStripMenuItem 发送结果ToolStripMenuItem;
         private System.Windows.Forms.Panel panelPic;
         private System.Windows.Forms.Button buttonPicClose;
         private System.Windows.Forms.PictureBox pictureBoxResult;
@@ -4016,6 +4279,40 @@
         private System.Windows.Forms.Button buttonBarcodeEnable;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.Timer timerConfigBackup1;
+        private System.Windows.Forms.Panel panelWasteStore;
+        private System.Windows.Forms.Label labelFloatBallWasteCard1;
+        private System.Windows.Forms.Panel panelFloatBallWaste;
+        private System.Windows.Forms.Label labelFloatBallWaste1;
+        private System.Windows.Forms.Panel panelFloatBallDillution;
+        private System.Windows.Forms.Label labelFloatBallDillution1;
+        private System.Windows.Forms.Button buttonFloatBallDilution;
+        private System.Windows.Forms.Panel panelFloatBallClean;
+        private System.Windows.Forms.Label labelFloatBallClean1;
+        private System.Windows.Forms.Button buttonFloatBallClean;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label labelFloatBallWaste;
+        private System.Windows.Forms.Label labelFloatBallWasteCard;
+        private System.Windows.Forms.TabPage tabPageWaiting;
+        private System.Windows.Forms.Panel panelZZZ;
+        private System.Windows.Forms.Label labelwait;
+        private System.Windows.Forms.Button buttonAwake;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Timer timerWaiting;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 修改压积ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 发送结果ToolStripMenuItem;
+        private System.Windows.Forms.Label labelWaitingMessage;
+        private System.Windows.Forms.Button buttonNewLiquidSensor;
+        private System.Windows.Forms.Timer timerFloatCommandCheck;
+        private System.Windows.Forms.Timer timerTHCheck;
     }
 }
 

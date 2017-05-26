@@ -61,6 +61,15 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
+        ///   查找类似 正在唤醒，请稍等五分钟 的本地化字符串。
+        /// </summary>
+        internal static string Awake {
+            get {
+                return ResourceManager.GetString("Awake", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap Background {
@@ -765,7 +774,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 清洗液泵流量检查在检测流量时，未检测到液体注入，请检查稀释液泵后重新运行液路自检程序 的本地化字符串。
+        ///   查找类似 清洗液泵流量检查在检测流量时，未检测到液体注入，请检查清洗液泵后重新运行液路自检程序 的本地化字符串。
         /// </summary>
         internal static string E2514 {
             get {
@@ -855,7 +864,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 液体探测电极未连接, 请检查液体探测电极连接是否完好 的本地化字符串。
+        ///   查找类似 液体探测电极受影响, 请检查液体探测电极连接是否完好，电极初始值过高 的本地化字符串。
         /// </summary>
         internal static string E2901 {
             get {
@@ -864,7 +873,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物 的本地化字符串。
+        ///   查找类似 液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物，电极初始值过低 的本地化字符串。
         /// </summary>
         internal static string E2902 {
             get {
@@ -873,7 +882,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新调试清洗液传感器（1号液路传感器）后重新运行液路自检程序 的本地化字符串。
+        ///   查找类似 清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新进行液路光耦校准后重新运行液路自检程序 的本地化字符串。
         /// </summary>
         internal static string E2905 {
             get {
@@ -882,7 +891,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 在进行稀释液灌注时，液面探测自检出现异常 的本地化字符串。
+        ///   查找类似 在进行清洗液灌注前，液面探测自检出现异常，电极异常偏低 的本地化字符串。
         /// </summary>
         internal static string E2906 {
             get {
@@ -900,7 +909,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新调试稀释液传感器（0号液路传感器）后重新运行液路自检程序 的本地化字符串。
+        ///   查找类似 稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新进行液路校准后重新运行液路自检程序 的本地化字符串。
         /// </summary>
         internal static string E2910 {
             get {
@@ -909,7 +918,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 在进行稀释液灌注时，液面探测自检出现异常 的本地化字符串。
+        ///   查找类似 在进行稀释液灌注时，液面探测自检出现异常，电极异常偏低 的本地化字符串。
         /// </summary>
         internal static string E2911 {
             get {
@@ -999,7 +1008,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 清洗液不足 的本地化字符串。
+        ///   查找类似 清洗液管有气泡 的本地化字符串。
         /// </summary>
         internal static string E3901 {
             get {
@@ -1008,7 +1017,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 自动灌注清洗液失败, 请检查清洗液供给后按开始键继续 的本地化字符串。
+        ///   查找类似 清洗液管中有气泡, 请检查清洗液供给后按开始键继续 的本地化字符串。
         /// </summary>
         internal static string E3902 {
             get {
@@ -1017,7 +1026,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 稀释液不足 的本地化字符串。
+        ///   查找类似 稀释液管有气泡 的本地化字符串。
         /// </summary>
         internal static string E3903 {
             get {
@@ -1026,11 +1035,29 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 自动灌注稀释液失败, 请检查稀释液供给后按开始键继续 的本地化字符串。
+        ///   查找类似 稀释液管中有气泡, 请检查稀释液供给后按开始键继续 的本地化字符串。
         /// </summary>
         internal static string E3904 {
             get {
                 return ResourceManager.GetString("E3904", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 手动灌注清洗液失败 的本地化字符串。
+        /// </summary>
+        internal static string E3911 {
+            get {
+                return ResourceManager.GetString("E3911", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 手动灌注稀释液失败 的本地化字符串。
+        /// </summary>
+        internal static string E3912 {
+            get {
+                return ResourceManager.GetString("E3912", resourceCulture);
             }
         }
         
@@ -1050,6 +1077,16 @@ namespace i_Reader_S.Properties {
         internal static System.Drawing.Bitmap Home_Press {
             get {
                 object obj = ResourceManager.GetObject("Home_Press", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap i_Reader {
+            get {
+                object obj = ResourceManager.GetObject("i_Reader", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1750,7 +1787,16 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 [Home]主菜单^[Search]查  询^[QC]质  控^[Setting]设  置^[Message]日  志^[Stop]紧急停止^ 的本地化字符串。
+        ///   查找类似 休眠 的本地化字符串。
+        /// </summary>
+        internal static string MeachineStatus5 {
+            get {
+                return ResourceManager.GetString("MeachineStatus5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 [Home]主菜单^[Search]查  询^[QC]质  控^[Setting]设  置^[Message]日  志^[Stop]紧急停止^[Sleep]等待^[ShutDown]关机^ 的本地化字符串。
         /// </summary>
         internal static string MenuText {
             get {
@@ -1971,7 +2017,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 未探测液面 的本地化字符串。
+        ///   查找类似 样本过少 的本地化字符串。
         /// </summary>
         internal static string ResultError14 {
             get {
@@ -1998,7 +2044,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 稀释液不足 的本地化字符串。
+        ///   查找类似 稀释管有气泡 的本地化字符串。
         /// </summary>
         internal static string ResultError2 {
             get {
@@ -2007,7 +2053,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似 清洗液不足 的本地化字符串。
+        ///   查找类似 清洗馆有气泡 的本地化字符串。
         /// </summary>
         internal static string ResultError3 {
             get {
@@ -2138,6 +2184,45 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
+        ///   查找类似 正在关机，请稍等五分钟 的本地化字符串。
+        /// </summary>
+        internal static string ShutDown {
+            get {
+                return ResourceManager.GetString("ShutDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap shutdown1 {
+            get {
+                object obj = ResourceManager.GetObject("shutdown1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap sleep48 {
+            get {
+                object obj = ResourceManager.GetObject("sleep48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap sleep72 {
+            get {
+                object obj = ResourceManager.GetObject("sleep72", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon SoftWareLogo {
@@ -2172,6 +2257,16 @@ namespace i_Reader_S.Properties {
         internal static string StopTip2 {
             get {
                 return ResourceManager.GetString("StopTip2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Sun {
+            get {
+                object obj = ResourceManager.GetObject("Sun", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

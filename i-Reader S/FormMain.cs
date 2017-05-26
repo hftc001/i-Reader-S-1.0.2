@@ -66,9 +66,12 @@ namespace i_Reader_S
         //searchcondition 查询列表条件
         private string _searchcondition = string.Format(" and createtime between '{0:yyyy-MM-dd 00:00:00}' and '{1:yyyy-MM-dd 23:59:59}' ", DateTime.Today.AddDays(-7), DateTime.Now);
 
-        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗,取片失败次数
-        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        
+        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗,取片失败次数,休眠状态
+        private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        //浮球命令判断，温湿度命令判断，浮球命令计数，温湿度命令计数
+        private int[] CommandCheck = { 0, 0, 0, 0 };
+
         //用户权限
         public string UserType = "";//2017-2-24
 
@@ -212,6 +215,32 @@ namespace i_Reader_S
                 else if (btn == buttonAddTestItem)
                 {
                     CounterText = "AddNewItem";
+                }
+                else if (btn == buttonAwake)
+                {
+                    try
+                    {
+                        serialPort_DataSend(serialPortMain, "#3051");
+                    }
+                    catch
+                    {
+                        MessageboxShow("唤醒失败");
+                        return;
+                    }
+
+
+                    Invoke(new Action(() =>
+                    {
+                        timerWaiting.Stop();
+                        panelZZZ.Size = new Size(150, 150);
+                        panelZZZ.Location = new Point(570, 90);
+                        panelZZZ.BackgroundImage = Resources.Sun;
+
+                        buttonAwake.Visible = false;
+                        labelWaitingMessage.Text = Resources.Awake;
+                        labelWaitingMessage.Visible = true;
+                        timerWaiting.Start();
+                    }));
                 }
                 else if (btn == buttonAutoPrint)
                 {
@@ -511,6 +540,13 @@ namespace i_Reader_S
                         byte[] th = Encoding.ASCII.GetBytes("\x02" + "PumpWork" + "\x03");
                         serialPortTH.Write(th, 0, th.Length);
                         Invoke(new Action(() => { PortLog("TH", "S", "<STX>PumpWork<ETX>"); MessageboxShow("排水中|排水完毕将自动关机,屏幕熄灭后请切断电源"); }));
+
+                        labelwait.Text = "关机中";
+                        labelMenu.Text = GetResxString("ShutDown", "MenuText");
+                        labelWaitingMessage.Text = Resources.ShutDown;
+                        panelZZZ.BackgroundImage = Resources.shutdown1;
+                        timerWaiting.Start();
+                        tbtemp = tabPageWaiting;
                         this.Enabled = false;
                     }
                 }
@@ -1231,6 +1267,16 @@ namespace i_Reader_S
                     labelNextTestItem.Text = newTestitem;
                     var reagentStoreId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
                     SwitchTestItem(reagentStoreId);
+                    if (newTestitem == "FBNP")
+                    {
+                        serialPort_DataSend(serialPortMain, "#3025$0");
+                        serialPort_DataSend(serialPortMain, "#3008$0");
+                    }
+                    else if (newTestitem == "FBNP0")
+                    {
+                        serialPort_DataSend(serialPortMain, "#3025$1");
+                        serialPort_DataSend(serialPortMain, "#3008$1");
+                    }
                     // ReSharper disable once ResourceItemNotResolved
                     Invoke(new Action(() => Log_Add(Resources.CC07 + labelNextTestItem.Text, false, Color.Red)));
                     if (newTestitem !=  "人工进样" & newTestitem != "CRPQC" )
@@ -1883,9 +1929,38 @@ namespace i_Reader_S
             if (resultStr.Substring(0, 1) == "-")
             {
                 var str = resultStr == "-9" ? "CCD计算异常" : "质控线异常" + resultStr.Substring(4);
+                /*
                 Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
                 DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
-                return;
+                return;*/
+                if (resultStr == "-11")
+                {
+                    if (_otherInt[1] == 0)
+                    {
+                        Invoke(new Action(() => Log_Add("第一次测试质控线异常，将重测", true)));
+                        serialPort_DataSend(serialPortMain, "#3054");
+                    }
+                    else if (_otherInt[1] == 1)
+                    {
+                        Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
+                        DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
+                    }
+                    return;
+                }
+                else if (resultStr == "-9")
+                {
+                    if (_otherInt[1] == 0)
+                    {
+                        Invoke(new Action(() => Log_Add("第一次测试计算异常，将重测", true)));
+                        serialPort_DataSend(serialPortMain, "#3054");
+                    }
+                    else if (_otherInt[1] == 1)
+                    {
+                        Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
+                        DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
+                    }
+                    return;
+                }
             }
             var resultinfo = SqlData.Selectresultinfo(seq);
             if (resultinfo.Rows.Count <= 0) return;
@@ -1894,11 +1969,18 @@ namespace i_Reader_S
             //if (Math.Abs(int.Parse(midY) - 428) > 30)
             if (Math.Abs(int.Parse(midY) - 428) > 45)
             {
-                if (_otherInt[1] == 1)
+                if (_otherInt[1] == 2)
+                {
                     DrawResult("-4", seq, "", "", "");
+                }
                 else if (_otherInt[1] == 0)
                 {
                     Invoke(new Action(() => Log_Add("第一次测试位置错误，将重测", true)));
+                    serialPort_DataSend(serialPortMain, "#3054");
+                }
+                else if (_otherInt[1] == 1)
+                {
+                    Invoke(new Action(() => Log_Add("第二次测试位置错误，将重测", true)));
                     serialPort_DataSend(serialPortMain, "#3054");
                 }
                 return;
@@ -2861,33 +2943,43 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
                 {
+                    
                     File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
                     File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                    
                     File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
                 }
+                /*
                 else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
                 {
                     File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
                     File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
-                }
+
+                }*/
                 else if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
                 {
+                    File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
                     File.Copy(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
+                    
+                    MessageBox.Show("配置文件调整，请重新启动软件");
+                    this.Close();
+                    
                 }
+                /*
                 else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
                 {
                     File.Move(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
-                }
+                }*/
             }
             catch
             {
                 MessageBox.Show("配置文件彻底损坏，请联系工程师");
             }
+            if (ConfigRead("FloatBallEnable") == "1")
+            {
+                timerFloatCommandCheck.Start();
+            }
             
-            
-            
-
-
             _mEstr[0] = "<STX>i[ｼｰｹﾝｽ No]00<ETX>";
             _mEstr[1] = "<STX>i[ｼｰｹﾝｽ No]01<ETX>";
 
@@ -2911,6 +3003,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             tbtemp = tabPageLogin;
             Size = new Size(1024, 768);
             timerLoad.Start();
+
 
             if (File.Exists(Application.StartupPath + "/ExceptionChar.txt"))
             {
@@ -3294,25 +3387,66 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         serialPort_DataSend(serialPortMain, "#0004");
                     }
+                    else if (_otherInt[2] == 5)
+                    {
+                        _otherInt[10] = 1;
+                        labelStep.Text = Resources.LoadingStep4;
+                        labelStep.Location = new Point(1024 / 2 - labelStep.Size.Width / 2, labelStep.Location.Y);
+                    }
 
                 }
                 //准备就绪后进入主界面
                 else if (labelStep.Text == Resources.LoadingStep4 & tabControlMain.SelectedTab == tabPageLogin)
                 {
-                    timerLoding.Enabled = false;
-                    buttonHome.Visible = true;
-                    buttonQC.Visible = true;
-                    buttonSearch.Visible = true;
-                    buttonSetting.Visible = true;
-                    buttonMessage.Visible = true;
-                    buttonStop.Visible = true;
-                    button1.Visible = true;
-                    button2.Visible = true;
-                    button3.Visible = true;
-                    button4.Visible = true;
-                    labelpage.Visible = true;
+                    if (_otherInt[2] == 3)
+                    {
+                        timerLoding.Enabled = false;
+                        Invoke(new Action(() =>
+                        {
+                            buttonHome.Visible = true;
+                            buttonQC.Visible = true;
+                            buttonSearch.Visible = true;
+                            buttonSetting.Visible = true;
+                            buttonMessage.Visible = true;
+                            buttonStop.Visible = true;
+                            button1.Visible = true;
+                            button2.Visible = true;
+                            button3.Visible = true;
+                            button4.Visible = true;
+                            labelpage.Visible = true;
+                        }));
 
-                    buttonMenu_Click(buttonHome, null);
+                        buttonMenu_Click(buttonHome, null);
+                    }
+                    else if (_otherInt[2] == 5)
+                    {
+                        timerLoding.Enabled = false;
+                        Invoke(new Action(() =>
+                        {
+                            buttonHome.Visible = false;
+                            buttonQC.Visible = false;
+                            buttonSearch.Visible = false;
+                            buttonSetting.Visible = false;
+                            buttonMessage.Visible = false;
+                            buttonStop.Visible = true;
+                            button1.Visible = true;
+                            button2.Visible = true;
+                            button3.Visible = true;
+                            button4.Visible = true;
+                            labelpage.Visible = true;
+
+                            labelwait.Text = "休眠中";
+                            panelZZZ.BackgroundImage = Resources.sleep72;
+                            panelZZZ.Visible = true;
+                            buttonAwake.Visible = true;
+                            labelWaitingMessage.Visible = false;
+                        }));
+                        _otherInt[10] = 1;
+                        
+                        labelMenu.Text = GetResxString("Sleep", "MenuText");
+                        timerWaiting.Start();
+                        tbtemp = tabPageWaiting;
+                    }
                     if (ConfigRead("ASUEnable") == "1")
                     {
                         serialPort_DataSend(serialPortMain, "#3024$0");
@@ -3838,7 +3972,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             button_Click(buttonSaveLog, null);
 
             //关闭前备份日志
-            if (!File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config"))
+            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config"))
             {
                 File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
             }
@@ -4061,10 +4195,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                 }
                 
-                
                 if (_fluoData.Count == fluoPointCount)
                 {
-                 /*   
+                    /*
                     fluoPointCount = 180;
                     List<double> list = new List<double>();
                     if (_fluoData.Take(20).Average() > 35)
@@ -4271,8 +4404,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 if (strCmd == "") return;
                 cmdlist.Add(strCmd);
                 return;
-
-
             }
             else if (serialPortTH == sr)
             {
@@ -4514,7 +4645,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         }
                         return;
                     }
-                    //2016-08-30 加入制冷片一场
+                    //2016-08-30 加入制冷异常
                     else if (strTemp.IndexOf("ColdPieceTepError") > -1)
                     {
                         Invoke(new Action(() => Log_Add("制冷片温度异常，请确认水冷是否正常", true)));
@@ -4536,6 +4667,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         // ReSharper disable once ResourceItemNotResolved
                         Log_Add(string.Format("[R][TH]{0}:{1}", Resources.D0004, strTemp), true);
                     }
+                    if (CommandCheck[1] == 0)
+                        CommandCheck[1] = 1;//温湿度命令有无判断
                 }
             }
         }
@@ -4828,16 +4961,17 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     //无参数的信息,直接显示即可，无需后续操作
                     string[] msgnoparam1 =
                     {
-                        "*0199", "*1101", "*2100", "*3153", "*3154", "*3160", "*3161", "*3162", "*3163", "*3190",
-                        "*3191", "*3135", "!3501", "!3525", "!3526", "!3527",
+                        "*0199", "*1101", "*2100", "*3153", "*3154", "*3160", "*3161", "*3162", "*3163", "*3135", "!3501", "!3525", "!3526", "!3527",
                         "*2103", "*2104", "*2107", "*2108", "*2109", "*2113", "*2114", "*2115", "*2116", "*2118",
                         "!2501", "!2502", "!2505", "!2506", "!2510", "!2511", "!2512", "!2513", "!2514", "!2520", "!2521",
-                        "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2550", "!2901", "!2902", "!2905", "!2906",
+                        "!2530", "!2531", "!2532", "!2533", "!2534", "!2535", "!2901", "!2902", "!2905", "!2906",
                         "!2907", "!2910", "!2911", "!2912", "!3911", "!3912"
                     };
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 = 
-                    { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904", "!3906"};
+                    { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904", "!3906", "*3190",
+                        "*3191", "!2550"
+                    };
                   
                     //无需特殊处理的含参数信息
                     string[] msgwithparam =
@@ -4896,11 +5030,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     }
                                 }));
                                 break;
-                            //休眠
+                            //紧急停止
                             case "*0106":
                                 Invoke(new Action(() =>
                                 {
-                                    //休眠中禁用其他操作
+                                    //紧急停止中禁用其他操作
                                     buttonHome.Visible = false;
                                     buttonQC.Visible = false;
                                     buttonSearch.Visible = false;
@@ -4912,7 +5046,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     labelStopStatus.Text = Resources.StopTip2;
                                 }));
                                 break;
-                            //休眠中恢复
+                            //紧急停止中恢复
                             case "*0105":
                                 Invoke(new Action(() =>
                                 {
@@ -4981,6 +5115,81 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 break;
                             case "!3906":
                                 MessageboxShow("请关闭废片仓");
+                                break;
+                            case "*3191":
+                                serialPort_DataSend(serialPortMain, "#3053$1");
+
+                                _otherInt[2] = 5;
+                                _otherInt[10] = 1;
+
+                                Invoke(new Action(() =>
+                                {
+                                    labelMeachineStatus.Text = _rm.GetString("MeachineStatus5");
+                                    labelwait.Text = "休眠中";
+                                    panelZZZ.BackgroundImage = Resources.sleep72;
+                                    panelZZZ.Visible = true;
+                                    buttonAwake.Visible = true;
+                                    labelWaitingMessage.Visible = false;
+
+                                    buttonHome.Visible = false;
+                                    buttonQC.Visible = false;
+                                    buttonSearch.Visible = false;
+                                    buttonMessage.Visible = false;
+                                    buttonSetting.Visible = false;
+
+                                    timerWaiting.Start();
+                                }));
+
+                                labelMenu.Text = GetResxString("Sleep", "MenuText");
+                                tbtemp = tabPageWaiting;
+                                break;
+                            case "*2120":
+                                if (_otherInt[10] == 1)
+                                {
+                                    _otherInt[2] = 3;
+                                    _otherInt[10] = 0;
+
+                                    Invoke(new Action(() =>
+                                    {
+                                        labelMeachineStatus.Text = _rm.GetString("MeachineStatus3");
+
+                                        buttonHome.Visible = true;
+                                        buttonQC.Visible = true;
+                                        buttonSearch.Visible = true;
+                                        buttonMessage.Visible = true;
+                                        buttonSetting.Visible = true;
+
+                                        buttonMenu_Click(buttonHome, null);
+                                        comboBox1.SelectedIndex = 3;
+                                        timerWaiting.Stop();
+                                    }));
+
+                                    serialPort_DataSend(serialPortMain, "#3053$0");
+                                }
+                                break;
+                            case "!2550":
+                                if (_otherInt[10] == 1)
+                                {
+                                    _otherInt[2] = 3;
+                                    _otherInt[10] = 0;
+
+                                    Invoke(new Action(() =>
+                                    {
+                                        labelMeachineStatus.Text = _rm.GetString("MeachineStatus3");
+
+                                        buttonHome.Visible = true;
+                                        buttonQC.Visible = true;
+                                        buttonSearch.Visible = true;
+                                        buttonMessage.Visible = true;
+                                        buttonSetting.Visible = true;
+
+                                        buttonMenu_Click(buttonHome, null);
+                                        comboBox1.SelectedIndex = 3;
+                                        timerWaiting.Stop();
+                                    }));
+
+                                    serialPort_DataSend(serialPortMain, "#3053$0");
+                                }
                                 break;
                         }
                     }
@@ -5162,8 +5371,15 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         MessageboxShow("注意！| 废片仓已经打开，请清空废片仓");
                                         if (ConfigRead("FloatBallEnable") == "1")
                                         {
+                                            /*
                                             labelReagentStatus.BackColor = Color.FromArgb(49, 169, 223);
+                                            labelSupplyLeft4.Text = "废片仓：√";*/
+
+                                            panelWasteStore.BackgroundImage = Resources.ReagentFull;
                                             labelSupplyLeft4.Text = "废片仓：√";
+                                            labelFloatBallWasteCard.Text = "正常\r\n" + "运行";
+                                            labelFloatBallWasteCard1.Text = "正常";
+
                                             if (labelLock.Text != "")
                                             {
                                                 if (labelSupplyLeft3.Text.IndexOf("×") == -1 & ConfigRead("FloatBallCount").Split('-')[0] != "0" & ConfigRead("FloatBallCount").Split('-')[1] != "0")
@@ -5171,7 +5387,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                                     serialPort_DataSend(serialPortMain, "#3053$0");
                                                     labelLock.Text = "";
                                                     Log_Add("仪器解锁，可以继续测试", true);
-
                                                 }
                                             }
                                         }
@@ -5252,9 +5467,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 else
                                 {
                                     //分辨样本是第一次测试还是第二次测试
-                                    if (seq == _otherStr[2])
+                                    if (seq == _otherStr[2] & _otherInt[1] == 0)
                                     {
                                         _otherInt[1] = 1;
+                                    }
+                                    else if (seq == _otherStr[2] & _otherInt[1] == 1)
+                                    {
+                                        _otherInt[1] = 2;
                                     }
                                     else
                                     {
@@ -5289,9 +5508,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 else
                                 {
                                     //分辨样本是第一次测试还是第二次测试
-                                    if (seq == _otherStr[2])
+                                    if (seq == _otherStr[2] & _otherInt[1] == 0)
                                     {
                                         _otherInt[1] = 1;
+                                    }
+                                    else if (seq == _otherStr[2] & _otherInt[1] == 1)
+                                    {
+                                        _otherInt[1] = 2;
                                     }
                                     else
                                     {
@@ -5331,7 +5554,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         var seq1 = detail[1];
                         OperationAfterDealMsgWithSeq(msgType, seq1, "");
                     }
-
                     else if (msgType == "!3927" | msgType == "!3925" | msgType == "!3926" | msgType == "!3928")
                     {
                         try
@@ -5426,7 +5648,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         }
                         if (LiquidSensorCheckCMDS != "")
                         {
-                            if (value > 230 | value < 220)
+                            if (value > 240 | value < 230)
                             {
                                 LiquidSensorCheck = false;
                                 LiquidSensorCheckCMDS = "";
@@ -5442,13 +5664,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             }
                             else
                             {
-                                Invoke(new Action(() => buttonLiquidSensor.Text = "继续液路光耦校准"));
+                                if (ConfigRead("Debug") == "1")
+                                {
+                                    Invoke(new Action(() => buttonLiquidSensor.Text = "继续液路光耦校准"));
+                                }
+                                else if (ConfigRead("Debug") == "0")
+                                {
+                                    Invoke(new Action(() => buttonNewLiquidSensor.Text = "继续液路光耦校准"));
+                                }
                                 Log_Add("光耦校准完成，请将清洗液、稀释液管移到液面以上,之后点击继续液路光耦校准", true);
                             }
                         }
                         else
                         {
-                            if (value > 230 | value < 220)
+                            if (value > 240 | value < 230)
                             {
                                 Log_Add(txt1 + "光耦校准异常", true);
                             }
@@ -5860,8 +6089,12 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         count1[3] = (int.Parse(count1[3]) + 1).ToString();
                         if (int.Parse(count1[3]) >= int.Parse(volume1[3]))
                         {
-                            labelFloatBallWasteReagent.BackColor = Color.Red;
-                            labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n已满\r\n\r\n请清空";
+
+                            //labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n已满\r\n\r\n请清空";
+
+                            panelWasteStore.BackgroundImage = Resources.ReagentFull3;
+                            labelFloatBallWasteCard.Text = "需要\r\n" + "清空";
+                            labelFloatBallWasteCard1.Text = "满仓";
 
                             labelSupplyLeft4.Text = "废片仓：×";
                             labelReagentStatus.BackColor = Color.Red;
@@ -5872,8 +6105,13 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         }
                         else
                         {
-                            labelFloatBallWasteReagent.BackColor = Color.FromArgb(41, 169, 223);
-                            labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n正常";
+                            //labelFloatBallWasteReagent.BackColor = Color.FromArgb(41, 169, 223);
+                            //labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n正常";
+
+                            panelWasteStore.BackgroundImage = Resources.ReagentFull;
+                            labelFloatBallWasteCard.Text = "运行\r\n" + "正常";
+                            labelFloatBallWasteCard1.Text = "正常";
+
                             labelSupplyLeft4.Text = "废片仓：√";
                             labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
                         }
@@ -5886,12 +6124,22 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     if (int.Parse(count[0]) <= int.Parse(volume[0]))
                     {
                         count[0] = (Math.Max(0, int.Parse(count[0]) - 1)).ToString();
+                        /*
                         labelFloatBallDilution.Text = "稀释液\r\n\r\n" + count[0] + "Test\r\n\r\n" + "点击灌注";
                         labelFloatBallDilution.BackColor = Color.Red;
+                        */
+                        buttonFloatBallDilution.Text = count[0] + "\r\n" + "Test";
+                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull5;
+                        labelFloatBallDillution1.Text = "较少";
+
                         labelDilutionStatus.BackColor = Color.Red;
                         labelSupplyLeft.Text = "稀释液:×";
+
                         if (count[0] == "0")
                         {
+                            panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
+                            labelFloatBallDillution1.Text = "用完";
+
                             serialPort_DataSend(serialPortMain, "#3053$1");
                             labelLock.Text = "仪器锁定";
                             Log_Add("请更换稀释液后继续操作，当前仪器锁定", true);
@@ -5900,8 +6148,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     else
                     {
+                        /*
                         labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";
                         labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);
+                        */
+                        buttonFloatBallDilution.Text = "点击\r\n" + "灌注";
+                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull4;
+                        labelFloatBallDillution1.Text = "充足";
+
                         labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
                         labelSupplyLeft.Text = "稀释液:√";
                     }
@@ -5909,12 +6163,21 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     if (int.Parse(count[1]) <= int.Parse(volume[1]))
                     {
                         count[1] = (Math.Max(0,int.Parse(count[1]) - 1)).ToString();
+                        /*
                         labelFloatBallClean.Text = "清洗液\r\n\r\n" + count[1] + "Test\r\n\r\n" + "点击灌注";
-                        labelFloatBallClean.BackColor = Color.Red;
+                        labelFloatBallClean.BackColor = Color.Red;*/
+
+                        buttonFloatBallClean.Text = count[1] + "\r\n" + "Test";
+                        panelFloatBallClean.BackgroundImage = Resources.BottleFull5;
+                        labelFloatBallClean1.Text = "较少";
+
                         labelCleanStatus.BackColor = Color.Red;
                         labelSupplyLeft2.Text = "清洗液:×";
                         if (count[1] == "0")
                         {
+                            panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
+                            labelFloatBallClean1.Text = "用完";
+
                             serialPort_DataSend(serialPortMain, "#3053$1");
                             labelLock.Text = "仪器锁定";
                             Log_Add("请更换清洗液后继续操作，当前仪器锁定", true);
@@ -5923,8 +6186,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     else
                     {
+                        /*
                         labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                        labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);
+                        labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);*/
+
+                        buttonFloatBallClean.Text = "点击\r\n" + "灌注";
+                        panelFloatBallClean.BackgroundImage = Resources.BottleFull4;
+                        labelFloatBallClean1.Text = "充足";
+
                         labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
                         labelSupplyLeft2.Text = "清洗液:√";
                     }
@@ -6032,15 +6301,26 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 if (int.Parse(supplyLeft1[3]) >= int.Parse(supplyVolume1[3]))
                 {
                     labelReagentStatus.BackColor = Color.Red;
+                    /*
                     labelFloatBallWasteReagent.BackColor = Color.Red;
                     labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n已满\r\n\r\n请清空";
+                    */
+                    panelWasteStore.BackgroundImage = Resources.ReagentFull3;
+                    labelFloatBallWasteCard.Text = "需要\r\n" + "清空";
+                    labelFloatBallWasteCard1.Text = "满仓";
                     labelSupplyLeft4.Text = "废片仓：×";
                 }
                 else
                 {
                     labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    /*
                     labelFloatBallWasteReagent.BackColor = Color.FromArgb(41, 169, 223);
-                    labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n正常";
+                    labelFloatBallWasteReagent.Text = "废片仓\r\n\r\n正常";*/
+
+                    panelWasteStore.BackgroundImage = Resources.ReagentFull;
+                    labelFloatBallWasteCard.Text = "运行\r\n" + "正常";
+                    labelFloatBallWasteCard1.Text = "正常";
+
                     labelSupplyLeft4.Text = "废片仓：√";
 
                 }
@@ -6051,29 +6331,64 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 if (int.Parse(supplyLeft2[0]) <= int.Parse(supplyVolume2[0]))
                 {
                     labelDilutionStatus.BackColor = Color.Red;
+                    /*
                     labelFloatBallDilution.BackColor = Color.Red;
-                    labelFloatBallDilution.Text = "稀释液\r\n\r\n" + supplyLeft2[0] + "Test\r\n\r\n" + "点击灌注";
-                    labelSupplyLeft.Text = "稀释液：×";
+                    labelFloatBallDilution.Text = "稀释液\r\n\r\n" + supplyLeft2[0] + "Test\r\n\r\n" + "点击灌注";*/
+
+                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull5;
+                    buttonFloatBallDilution.Text = supplyLeft2[0] + "\r\n" + "Test";
+                    labelFloatBallDillution1.Text = "较少";
+
+                    if (supplyLeft2[0] == "0")
+                    {
+                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
+                        labelFloatBallDillution1.Text = "用完";
+                    }
+                        labelSupplyLeft.Text = "稀释液：×";
                 }
                 else
                 {
                     labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    /*
                     labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);
-                    labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";
+                    labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";*/
+
+                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull4;
+                    buttonFloatBallDilution.Text = "点击" + "\r\n" + "灌注";
+                    labelFloatBallDillution1.Text = "充足";
+
                     labelSupplyLeft.Text = "稀释液：√";
                 }
                 if (int.Parse(supplyLeft2[1]) <= int.Parse(supplyVolume2[1]))
                 {
                     labelCleanStatus.BackColor = Color.Red;
+                    /*
                     labelFloatBallClean.BackColor = Color.Red;
-                    labelFloatBallClean.Text = "清洗液\r\n\r\n" + supplyLeft2[1] + "Test\r\n\r\n" + "点击灌注";
+                    labelFloatBallClean.Text = "清洗液\r\n\r\n" + supplyLeft2[1] + "Test\r\n\r\n" + "点击灌注";*/
+                    
+                    panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
+                    buttonFloatBallClean.Text = supplyLeft2[1] + "\r\n" + "Test";
+                    labelFloatBallClean1.Text = "较少";
+
+                    if (supplyLeft2[1] == "0")
+                    {
+                        panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
+                        labelFloatBallClean1.Text = "用完";
+                    }
+
                     labelSupplyLeft2.Text = "清洗液：×";
                 }
                 else
                 {
                     labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    /*
                     labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);
-                    labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
+                    labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";*/
+
+                    panelFloatBallClean.BackgroundImage = Resources.BottleFull4;
+                    buttonFloatBallClean.Text = "点击" + "\r\n" + "灌注";
+                    labelFloatBallClean1.Text = "充足";
+
                     labelSupplyLeft2.Text = "清洗液：√";
                 }
 
@@ -6191,6 +6506,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 {
                     panelWasteReagent2.BackgroundImage = Resources.ReagentFull2;
                     labelReagentStatus.BackColor = Color.Yellow;
+                }
+                else if (wasteReagentUsage == 100)
+                {
+                    serialPort_DataSend(serialPortMain, "#3053$1");
+                    labelLock.Text = "仪器锁定";
+                    Log_Add("请清空废片后继续操作，当前仪器锁定", true);
+                    ShowMyAlert("请清空废片后继续操作，\r\n当前仪器锁定");
+                    MessageboxShow("请清空废片后继续操作，当前仪器锁定");
                 }
                 else
                 {
@@ -6312,6 +6635,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void buttonReagentSensor_Click(object sender, EventArgs e)
         {
+            if (_otherInt[2] != 4)
+            {
+                MessageBox.Show(@"需进入维护状态");
+                return;
+            }
             //片仓光耦校准  需要校准1-5个片仓，命令为#4011$1
             ShowMyAlert("开始自动进行试剂片仓光耦校准");
             ReagentSensorCheck = true;
@@ -6325,20 +6653,48 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void buttonLiquidSensor_Click(object sender, EventArgs e)
         {
-            if (buttonLiquidSensor.Text == "液路光耦校准")
+            Button btn = (Button)sender;
+            if (btn == buttonLiquidSensor)
             {
-                LiquidSensorCheck = true;
-                serialPort_DataSend(serialPortMain, "#4029");
-                Log_Add("开始液路光耦校准", false);
-                //液路光耦校准，1、#4029 #4030各5次
-                LiquidSensorCheckCMDS = "#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4009$0|#4009$1|#4029|#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4033$0|";
+                if (_otherInt[2] != 4)
+                {
+                    MessageBox.Show(@"需进入维护状态");
+                    return;
+                }
+                if (buttonLiquidSensor.Text == "液路光耦校准")
+                {
+                    LiquidSensorCheck = true;
+                    serialPort_DataSend(serialPortMain, "#4029");
+                    Log_Add("开始液路光耦校准", false);
+                    //液路光耦校准，1、#4029 #4030各5次
+                    LiquidSensorCheckCMDS = "#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4009$0|#4009$1|#4029|#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4033$0|";
+                }
+                else
+                {
+                    serialPort_DataSend(serialPortMain, "#4029");
+                    LiquidSensorCheckCMDS = LiquidSensorCheckCMDS.Substring(6);
+                    Log_Add("继续液路光耦校准", false);
+                }
             }
-            else
+            else if (btn == buttonNewLiquidSensor)
             {
-                serialPort_DataSend(serialPortMain, "#4029");
-                LiquidSensorCheckCMDS = LiquidSensorCheckCMDS.Substring(6);
-                Log_Add("继续液路光耦校准", false);
+                SwitchWorkState(_otherInt[2], 4);
+                if (buttonNewLiquidSensor.Text == "液路光耦校准")
+                {
+                    LiquidSensorCheck = true;
+                    serialPort_DataSend(serialPortMain, "#4029");
+                    Log_Add("开始液路光耦校准", false);
+                    //液路光耦校准，1、#4029 #4030各5次
+                    LiquidSensorCheckCMDS = "#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4009$0|#4009$1|#4029|#4029|#4029|#4029|#4029|#4030|#4030|#4030|#4030|#4030|#4033$0|";
+                }
+                else
+                {
+                    serialPort_DataSend(serialPortMain, "#4029");
+                    LiquidSensorCheckCMDS = LiquidSensorCheckCMDS.Substring(6);
+                    Log_Add("继续液路光耦校准", false);
+                }
             }
+            
         }
 
         private void timerLoad_Tick(object sender, EventArgs e)
@@ -6543,8 +6899,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
                 labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
                 labelReagentNow.Location = new Point(labelReagentNow.Location.X, 723);
-
-
             }
             if (ASUEanble == "1")
             {
@@ -7309,7 +7663,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             var tempbyte = Encoding.ASCII.GetBytes(tempSend);
             Invoke(new Action(() => PortLog("ASU", "S", tempSend)));
-            if (ConfigRead("ASUEnable") == "1")
+            if (ConfigRead("ASUEnable") == "1" & serialPortME.IsOpen)
             {
                 serialPortME.Write(tempbyte, 0, tempbyte.Length);
                 tempSend = "";
@@ -7509,15 +7863,23 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             _comStr[5] = _comStr[5].Substring(_comStr[5].IndexOf("\r\n") + 2);
                             if (str.IndexOf("*3301") > -1 & str.Split('$').Length == 4)
                             {
+                                if (CommandCheck[0] == 0)
+                                    CommandCheck[0] = 1;//浮球命令有无判断
                                 Invoke(new Action(() => Log_Add("FloatBall:" + str, false)));
                                 var wastestatus = str.Split('$')[1];
                                 var dilutionstatus = str.Split('$')[2];
                                 var cleanstatus = str.Split('$')[3];
                                 if (wastestatus == "1")
                                 {
-                                    labelFloatBallWaste.Text = "废液\r\n\r\n" + "警报";
+                                    /*
+                                    labelFloatBallWork.Text = "废液\r\n\r\n" + "警报";
+                                    labelFloatBallWork.BackColor = Color.Red;*/
                                     labelWasteStatus.BackColor = Color.Red;
-                                    labelFloatBallWaste.BackColor = Color.Red;
+
+                                    labelFloatBallWaste.Text = "需要\r\n" + "更换";
+                                    labelFloatBallWaste1.Text = "满溢";
+                                    panelFloatBallWaste.BackgroundImage = Resources.BottleFull6;
+
                                     labelSupplyLeft3.Text = "废液：×";
                                     if (labelLock.Text == "")
                                     {
@@ -7530,9 +7892,16 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 }
                                 else
                                 {
-                                    labelFloatBallWaste.Text = "废液\r\n\r\n" + "正常";
+                                    /*
+                                    labelFloatBallWork.Text = "废液\r\n\r\n" + "正常";
+                                    labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
+                                    */
                                     labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
-                                    labelFloatBallWaste.BackColor = Color.FromArgb(41, 169, 223);
+
+                                    labelFloatBallWaste.Text = "运行\r\n" + "正常";
+                                    labelFloatBallWaste1.Text = "正常";
+                                    panelFloatBallWaste.BackgroundImage = Resources.BottleFull4;
+
                                     labelSupplyLeft3.Text = "废液：√";
                                 }
                                 var volume = ConfigRead("FloatBallVolume").Split('-');
@@ -7542,8 +7911,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 {
                                     if (int.Parse(count[0]) > int.Parse(volume[0]))
                                         count[0] = volume[0];
+                                    /*
                                     labelFloatBallDilution.Text = "稀释液\r\n\r\n" + count[0] + "Test\r\n\r\n" + "点击灌注";
-                                    labelFloatBallDilution.BackColor = Color.Red;
+                                    labelFloatBallDilution.BackColor = Color.Red;*/
+                                    
+                                    buttonFloatBallDilution.Text = count[0] + "\r\n" + "Test";
+                                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull5;
+                                    labelFloatBallDillution1.Text = "较少";
+
+                                    if (count[0] == "0")
+                                    {
+                                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
+                                        labelFloatBallDillution1.Text = "用完";
+                                    }
+
                                     labelDilutionStatus.BackColor = Color.Red;
                                     labelSupplyLeft.Text = "稀释液:×";
                                 }
@@ -7551,8 +7932,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 {
                                     if (int.Parse(count[0]) <= int.Parse(volume[0]))
                                         count[0] = (int.Parse(volume[0]) + 1).ToString();
+                                    /*
                                     labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                                    labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);
+                                    labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);*/
+                                    
+                                    buttonFloatBallDilution.Text = "点击\r\n" + "灌注";
+                                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull4;
+                                    labelFloatBallDillution1.Text = "充足";
+
                                     labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
                                     labelSupplyLeft.Text = "稀释液:√";
                                 }
@@ -7561,8 +7948,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 {
                                     if (int.Parse(count[1]) > int.Parse(volume[1]))
                                         count[1] = volume[1];
+                                    /*
                                     labelFloatBallClean.Text = "清洗液\r\n\r\n" + count[1] + "Test\r\n\r\n" + "点击灌注";
-                                    labelFloatBallClean.BackColor = Color.Red;
+                                    labelFloatBallClean.BackColor = Color.Red;*/
+
+                                    buttonFloatBallClean.Text = count[1] + "\r\n" + "Test";
+                                    panelFloatBallClean.BackgroundImage = Resources.BottleFull5;
+                                    labelFloatBallClean1.Text = "较少";
+
+                                    if (count[1] == "0")
+                                    {
+                                        panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
+                                        labelFloatBallClean1.Text = "用完";
+                                    }
+                                    
                                     labelCleanStatus.BackColor = Color.Red;
                                     labelSupplyLeft2.Text = "清洗液:×";
                                 }
@@ -7570,8 +7969,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                 {
                                     if (int.Parse(count[1]) <= int.Parse(volume[1]))
                                         count[1] = (int.Parse(volume[1]) + 1).ToString();
+                                    /*
                                     labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                                    labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);
+                                    labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);*/
+                                    
+                                    buttonFloatBallClean.Text = "点击\r\n" + "灌注";
+                                    panelFloatBallClean.BackgroundImage = Resources.BottleFull4;
+                                    labelFloatBallClean1.Text = "充足";
+
                                     labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
                                     labelSupplyLeft2.Text = "清洗液:√";
                                 }
@@ -7594,16 +7999,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
         }
 
-        private void labelFloatBallDilution_Click(object sender, EventArgs e)
-        {
-            if(labelFloatBallDilution.Text.IndexOf("点击")>-1)
-            serialPort_DataSend(serialPortMain, "#3060");
-        }
-
-        private void labelFloatBallClean_Click(object sender, EventArgs e)
-        {
-            serialPort_DataSend(serialPortMain, "#3061");
-        }
 
         private void 发送结果ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -7751,6 +8146,281 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
             }
             File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
+        }
+
+        private void buttonFloatBallDilution_Click(object sender, EventArgs e)
+        {
+            if (buttonFloatBallDilution.Text.IndexOf("点击") > -1)
+                serialPort_DataSend(serialPortMain, "#3060");
+        }
+
+        private void buttonFloatBallClean_Click(object sender, EventArgs e)
+        {
+            if (buttonFloatBallClean.Text.IndexOf("点击") > -1)
+                serialPort_DataSend(serialPortMain, "#3061");
+        }
+
+        
+        private void timerWaiting_Tick(object sender, EventArgs e)
+        {
+            if (labelwait.Text == "休眠中")
+            {
+                if (labelWaitingMessage.Visible == true)
+                {
+                    var WaitMessage = labelWaitingMessage.Text;
+                    var NewMessage = Resources.Awake;
+                    if (WaitMessage.Substring(0,1).ToString() != " ")
+                    {
+                        WaitMessage = WaitMessage.Replace(" ", "");
+                        WaitMessage = WaitMessage.Substring(1);
+                        labelWaitingMessage.Text = WaitMessage.PadRight(NewMessage.Length, ' ');
+                    }
+                    else
+                    {
+                        WaitMessage = WaitMessage.Replace(" ", "");
+                        WaitMessage = NewMessage.Substring(0, WaitMessage.Length + 1);
+                        labelWaitingMessage.Text = WaitMessage.PadLeft(NewMessage.Length, ' ');
+                    }
+                }
+                else
+                {
+                    if (panelZZZ.Location.Y == 90)
+                    {
+                        panelZZZ.Size = new Size(70, 70);
+                        panelZZZ.Location = new Point(570, 170);
+                    }
+                    else if (panelZZZ.Location.Y == 170)
+                    {
+                        panelZZZ.Size = new Size(150, 150);
+                        panelZZZ.Location = new Point(570, 90);
+                    }
+                }
+            }
+            else if (labelwait.Text == "关机中")
+            {
+                if(panelZZZ.Visible == true | buttonAwake.Visible == true)
+                panelZZZ.Visible = false;
+                buttonAwake.Visible = false;
+
+                var WaitMessage = labelWaitingMessage.Text.Replace(" ", "").ToString();
+                var NewMessage = Resources.ShutDown;
+                if (WaitMessage.Substring(0,1).ToString() != " ")
+                {
+                    WaitMessage = WaitMessage.Substring(1);
+                    labelWaitingMessage.Text = WaitMessage.PadRight(NewMessage.Length, ' ');
+                }
+                else
+                {
+                    WaitMessage = NewMessage.Substring(0, WaitMessage.Length + 1);
+                    labelWaitingMessage.Text = WaitMessage.PadLeft(NewMessage.Length, ' ');
+                }
+            }
+        }
+
+        private void timerTHCheck_Tick(object sender, EventArgs e)
+        {
+            if (!serialPortTH.IsOpen)
+            {
+                try
+                {
+                    serialPortTH.Open();
+                    Log_Add("温湿度串口恢复", false);
+
+                    if (ConfigRead("THEnable") == "1" & labelTH.Visible == true)
+                    {
+                        labelTH.Visible = false;
+
+                        labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 723);
+                        labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 723);
+                        labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
+                        labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
+                        labelReagentNow.Location = new Point(labelReagentNow.Location.X, 723);
+
+                        CommandCheck[3] = 0;
+                        CommandCheck[1] = 0;
+                    }
+                }
+                catch
+                {
+                    if (ConfigRead("THEnable") == "1" )
+                    {
+                        labelTH.Visible = true;
+
+                        labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 732);
+                        labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 732);
+                        labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 732);
+                        labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 732);
+                        labelReagentNow.Location = new Point(labelReagentNow.Location.X, 732);
+                    }
+                    labelTH.Text = "温湿度信号异常";
+                    labelTH.BackColor = Color.Red;
+                    CommandCheck[3] = 0;
+                    CommandCheck[1] = 0;
+
+                    Log_Add("温湿度串口连接失败", false);
+                    MessageboxShow("温湿度端口异常");
+                }
+            }
+            
+            if (CommandCheck[1] == 1)
+            {
+                if (ConfigRead("THEnable") == "1" & labelTH.Visible == true)
+                {
+                    labelTH.Visible = false;
+
+                    labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 723);
+                    labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 723);
+                    labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
+                    labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
+                    labelReagentNow.Location = new Point(labelReagentNow.Location.X, 723);
+                }
+
+                CommandCheck[3] = 0;
+                CommandCheck[1] = 0;
+            }
+            else if (CommandCheck[1] == 0 & CommandCheck[3] == 0)
+            {
+                serialPortTH.Close();
+                Thread.Sleep(1000);
+                try
+                {
+                    serialPortTH.Open();
+                    CommandCheck[3] = CommandCheck[3] + 1;
+                    Log_Add("温湿度串口重新连接", false);
+                }
+                catch (Exception ee)
+                {
+                    if (ConfigRead("THEnable") == "1")
+                    {
+                        labelTH.Visible = true;
+                        labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 732);
+                        labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 732);
+                        labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 732);
+                        labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 732);
+                        labelReagentNow.Location = new Point(labelReagentNow.Location.X, 732);
+                    }
+                    labelTH.Text = "温湿度信号异常";
+                    labelTH.BackColor = Color.Red;
+                    CommandCheck[3] = 0;
+                    CommandCheck[1] = 0;
+
+                    Log_Add("温湿度串口连接失败", false);
+                    MessageboxShow("温湿度端口异常");
+                }
+            }
+            else if (CommandCheck[1] == 0 & CommandCheck[3] == 1)
+            {
+                if (ConfigRead("THEnable") == "1")
+                {
+                    labelTH.Visible = true;
+                    labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 732);
+                    labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 732);
+                    labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 732);
+                    labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 732);
+                    labelReagentNow.Location = new Point(labelReagentNow.Location.X, 732);
+                }
+                labelTH.Text = "温湿度信号异常";
+                labelTH.BackColor = Color.Red;
+
+                CommandCheck[1] = 0;
+
+                Log_Add("温湿度串口异常", false);
+                MessageboxShow("温湿度端口异常，请检查端口连接");
+            }
+        }
+
+        private void timerFloatCommandCheck_Tick(object sender, EventArgs e)
+        {
+            if (!serialPortFloatBall.IsOpen)
+            {
+                try
+                {
+                    serialPortFloatBall.Open();
+                    labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
+                    labelFloatBallWork.Text = "浮球工作中";
+                    Log_Add("浮球串口连接成功", false);
+
+                    labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
+                    labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
+
+                    CommandCheck[2] = 0;
+                    CommandCheck[0] = 0;
+
+                    timerFloatCommandCheck.Interval = 300000;
+                    return;
+                }
+                catch
+                {
+                    labelFloatBallWork.Text = "浮球信号异常";
+                    labelFloatBallWork.BackColor = Color.Red;
+
+                    labelDilutionStatus.BackColor = Color.Red;
+                    labelCleanStatus.BackColor = Color.Red;
+                    labelWasteStatus.BackColor = Color.Red;
+                    labelReagentStatus.BackColor = Color.Red;
+                    CommandCheck[2] = 0;
+                    CommandCheck[0] = 0;
+
+                    Log_Add("浮球串口连接失败", false);
+                    MessageboxShow("浮球端口异常，请检查浮球连接");
+                }
+            }
+
+            if (CommandCheck[0] == 1)
+            {
+                labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
+                labelFloatBallWork.Text = "浮球工作中";
+
+                labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
+                labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
+                labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
+                labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
+
+                CommandCheck[2] = 0;
+                CommandCheck[0] = 0;
+
+                timerFloatCommandCheck.Interval = 300000;
+            }
+            else if (CommandCheck[0] == 0 & CommandCheck[2] == 0)
+            {
+                serialPortFloatBall.Close();
+                Thread.Sleep(1000);
+                try
+                {
+                    serialPortFloatBall.Open();
+                    CommandCheck[2] = CommandCheck[2] + 1;
+                    Log_Add("浮球串口重新连接", false);
+                }
+                catch (Exception ee)
+                {
+                    labelFloatBallWork.Text = "浮球信号异常";
+                    labelFloatBallWork.BackColor = Color.Red;
+
+                    labelDilutionStatus.BackColor = Color.Red;
+                    labelCleanStatus.BackColor = Color.Red;
+                    labelWasteStatus.BackColor = Color.Red;
+                    labelReagentStatus.BackColor = Color.Red;
+
+                    Log_Add("浮球串口连接失败", false);
+                    MessageboxShow("浮球端口异常，请检查浮球连接");
+                }
+                timerFloatCommandCheck.Interval = 60000;
+            }
+            else if (CommandCheck[0] == 0 & CommandCheck[2] == 1)
+            {
+                labelFloatBallWork.Text = "浮球信号异常";
+                labelFloatBallWork.BackColor = Color.Red;
+
+                labelDilutionStatus.BackColor = Color.Red;
+                labelCleanStatus.BackColor = Color.Red;
+                labelWasteStatus.BackColor = Color.Red;
+                labelReagentStatus.BackColor = Color.Red;
+                
+                CommandCheck[0] = 0;
+                MessageboxShow("浮球信号异常，请检查浮球连接");
+            }
         }
     }
 
