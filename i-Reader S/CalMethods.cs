@@ -55,19 +55,21 @@ namespace i_Reader_S
                             break;
                         }
                     }
+                    
                     if (DownX == 0) return "-9";
+                    
                     midY = DownX / 2 + UpX / 2 - 80;
                 }
                 //有效区域取平均
                 int[] data2 = new int[data.GetLength(1)];
-
+                
                 if (Math.Abs(midY) - 428 < 45 & Math.Abs(midY) - 428 > 30)
                 {
                     if (midY - 428 > 0)
                     {
                         for (int i = 0; i < data2.Length; i++)
                         {
-                            for (int j = midY - 15; j < midY + 160; j++)
+                            for (int j = midY - 15; j < midY + 145; j++)
                             {
                                 data2[i] += data[j, i];
                             }
@@ -78,7 +80,7 @@ namespace i_Reader_S
                     {
                         for (int i = 0; i < data2.Length; i++)
                         {
-                            for (int j = midY + 15; j < midY + 160; j++)
+                            for (int j = midY + 15; j < midY + 175; j++)
                             {
                                 data2[i] += data[j, i];
                             }
@@ -97,6 +99,15 @@ namespace i_Reader_S
                         data2[i] /= 160;
                     }
                 }
+                /*
+                for (int i = 0; i < data2.Length; i++)
+                {
+                    for (int j = midY; j < midY + 160; j++)
+                    {
+                        data2[i] += data[j, i];
+                    }
+                    data2[i] /= 160;
+                }*/
 
                 int c1X = 0;
                 int c1Y = 0;
@@ -155,8 +166,7 @@ namespace i_Reader_S
                         {
                             ty = data2[LeftX + RightX / 3 - LeftX / 3 + i];
                             tx = LeftX + RightX / 3 - LeftX / 3 + i;
-                        }
-                        */
+                        }*/
                         if (data2[LeftX + RightX / 3 - LeftX / 3 + i] < miny)
                         {
                             minx = LeftX + RightX / 3 - LeftX / 3 + i;
