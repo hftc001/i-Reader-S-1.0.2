@@ -38,8 +38,9 @@ namespace i_Reader_S
 
         //用于切换测试项目
         public static string TestItemText = "";
-        //用于确定弹窗形式
-        public static string [] MessageType = { "", "" };
+
+        //用于确定弹窗形式：0.确认是普通形式还是OkCancel形式的弹窗 1.右上角弹窗时间 2.记录返回信息
+        public static string[] MessageType = { "", "3", "" };
 
         //荧光的数据需要8个数一组自行读取，为间断式数据，用于存储荧光数据
         private readonly List<double> _fluoData = new List<double>();
@@ -48,11 +49,11 @@ namespace i_Reader_S
         private readonly string[] _comStr = { "", "", "", "-1", "", "" };
 
         //荧光测试的seq，打印信息，CCDSeq
-        private readonly string[] _otherStr = { "", "", ""};
+        private readonly string[] _otherStr = { "", "", "" };
 
         //当前仪器测试参数 检测头，片仓,反应时间
         private int[] _MParam = { 0, 1, 300 };
-        
+
 
         //警告弹窗
         private FormAlert _myAlert;
@@ -66,23 +67,44 @@ namespace i_Reader_S
         //searchcondition 查询列表条件
         private string _searchcondition = string.Format(" and createtime between '{0:yyyy-MM-dd 00:00:00}' and '{1:yyyy-MM-dd 23:59:59}' ", DateTime.Today.AddDays(-7), DateTime.Now);
 
-        //barcodemode,CCD测试次数,状态名称,混匀模式，打印模式，自动测试,是否光源校准,是否中心校准,是否锁定弹窗,取片失败次数,休眠状态
+        //[0]barcodemode,[1]CCD测试次数,[2]状态名称,[3]混匀模式，[4]打印模式，[5]自动测试,[6]是否光源校准,[7]是否中心校准,[8]是否锁定弹窗,[9]取片失败次数,[10]休眠状态
         private readonly int[] _otherInt = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        //浮球命令判断，温湿度命令判断，浮球命令计数，温湿度命令计数
-        private int[] CommandCheck = { 0, 0, 0, 0 };
+        //[0]浮球命令判断,[1]温湿度命令判断,[2]浮球命令计数，[3]温湿度命令计数，[4]休眠剩余时间
+        private int[] CommandCheck = { 0, 0, 0, 0, 0 };
+
+        //[0]ASU是否仍存在错误或未扫出的条码,[1]当前条码的位置，[2]命令计数,[3] ASU状态, [4]当前试管架最后的试管位置
+        private int[] ASU_Int = { 0, 0, 0, 0, 0 };
+
+        //鼠标位置{[X],[Y]}
+        private int[] Cursor_Point = { 0, 0 };
 
         //用户权限
         public string UserType = "";//2017-2-24
 
         //ASU测试是否已经完成的判断变量//2017-3-22
         public bool ASUComplete = true;
-        
+
         //触摸屏美观要求，需要隐藏鼠标
         [DllImport("user32.dll", EntryPoint = "ShowCursor", CharSet = CharSet.Auto)]
 
-        
         public static extern void ShowCursor(int status);
+
+        //读取鼠标在屏幕上的位置
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern bool GetCursorPos(out POINT pt);
+
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+        }
 
         public ReaderS()
         {
@@ -94,6 +116,8 @@ namespace i_Reader_S
         /// </summary>
         /// <param name="newKey">要修改或者插入的配置项</param>
         /// <param name="newValue">配置值</param>
+        /// 
+        /*
         private static void UpdateAppConfig(string newKey, string newValue)
         {
             var isModified = ConfigurationManager.AppSettings.Cast<string>().Any(key => key == newKey);
@@ -106,7 +130,7 @@ namespace i_Reader_S
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
-
+        */
         /// <summary>
         /// 将获得的二维码进行提取转换
         /// </summary>
@@ -123,7 +147,7 @@ namespace i_Reader_S
                 var cpmc = Convert.ToInt32(a.Substring(0, 5), 2).ToString();
                 //第三字节的第2到第5位表示0-15*3月的保质期
                 var bzs = Convert.ToInt32(a.Substring(9, 4), 2).ToString();
-                //第二字节的第6-8位表示公式类型0-7
+                //第三字节的第6-8位表示公式类型0-7
                 var funtype = Convert.ToInt32(a.Substring(13), 2).ToString();
                 //第四第五字节表示批号新系
                 var lot = (Convert.ToInt32(outputb[3]) * 256 + Convert.ToInt32(outputb[4])).ToString();
@@ -224,7 +248,7 @@ namespace i_Reader_S
                     }
                     catch
                     {
-                        MessageboxShow("唤醒失败");
+                        MessageboxShow("提示|唤醒失败");
                         return;
                     }
 
@@ -821,12 +845,12 @@ namespace i_Reader_S
                 {
                     if (SqlData.SelectUsertype("1").Rows.Count <= 1 & SqlData.SelectUserName(textBoxNewUserName.Text.ToString()).Rows[0][1].ToString() == "1")
                     {
-                        MessageboxShow("不能删除所有管理员");
+                        MessageboxShow("警告|不能删除所有管理员");
                     }
                     else
                     {
                         SqlData.DeleteUser(textBoxNewUserName.Text.ToString());
-                        MessageboxShow("用户已经删除");
+                        MessageboxShow("提示|用户已经删除");
                         ShowAllUsers();
                         SetUsersetting();
                     }
@@ -839,15 +863,15 @@ namespace i_Reader_S
                         {
                             if (SqlData.SelectUserName(textBoxNewUserName.Text).Rows.Count >= 1)
                             {
-                                MessageboxShow("该用户已经存在");
+                                MessageboxShow("提示|该用户已经存在");
                             }
                             else if (SqlData.SelectallUserName().Rows.Count >= 10)
                             {
-                                MessageboxShow("用户数量已达上限");
+                                MessageboxShow("提示|用户数量已达上限");
                             }
                             else if (comboBoxUserType.Text == "")
                             {
-                                MessageboxShow("请选择用户类型");
+                                MessageboxShow("提示|请选择用户类型");
                             }
                             else if (textBoxNewPassword.Text != "" && textBoxRepeatPassword.Text != "" && textBoxNewUserName.Text != "")
                             {
@@ -863,7 +887,7 @@ namespace i_Reader_S
                                         usertype = "1";
                                     }
                                     SqlData.InsertNewUser(textBoxNewUserName.Text, textBoxNewPassword.Text, usertype);
-                                    MessageboxShow("新用户创建成功");
+                                    MessageboxShow("提示|新用户创建成功");
                                     ShowAllUsers();
                                 }
                                 catch (Exception ee)
@@ -873,7 +897,7 @@ namespace i_Reader_S
                             }
                             else if (textBoxNewPassword.Text == "" || textBoxRepeatPassword.Text == "" || textBoxNewUserName.Text == "")
                             {
-                                MessageboxShow("用户名或密码不能为空");
+                                MessageboxShow("警告|用户名或密码不能为空");
                             }
                             textBoxNewPassword.Clear();
                             textBoxNewUserName.Clear();
@@ -881,7 +905,7 @@ namespace i_Reader_S
                         }
                         else
                         {
-                            MessageboxShow("两次密码输入不一致");
+                            MessageboxShow("警告|两次密码输入不一致");
                             textBoxNewPassword.Clear();
                             textBoxRepeatPassword.Clear();
                         }
@@ -892,19 +916,19 @@ namespace i_Reader_S
                         if (textBoxNewPassword.Text == textBoxRepeatPassword.Text && textBoxNewPassword.Text != "" && textBoxRepeatPassword.Text != "")
                         {
                             SqlData.ChangePassword(textBoxNewUserName.Text.ToString(), textBoxNewPassword.Text.ToString());
-                            MessageboxShow("密码已经更改");
+                            MessageboxShow("提示|密码已经更改");
                             ShowAllUsers();
                             SetUsersetting();
                         }
                         else if (textBoxNewPassword.Text == "" | textBoxRepeatPassword.Text == "")
                         {
-                            MessageboxShow("密码不能为空");
+                            MessageboxShow("警告|密码不能为空");
                             textBoxNewPassword.Clear();
                             textBoxRepeatPassword.Clear();
                         }
                         else
                         {
-                            MessageboxShow("两次密码输入不一致");
+                            MessageboxShow("警告|两次密码输入不一致");
                             textBoxNewPassword.Clear();
                             textBoxRepeatPassword.Clear();
                         }
@@ -1001,7 +1025,7 @@ namespace i_Reader_S
                         UpdatedataGridViewMain("Doing");
                         panelPic.Visible = false;//2017-2-24
                         break;
-                        
+
                     case "Done":
                         buttonDone.BackgroundImage = Resources.Button_Press;
                         buttonDone.Font = new Font("微软雅黑", 15, FontStyle.Bold);
@@ -1191,7 +1215,7 @@ namespace i_Reader_S
             dataGridViewQCSetting.Visible = true;
             buttonFixQCData.Visible = false;
         }
-        
+
 
         private void buttonSubMenu_Click(object sender, EventArgs e)
         {
@@ -1219,7 +1243,7 @@ namespace i_Reader_S
                     {
                         TestItemText += dttestitem.Rows[i][0] + "|";
                     }
-                    
+
                     var newTestitem = Mytestitem();
                     //空项目名不处理
                     if (newTestitem == null) return;
@@ -1237,14 +1261,14 @@ namespace i_Reader_S
                         var reagentId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
                         SwitchTestItem(reagentId);
                         return;
-                    } 
+                    }
                     if (ConfigRead("ASUEnable") == "1")
                     {
                         if (newTestitem == "人工进样" | newTestitem == "CRPQC" & serialPortME.IsOpen)
                         {
                             if (newTestitem == "人工进样")
                             {
-                                DataTable dt = SqlData.SelectWorkRunlistforASU();
+                                DataTable dt = SqlData.SelectWorkRunlistforASU("ASU传送");
                                 if (dt.Rows.Count == 0)
                                 {
                                     ASUComplete = true;
@@ -1255,7 +1279,7 @@ namespace i_Reader_S
                                 }
                                 if (ASUComplete == false)
                                 {
-                                    MessageboxShow("ASU测试尚未完成，请勿开启人工进样模式");
+                                    MessageboxShow("警告|ASU测试尚未完成，请勿开启人工进样模式");
                                     return;
                                 }
                                 else
@@ -1265,7 +1289,7 @@ namespace i_Reader_S
                                     serialPortME.Close();
                                     serialPort_DataSend(serialPortMain, "#3024$1");
                                 }
-                            } 
+                            }
                         }
                         else if (newTestitem != "人工进样" & newTestitem != "CRPQC" & !serialPortME.IsOpen)
                         {
@@ -1274,8 +1298,8 @@ namespace i_Reader_S
                             serialPort_DataSend(serialPortMain, "#3024$0");
                         }
                     }
-                    if(newTestitem != "人工进样")
-                    labelNextTestItem.Text = newTestitem;
+                    if (newTestitem != "人工进样")
+                        labelNextTestItem.Text = newTestitem;
                     var reagentStoreId = SqlData.SelectproductidbyTestItemName(labelNextTestItem.Text).Rows[0][0].ToString();
                     SwitchTestItem(reagentStoreId);
                     if (newTestitem == "FBNP")
@@ -1290,8 +1314,8 @@ namespace i_Reader_S
                     }
                     // ReSharper disable once ResourceItemNotResolved
                     Invoke(new Action(() => Log_Add(Resources.CC07 + labelNextTestItem.Text, false, Color.Red)));
-                    if (newTestitem !=  "人工进样" & newTestitem != "CRPQC" )
-                    UpdateAppConfig("TestItem", labelNextTestItem.Text);
+                    if (newTestitem != "人工进样" & newTestitem != "CRPQC")
+                        UpdateAppConfig("TestItem", labelNextTestItem.Text);
                     if (newTestitem.Substring(newTestitem.Length - 2) == "QC")
                     {
                         labelNextSampleNo.Text =
@@ -1354,7 +1378,7 @@ namespace i_Reader_S
                         txt = dataGridViewSearch[0, i].Value.ToString() + "," + dataGridViewSearch[1, i].Value.ToString() + ",";
 
                         if (dataGridViewSearch[2, i].Value.ToString().IndexOf(".") > -1)
-                            txt += dataGridViewSearch[2, i].Value.ToString().Substring(0, dataGridViewSearch[2, i].Value.ToString().IndexOf(".")+3).Replace("*","");
+                            txt += dataGridViewSearch[2, i].Value.ToString().Substring(0, dataGridViewSearch[2, i].Value.ToString().IndexOf(".") + 3).Replace("*", "");
                         else
                             txt += "Error";
                         txt += "," + dataGridViewSearch[3, i].Value.ToString();
@@ -1367,7 +1391,7 @@ namespace i_Reader_S
                         StreamWriter sw = new StreamWriter(Application.StartupPath + "\\ireader.txt");
                         sw.Write(history);
                         sw.Close();
-                        Log_Add("已将该页结果重新发送到结果文件",true);
+                        Log_Add("已将该页结果重新发送到结果文件", true);
                     }
 
                 }
@@ -1499,9 +1523,9 @@ namespace i_Reader_S
                     {
                         if (ConfigRead("ASUEnable") == "1")
                         {
-                            if (SqlData.SelectWorkRunlistforASU().Rows.Count > 0)
+                            if (SqlData.SelectWorkRunlistforASU("ASU传送").Rows.Count > 0)
                             {
-                                MessageboxShow("ASU正在传送，请勿修改样本号");
+                                MessageboxShow("警告|ASU正在传送，请勿修改样本号");
                                 return;
                             }
                         }
@@ -1553,7 +1577,7 @@ namespace i_Reader_S
                         }
 
                         //定义一个DirectoryInfo对象
-                        var di = new DirectoryInfo(Application.StartupPath + @"\Rawdata"); 
+                        var di = new DirectoryInfo(Application.StartupPath + @"\Rawdata");
 
                         //通过GetFiles方法,获取di目录中的所有文件的大小
                         var len = di.GetFiles().Aggregate<FileInfo, double>(0, (current, fi) => current + fi.Length);
@@ -1700,7 +1724,7 @@ namespace i_Reader_S
             return b;
         }
 
-        private double Cal(double a, string calparam,string style)
+        private double Cal(double a, string calparam, string style)
         {
             var dbxx1 = calparam.Split(',');
             var b = 0.0;
@@ -1710,8 +1734,8 @@ namespace i_Reader_S
             }
             else if (style == "max")
             {
-                b = (double.Parse(dbxx1[3]) - double.Parse(dbxx1[6])) / 
-                    (1 + Math.Pow((a / double.Parse(dbxx1[4])), double.Parse(dbxx1[5]))) + 
+                b = (double.Parse(dbxx1[3]) - double.Parse(dbxx1[6])) /
+                    (1 + Math.Pow((a / double.Parse(dbxx1[4])), double.Parse(dbxx1[5]))) +
                     double.Parse(dbxx1[6]);
             }
             return b;
@@ -1755,8 +1779,8 @@ namespace i_Reader_S
             }
             else if (int.Parse(dtCalibdata.Rows[0][0].ToString()) == 5)//PCT项目
             {
-                if (Cal(min, fun[1],"min") > ty) return min;
-                if (Cal(max, fun[1],"max") < ty) return max;
+                if (Cal(min, fun[1], "min") > ty) return min;
+                if (Cal(max, fun[1], "max") < ty) return max;
                 if (ty <= c)
                 {
                     return (ty - b) / a;
@@ -1833,98 +1857,106 @@ namespace i_Reader_S
         /// <returns></returns>
         private string CalTy(string seq)
         {
-            var dt = SqlData.Selectresultinfo(seq);
-            var sampleno = dt.Rows.Count == 0 ? seq : dt.Rows[0][0].ToString(); ;
-            Thread.Sleep(1000);
-            CCam.CameraPlay();
-            // System.Threading.Thread.Sleep(1000);
-            var bDataWide = false;
-            var w = 0;
-            var h = 0;
-            CCam.CameraGetImageSize(ref w, ref h);
-            var rawStr = new byte[w * h * 2];
-
-           
-            CCam.CameraGetImageData(rawStr, ref bDataWide);
-
-            // CCam.CameraSaveTifFile("d:/1111.tif", rawStr, 1272, 1016, false);
-            var bit = ToGrayBitmap(rawStr.Where((s, index) => index % 2 == 1).ToArray(), w, h);
-            //var bit = new Bitmap(w, h);
-            //byte[] pRgb24 = new byte[w * h * 3];
-            var data = new int[h, w];
-            //C0AB装还为ABC 16bit转12bit
-            for (var i = 0; i < w * h; i++)
+            try
             {
-                data[i / w, i % w] = 4096 - (rawStr[i * 2] >> 4) - (rawStr[i * 2 + 1] << 4);
-                //bit.SetPixel(i % w, i / w, Color.FromArgb(rawStr[i * 2 + 1], rawStr[i * 2 + 1], rawStr[i * 2 + 1]));
-            }
+                var dt = SqlData.Selectresultinfo(seq);
+                var sampleno = dt.Rows.Count == 0 ? seq : dt.Rows[0][0].ToString(); ;
+                Thread.Sleep(1000);
+                CCam.CameraPlay();
+                // System.Threading.Thread.Sleep(1000);
+                var bDataWide = false;
+                var w = 0;
+                var h = 0;
+                CCam.CameraGetImageSize(ref w, ref h);
+                var rawStr = new byte[w * h * 2];
 
-            //保存图像
-            var str = CalMethods.CalCcdod(data);
-            var sb = new StringBuilder();
 
-            if (str.IndexOf("-9", StringComparison.Ordinal) > -1)
-            {
-                var path2 = string.Format("Error/No-{0}-{1:yyyyMMddHHmmss}.jpg", sampleno, DateTime.Now);
-                var filename = string.Format("{0}/RawData/{1}", Application.StartupPath, path2);
-                bit.Save(filename);
-                str = string.Format("{0}||{1}", str, path2);
+                CCam.CameraGetImageData(rawStr, ref bDataWide);
+
+                // CCam.CameraSaveTifFile("d:/1111.tif", rawStr, 1272, 1016, false);
+                var bit = ToGrayBitmap(rawStr.Where((s, index) => index % 2 == 1).ToArray(), w, h);
+                //var bit = new Bitmap(w, h);
+                //byte[] pRgb24 = new byte[w * h * 3];
+                var data = new int[h, w];
+                //C0AB装还为ABC 16bit转12bit
+                for (var i = 0; i < w * h; i++)
+                {
+                    data[i / w, i % w] = 4096 - (rawStr[i * 2] >> 4) - (rawStr[i * 2 + 1] << 4);
+                    //bit.SetPixel(i % w, i / w, Color.FromArgb(rawStr[i * 2 + 1], rawStr[i * 2 + 1], rawStr[i * 2 + 1]));
+                }
+
+                //保存图像
+                var str = CalMethods.CalCcdod(data);
+                var sb = new StringBuilder();
+
+                if (str.IndexOf("-9", StringComparison.Ordinal) > -1)
+                {
+                    var path2 = string.Format("Error/No-{0}-{1:yyyyMMddHHmmss}.jpg", sampleno, DateTime.Now);
+                    var filename = string.Format("{0}/RawData/{1}", Application.StartupPath, path2);
+                    bit.Save(filename);
+                    str = string.Format("{0}||{1}", str, path2);
+                    return str;
+                }
+
+                if (_otherInt[6] == 0)
+                {
+                    //中心校准
+                    if (_otherInt[7] == 1)
+                    {
+                        str = CalMethods.CalTurn(data, str);
+                    }
+
+                    var midy = str.Substring(str.IndexOf("nstartY(", StringComparison.Ordinal) + 8);
+                    var midY = int.Parse(midy.Substring(0, midy.IndexOf(")", StringComparison.Ordinal)));
+
+                    for (var i = 0; i < w; i++)
+                    {
+                        var datasave = 0;
+                        for (var j = 0; j < 160; j++)
+                        {
+                            datasave += data[midY + j, i];
+                        }
+                        datasave /= 160;
+                        sb.Append(datasave);
+                        sb.Append(i == w - 1 ? "" : ",");
+                    }
+                    var ee = "";
+                    if (Math.Abs(midY - 428) > 30 | str.IndexOf("-11") > -1) ee = "Error/";
+                    var path1 = string.Format("{0}No-{1}-{2:yyyyMMddHHmmss}.csv", ee, sampleno, DateTime.Now);
+                    var path2 = string.Format("{0}No-{1}-{2:yyyyMMddHHmmss}-Mid-{3}.jpg", ee, sampleno, DateTime.Now, midY);
+                    var sw = new StreamWriter(string.Format("{0}/RawData/{1}", Application.StartupPath, path1), true,
+                        Encoding.ASCII);
+                    sw.Write(sb);
+                    sw.Flush();
+                    sw.Close();
+                    var filename = string.Format("{0}/RawData/{1}", Application.StartupPath, path2);
+                    bit.Save(filename, ImageFormat.Jpeg);
+                    str = string.Format("{0}|{1}|{2}", str, path1, path2);
+                }
+                else
+                {
+                    var c1X = str.Substring(str.IndexOf("C1", StringComparison.Ordinal) + 3);
+                    c1X = c1X.Substring(c1X.IndexOf(",", StringComparison.Ordinal) + 1);
+                    var c1Y = int.Parse(c1X.Substring(0, c1X.IndexOf(")", StringComparison.Ordinal)));
+                    var c2X = str.Substring(str.IndexOf("C2", StringComparison.Ordinal) + 3);
+                    c2X = c2X.Substring(c2X.IndexOf(",", StringComparison.Ordinal) + 1);
+                    var c2Y = int.Parse(c2X.Substring(0, c2X.IndexOf(")", StringComparison.Ordinal)));
+                    var tx = str.Substring(str.IndexOf("T(", StringComparison.Ordinal) + 2);
+                    tx = tx.Substring(tx.IndexOf(",", StringComparison.Ordinal) + 1);
+                    var ty = int.Parse(tx.Substring(0, tx.IndexOf(")", StringComparison.Ordinal)));
+                    Invoke(new Action(() =>
+                    {
+                        PortLog("Log", "F", string.Format("(C1Y,TY,C2Y)=({0},{1},{2})", c1Y, ty, c2Y));
+                    }));
+                    FixLight(c1Y, ty, c2Y);
+                }
                 return str;
             }
-
-            if (_otherInt[6] == 0)
+            catch (Exception ee)
             {
-                //中心校准
-                if (_otherInt[7] == 1)
-                {
-                    str = CalMethods.CalTurn(data, str);
-                }
-
-                var midy = str.Substring(str.IndexOf("nstartY(", StringComparison.Ordinal) + 8);
-                var midY = int.Parse(midy.Substring(0, midy.IndexOf(")", StringComparison.Ordinal)));
-
-                for (var i = 0; i < w; i++)
-                {
-                    var datasave = 0;
-                    for (var j = 0; j < 160; j++)
-                    {
-                        datasave += data[midY + j, i];
-                    }
-                    datasave /= 160;
-                    sb.Append(datasave);
-                    sb.Append(i == w - 1 ? "" : ",");
-                }
-                var ee = "";
-                if (Math.Abs(midY - 428) > 30 | str.IndexOf("-11") > -1) ee = "Error/";
-                var path1 = string.Format("{0}No-{1}-{2:yyyyMMddHHmmss}.csv", ee, sampleno, DateTime.Now);
-                var path2 = string.Format("{0}No-{1}-{2:yyyyMMddHHmmss}-Mid-{3}.jpg", ee, sampleno, DateTime.Now, midY);
-                var sw = new StreamWriter(string.Format("{0}/RawData/{1}", Application.StartupPath, path1), true,
-                    Encoding.ASCII);
-                sw.Write(sb);
-                sw.Flush();
-                sw.Close();
-                var filename = string.Format("{0}/RawData/{1}", Application.StartupPath, path2);
-                bit.Save(filename, ImageFormat.Jpeg);
-                str = string.Format("{0}|{1}|{2}", str, path1, path2);
+                Log_Add("6236" + ee.Message, false);
+                return "";
             }
-            else
-            {
-                var c1X = str.Substring(str.IndexOf("C1", StringComparison.Ordinal) + 3);
-                c1X = c1X.Substring(c1X.IndexOf(",", StringComparison.Ordinal) + 1);
-                var c1Y = int.Parse(c1X.Substring(0, c1X.IndexOf(")", StringComparison.Ordinal)));
-                var c2X = str.Substring(str.IndexOf("C2", StringComparison.Ordinal) + 3);
-                c2X = c2X.Substring(c2X.IndexOf(",", StringComparison.Ordinal) + 1);
-                var c2Y = int.Parse(c2X.Substring(0, c2X.IndexOf(")", StringComparison.Ordinal)));
-                var tx = str.Substring(str.IndexOf("T(", StringComparison.Ordinal) + 2);
-                tx = tx.Substring(tx.IndexOf(",", StringComparison.Ordinal) + 1);
-                var ty = int.Parse(tx.Substring(0, tx.IndexOf(")", StringComparison.Ordinal)));
-                Invoke(new Action(() =>
-                {
-                    PortLog("Log", "F", string.Format("(C1Y,TY,C2Y)=({0},{1},{2})", c1Y, ty, c2Y));
-                }));
-                FixLight(c1Y, ty, c2Y);
-            }
-            return str;
         }
 
         /// <summary>
@@ -1933,89 +1965,96 @@ namespace i_Reader_S
         /// <param name="seq">采集的样本的seq</param>
         private void CcdNewTest(string seq)
         {
-            var resultStr = CalTy(seq);
-            var path1 = resultStr.Split('|')[1];
-            var path2 = resultStr.Split('|')[2];
-            resultStr = resultStr.Split('|')[0];
-            if (resultStr.Substring(0, 1) == "-")
+            try
             {
-                var str = resultStr == "-9" ? "CCD计算异常" : "质控线异常" + resultStr.Substring(4);
-                /*
-                Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
-                DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
-                return;*/
-                if (resultStr == "-11")
+                var resultStr = CalTy(seq);
+                var path1 = resultStr.Split('|')[1];
+                var path2 = resultStr.Split('|')[2];
+                resultStr = resultStr.Split('|')[0];
+                if (resultStr.Substring(0, 1) == "-")
                 {
-                    if (_otherInt[1] == 0)
+                    var str = resultStr == "-9" ? "CCD计算异常" : "质控线异常" + resultStr.Substring(4);
+                    /*
+                    Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
+                    DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
+                    return;*/
+                    if (resultStr == "-11")
                     {
-                        Invoke(new Action(() => Log_Add("第一次测试质控线异常，将重测", true)));
+                        if (_otherInt[1] == 0)
+                        {
+                            Invoke(new Action(() => Log_Add("第一次测试质控线异常，将重测", true)));
+                            serialPort_DataSend(serialPortMain, "#3054");
+                        }
+                        else if (_otherInt[1] == 1)
+                        {
+                            Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
+                            DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
+                        }
+                        return;
+                    }
+                    else if (resultStr == "-9")
+                    {
+                        if (_otherInt[1] == 0)
+                        {
+                            Invoke(new Action(() => Log_Add("第一次测试计算异常，将重测", true)));
+                            serialPort_DataSend(serialPortMain, "#3054");
+                        }
+                        else if (_otherInt[1] == 1)
+                        {
+                            Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
+                            DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
+                        }
+                        return;
+                    }
+                }
+                var resultinfo = SqlData.Selectresultinfo(seq);
+                if (resultinfo.Rows.Count <= 0) return;
+                var midY = resultStr.Substring(resultStr.IndexOf("nstartY", StringComparison.Ordinal) + 8);
+                midY = midY.Substring(0, midY.IndexOf(")", StringComparison.Ordinal));
+                //if (Math.Abs(int.Parse(midY) - 428) > 30)
+                if (Math.Abs(int.Parse(midY) - 428) > 45)
+                {
+                    if (_otherInt[1] == 2)
+                    {
+                        DrawResult("-4", seq, "", "", "");
+                    }
+                    else if (_otherInt[1] == 0)
+                    {
+                        Invoke(new Action(() => Log_Add("第一次测试位置错误，将重测", true)));
                         serialPort_DataSend(serialPortMain, "#3054");
                     }
                     else if (_otherInt[1] == 1)
                     {
-                        Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
-                        DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
-                    }
-                    return;
-                }
-                else if (resultStr == "-9")
-                {
-                    if (_otherInt[1] == 0)
-                    {
-                        Invoke(new Action(() => Log_Add("第一次测试计算异常，将重测", true)));
+                        Invoke(new Action(() => Log_Add("第二次测试位置错误，将重测", true)));
                         serialPort_DataSend(serialPortMain, "#3054");
                     }
-                    else if (_otherInt[1] == 1)
-                    {
-                        Invoke(new Action(() => Log_Add(str + @"^" + seq, false)));
-                        DrawResult(resultStr == "-9" ? "-9" : "-11", seq, resultStr, "", path2);
-                    }
                     return;
                 }
+                var ty = resultStr.Substring(resultStr.IndexOf("T(", StringComparison.Ordinal) + 2);
+                ty = ty.Substring(ty.IndexOf(",", StringComparison.Ordinal) + 1);
+                ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
+
+                var Basey = resultStr.Substring(resultStr.IndexOf("Min(", StringComparison.Ordinal) + 4);
+                Basey = Basey.Substring(Basey.IndexOf(",") + 1);
+                Basey = Basey.Substring(0, Basey.IndexOf(")"));
+
+                var Thit = int.Parse(ty) - int.Parse(Basey);
+
+                var tyFixStr = ConfigRead("CMOSFix");
+
+                var trueThit = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
+                Invoke(new Action(() =>
+                {
+                    Log_Add(resultStr + "^" + seq, false);
+                    labelResult.Text = @"TY:" + ty + @" THit:" + Thit + @" Base:" + Basey;//2017-04-24
+                                                                                          //labelResult.Text = @"TY:" + ty;
+                }));
+                DrawResult(string.Format("{0}|{1}", ty, Basey), seq, resultStr, path1, path2);
             }
-            var resultinfo = SqlData.Selectresultinfo(seq);
-            if (resultinfo.Rows.Count <= 0) return;
-            var midY = resultStr.Substring(resultStr.IndexOf("nstartY", StringComparison.Ordinal) + 8);
-            midY = midY.Substring(0, midY.IndexOf(")", StringComparison.Ordinal));
-            //if (Math.Abs(int.Parse(midY) - 428) > 30)
-            if (Math.Abs(int.Parse(midY) - 428) > 45)
+            catch (Exception ee)
             {
-                if (_otherInt[1] == 2)
-                {
-                    DrawResult("-4", seq, "", "", "");
-                }
-                else if (_otherInt[1] == 0)
-                {
-                    Invoke(new Action(() => Log_Add("第一次测试位置错误，将重测", true)));
-                    serialPort_DataSend(serialPortMain, "#3054");
-                }
-                else if (_otherInt[1] == 1)
-                {
-                    Invoke(new Action(() => Log_Add("第二次测试位置错误，将重测", true)));
-                    serialPort_DataSend(serialPortMain, "#3054");
-                }
-                return;
+                Log_Add("6234" + ee.Message, false);
             }
-            var ty = resultStr.Substring(resultStr.IndexOf("T(", StringComparison.Ordinal) + 2);
-            ty = ty.Substring(ty.IndexOf(",", StringComparison.Ordinal) + 1);
-            ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
-
-            var Basey = resultStr.Substring(resultStr.IndexOf("Min(", StringComparison.Ordinal) + 4);
-            Basey = Basey.Substring(Basey.IndexOf(",") + 1);
-            Basey = Basey.Substring(0, Basey.IndexOf(")"));
-
-            var Thit = int.Parse(ty) - int.Parse(Basey);
-
-            var tyFixStr = ConfigRead("CMOSFix");
-
-            var trueThit = double.Parse(ty) * double.Parse(tyFixStr.Split('|')[0]) + double.Parse(tyFixStr.Split('|')[1]);
-            Invoke(new Action(() =>
-            {
-                Log_Add(resultStr + "^" + seq, false);
-                labelResult.Text = @"TY:" + ty + @" THit:" + Thit + @" Base:" + Basey;//2017-04-24
-                //labelResult.Text = @"TY:" + ty;
-            }));
-            DrawResult(string.Format("{0}|{1}", ty, Basey), seq, resultStr, path1, path2);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -2103,130 +2142,170 @@ namespace i_Reader_S
             if (comboBox2.Items.Count > 0)
                 comboBox2.SelectedIndex = 0;
         }
-        
+
 
         private void dataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (sender == dataGridViewMain)
+            try
             {
-                if (labelOther.Text == GetResxString("Doing", "ColumnText") & e.RowIndex > -1)
+                if (sender == dataGridViewMain)
                 {
-                    dataGridViewMain.Rows[e.RowIndex].Selected = true;
-                    var seq = dataGridViewMain.Rows[e.RowIndex].Cells[0].Value.ToString();
-                    if (SqlData.SelectWorkRunlistforASUwithSeq(seq).Rows[0][0].ToString() != "ASU传送")
+                    if (labelOther.Text == GetResxString("Doing", "ColumnText") & e.RowIndex > -1)
                     {
-                        CounterText = string.Format("Del|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
-                    }
-                    else
-                    {
-                        CounterText = string.Format("Int|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
-                    }
-                    _otherInt[0] = 2;
-                    var str = VirtualKeyBoard();
-                    if (str == "Cancel") return;
-                    if (str == "") { ShowMyAlert("样本号不能为空"); return; }
-                    if (str.Length > 20) { ShowMyAlert("样本号长度不能大于20"); return; }
-                    var sampleno = str;
-                    if (sampleno == "Del|")
-                    {
-                        if (MessageBox.Show("是否删除样本？", "样本删除确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        dataGridViewMain.Rows[e.RowIndex].Selected = true;
+                        var seq = dataGridViewMain.Rows[e.RowIndex].Cells[0].Value.ToString();
+                        var sampleNo = dataGridViewMain.Rows[e.RowIndex].Cells[1].Value.ToString();
+                        var Testitem = dataGridViewMain.Rows[e.RowIndex].Cells[2].Value.ToString();
+                        var workstate = dataGridViewMain.Rows[e.RowIndex].Cells[3].Value.ToString();
+                        if (workstate != "ASU传送" & workstate != "测试完成")
                         {
-                            SqlData.DeleteSampleNo(seq);
+                            CounterText = string.Format("Del|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
+                        }
+                        else
+                        {
+                            CounterText = string.Format("Int|{0}|{1}", dataGridViewMain.Rows[e.RowIndex].Cells[1].Value, seq);
+                        }
+                        _otherInt[0] = 2;
+                        var str = VirtualKeyBoard();
+                        if (str == "Cancel") return;
+                        if (str == "") { ShowMyAlert("样本号不能为空"); return; }
+                        if (str.Length > 20) { ShowMyAlert("样本号长度不能大于20"); return; }
+                        var sampleno = str;
+                        if (sampleno == "Del|")
+                        {
+                            if (MessageBox.Show("是否删除样本？", "样本删除确认", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                            {
+                                SqlData.DeleteSampleNo(seq);
+                                Invoke(new Action(() => UpdatedataGridViewMain("Doing")));
+                                // ReSharper disable once ResourceItemNotResolved
+                                var msgLog = Resources.CC02;
+                                if (msgLog == null) return;
+                                msgLog = msgLog.Replace("[1]", seq);
+                                msgLog = msgLog.Replace("[2]", textBoxLoginName.Text);
+                                Invoke(new Action(() => Log_Add(msgLog, false, Color.FromArgb(128, 128, 128))));
+                            }
+                        }
+                        else if (sampleno != "")
+                        {
+                            if (workstate == "测试完成")
+                            {
+                                //MessageBox.Show("修改“" + sampleNo + "”为：" + "\r\n" + sampleno + "并发送结果", "", MessageBoxButtons.OKCancel);
+                                DialogResult OKCancel = MessageBox.Show("修改“" + sampleNo + "”为：" + "\r\n" + sampleno + "并发送结果", "发送结果", MessageBoxButtons.OKCancel);
+                                if (OKCancel == DialogResult.Cancel)
+                                {
+                                    return;
+                                }
+                                else if (OKCancel == DialogResult.OK)
+                                {
+                                    SqlData.UpdateResultlistSampleNobySeq(sampleNo, sampleno);
+                                    SqlData.DeleteFromWorkrunlist(seq);
+                                    var lis_message = SqlData.SelectResult_BarcodeChange(sampleno);
+                                    var result = double.Parse(lis_message.Rows[0][1].ToString());
+                                    var unit = lis_message.Rows[0][2].ToString();
+                                    var flag = lis_message.Rows[0][3].ToString();
+                                    var createtime = lis_message.Rows[0][4].ToString();
+                                    var accurancy = lis_message.Rows[0][5].ToString();
+                                    var resultsend = flag + result.ToString("F" + accurancy) + unit;
+                                    exportResult(sampleno, Testitem, resultsend, createtime);
+                                    if (SqlData.SelectBarcodeError("位置").Rows.Count == 0)
+                                    {
+                                        buttonASU_Control_Click(buttonASURecover, null);
+                                    }
+                                    Log_Add("修改“" + sampleNo + "”为：" + sampleno + ",结果已发送", false);
+                                }
+                            }
+                            else
+                            {
+                                SqlData.UpdateWorkRunlistSampleNobySeq(seq, sampleno);
+                            }
                             Invoke(new Action(() => UpdatedataGridViewMain("Doing")));
+                            dataGridViewMain.CurrentCell = null;
                             // ReSharper disable once ResourceItemNotResolved
-                            var msgLog = Resources.CC02;
+                            var msgLog = Resources.CC01;
                             if (msgLog == null) return;
                             msgLog = msgLog.Replace("[1]", seq);
-                            msgLog = msgLog.Replace("[2]", textBoxLoginName.Text);
+                            msgLog = msgLog.Replace("[2]", sampleno);
+                            msgLog = msgLog.Replace("[3]", textBoxLoginName.Text);
                             Invoke(new Action(() => Log_Add(msgLog, false, Color.FromArgb(128, 128, 128))));
+
+                            _otherInt[0] = 0;
                         }
                     }
-                    else if (sampleno != "")
+                    else if (labelOther.Text == GetResxString("Done", "ColumnText") & e.RowIndex > -1)
                     {
-                        SqlData.UpdateWorkRunlistSampleNobySeq(seq, sampleno);
-
-                        Invoke(new Action(() => UpdatedataGridViewMain("Doing")));
-                        dataGridViewMain.CurrentCell = null;
-                        // ReSharper disable once ResourceItemNotResolved
-                        var msgLog = Resources.CC01;
-                        if (msgLog == null) return;
-                        msgLog = msgLog.Replace("[1]", seq);
-                        msgLog = msgLog.Replace("[2]", sampleno);
-                        msgLog = msgLog.Replace("[3]", textBoxLoginName.Text);
-                        Invoke(new Action(() => Log_Add(msgLog, false, Color.FromArgb(128, 128, 128))));
+                        contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
+                        CounterText = e.RowIndex.ToString();
                     }
-                    _otherInt[0] = 0;
+                    else if (labelOther.Text == GetResxString("Exception", "ColumnText") & e.RowIndex > -1)
+                    {
+                        var str = "";
+                        try
+                        {
+                            if (e.RowIndex < 0) return;
+                            var rowIndex = e.RowIndex;
+                            var createtime = "";
+                            if (tabControlMain.SelectedTab == tabPageHome)
+                            {
+                                createtime = dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString();
+                                str = SqlData.SelectPicNum(createtime).Rows[0][0].ToString();
+                                Image img = Image.FromFile(string.Format("{0}/Rawdata/{1}", Application.StartupPath, str));//双引号里是图片的路径
+                                pictureBoxResult.Image = img;
+                            }
+                        }
+                        catch (Exception ee)
+                        {
+                            str = "";
+                        }
+                        if (str != "")
+                        {
+                            panelPic.Visible = true;
+                        }
+                    }
                 }
-                else if (labelOther.Text == GetResxString("Done", "ColumnText") & e.RowIndex > -1)
+                else if (sender == dataGridViewQCSetting)
+                {
+                    if (e.RowIndex > -1)
+                    {
+                        textBoxQCSD.Text = dataGridViewQCSetting[3, e.RowIndex].Value.ToString();
+                        textBoxQCTarget.Text = dataGridViewQCSetting[2, e.RowIndex].Value.ToString();
+                        textBoxQCSampleNo.Text = dataGridViewQCSetting[1, e.RowIndex].Value.ToString();
+                        buttonFixQCData.Visible = true;
+                    }
+                }
+                else if (sender == dataGridViewSearch)
                 {
                     contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
                     CounterText = e.RowIndex.ToString();
                 }
-                else if (labelOther.Text == GetResxString("Exception", "ColumnText") & e.RowIndex > -1)
+                else if (sender == dataGridViewTestItem)
                 {
-                    var str = "";
-                    try
+                    buttonFixTestItem.Enabled = true;
+                    if (e.RowIndex > -1)
                     {
-                        if (e.RowIndex < 0) return; 
-                        var rowIndex = e.RowIndex;
-                        var createtime = "";
-                        if (tabControlMain.SelectedTab == tabPageHome)
+                        textBoxSettingTestItemName.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[2].Value.ToString();
+                        textBoxSettingAccurancy.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[6].Value.ToString();
+                        textBoxSettingRatio.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[4].Value.ToString();
+                        textBoxSettingUnit.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[3].Value.ToString();
+                        textBoxSettingUnitDefault.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[7].Value.ToString();
+                        textBoxSettingUnitRatio.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[8].Value.ToString();
+                        textBoxSettingWarning.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[5].Value.ToString();
+                        if (textBoxSettingTestItemName.Text == "CRPDIL")
                         {
-                            createtime = dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString();
-                            str = SqlData.SelectPicNum(createtime).Rows[0][0].ToString();
-                            Image img = Image.FromFile(string.Format("{0}/Rawdata/{1}", Application.StartupPath, str));//双引号里是图片的路径
-                            pictureBoxResult.Image = img;
+                            labelPreDilu.Visible = true;
+                            textBoxPreDilu.Visible = true;
+                            textBoxPreDilu.Text = ConfigRead("PreDilu");
+                        }
+                        else
+                        {
+                            labelPreDilu.Visible = false;
+                            textBoxPreDilu.Visible = false;
                         }
                     }
-                    catch (Exception ee)
-                    {
-                        str = "";
-                    }
-                    if (str != "")
-                    {
-                        panelPic.Visible = true;
-                    }
                 }
             }
-            else if (sender == dataGridViewQCSetting)
+            catch (Exception ee)
             {
-                if (e.RowIndex > -1)
-                {
-                    textBoxQCSD.Text = dataGridViewQCSetting[3, e.RowIndex].Value.ToString();
-                    textBoxQCTarget.Text = dataGridViewQCSetting[2, e.RowIndex].Value.ToString();
-                    textBoxQCSampleNo.Text = dataGridViewQCSetting[1, e.RowIndex].Value.ToString();
-                    buttonFixQCData.Visible = true;
-                }
-            }
-            else if (sender == dataGridViewSearch)
-            {
-                contextMenuStrip1.Show(MousePosition.X, MousePosition.Y);
-                CounterText = e.RowIndex.ToString();
-            }
-            else if (sender == dataGridViewTestItem)
-            {
-                buttonFixTestItem.Enabled = true;
-                if (e.RowIndex > -1)
-                {
-                    textBoxSettingTestItemName.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[2].Value.ToString();
-                    textBoxSettingAccurancy.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[6].Value.ToString();
-                    textBoxSettingRatio.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[4].Value.ToString();
-                    textBoxSettingUnit.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[3].Value.ToString();
-                    textBoxSettingUnitDefault.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[7].Value.ToString();
-                    textBoxSettingUnitRatio.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[8].Value.ToString();
-                    textBoxSettingWarning.Text = dataGridViewTestItem.Rows[e.RowIndex].Cells[5].Value.ToString();
-                    if (textBoxSettingTestItemName.Text == "CRPDIL")
-                    {
-                        labelPreDilu.Visible = true;
-                        textBoxPreDilu.Visible = true;
-                        textBoxPreDilu.Text = ConfigRead("PreDilu");
-                    }
-                    else
-                    {
-                        labelPreDilu.Visible = false;
-                        textBoxPreDilu.Visible = false;
-                    }
-                }
+                Log_Add("6233" + ee.Message, false);
             }
         }
 
@@ -2277,11 +2356,16 @@ namespace i_Reader_S
                         break;
                 }
                 var result = 0.0;
+
                 if (dtparam.Rows[0][0].ToString() == "0")
+                {
                     result = double.Parse(dtparam.Rows[0][6].ToString()) * value + double.Parse(dtparam.Rows[0][7].ToString());
+                }
                 else
-                    result = value >
-                                    Math.Max(double.Parse(dtparam.Rows[0][3].ToString()), double.Parse(dtparam.Rows[0][7].ToString())) ? double.Parse(value > double.Parse(dtparam.Rows[0][4].ToString()) ? maxValue : (Math.Pow((double.Parse(dtparam.Rows[0][4].ToString()) - value) / (value - double.Parse(dtparam.Rows[0][7].ToString())), 1 / double.Parse(dtparam.Rows[0][5].ToString())) * double.Parse(dtparam.Rows[0][6].ToString())).ToString("F" + accurancy)) : double.Parse(((value - double.Parse(dtparam.Rows[0][2].ToString())) / double.Parse(dtparam.Rows[0][1].ToString())).ToString("F" + accurancy));
+                {
+                    result = value > Math.Max(double.Parse(dtparam.Rows[0][3].ToString()), double.Parse(dtparam.Rows[0][7].ToString())) ? double.Parse(value > double.Parse(dtparam.Rows[0][4].ToString()) ? maxValue : (Math.Pow((double.Parse(dtparam.Rows[0][4].ToString()) - value) / (value - double.Parse(dtparam.Rows[0][7].ToString())), 1 / double.Parse(dtparam.Rows[0][5].ToString())) * double.Parse(dtparam.Rows[0][6].ToString())).ToString("F" + accurancy)) : double.Parse(((value - double.Parse(dtparam.Rows[0][2].ToString())) / double.Parse(dtparam.Rows[0][1].ToString())).ToString("F" + accurancy));
+
+                }
                 result = Math.Min(Math.Max(result, double.Parse(minValue)), double.Parse(maxValue) / double.Parse(ratio));
                 var flag = "";
                 if (result == double.Parse(minValue)) flag = "<";
@@ -2292,9 +2376,15 @@ namespace i_Reader_S
                 var msglog = Resources.M0001;
                 msglog = msglog?.Replace("[1]", sampleNo);
                 msglog += result.ToString(CultureInfo.InvariantCulture) + unit;
+
+                if (Fluo2500 == 1)
+                {
+                    Fluo2500 = 0;
+                    flag = "$";
+                }
                 SqlData.InsertIntoNewResult(sampleNo, createtime, testItemId, result.ToString(CultureInfo.InvariantCulture), unit,
                    path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odData, flag);
-                SqlData.DeleteFromWrokrunlist(seq);
+                SqlData.DeleteFromWorkrunlist(seq);
                 Invoke(new Action(() =>
                 {
                     Log_Add(msglog, false, Color.FromArgb(128, 128, 128));
@@ -2317,8 +2407,8 @@ namespace i_Reader_S
                             labelExceptionNo.Text = (int.Parse(labelExceptionNo.Text) + 1).ToString();
                             labelExceptionNo.Visible = true;
                         }
-                    }
-    ));
+                    }));
+
                 if (result >= 0)
                 {
                     exportResult(sampleNo, resultinfo.Rows[0][14].ToString(), flag + result.ToString("F" + accurancy), createtime);
@@ -2341,6 +2431,11 @@ namespace i_Reader_S
         {
             try
             {
+                if (oddata == "-1" | oddata == "-6")
+                {
+                    if (SqlData.SelectWorkstatueFromWorkRunlist(seq).Rows[0][0].ToString() == "测试完成")
+                    { return; }
+                }
                 var ty = oddata.Split('|')[0];
                 var resultinfo = SqlData.Selectresultinfo(seq);
                 if (resultinfo.Rows.Count == 0) return;
@@ -2431,7 +2526,7 @@ namespace i_Reader_S
 
                 if (testitemname == "CRP500")
                 {
-                    if (ConfigRead("CRPDebug") == "1"&result>0)
+                    if (ConfigRead("CRPDebug") == "1" & result > 0)
                     {
                         if (result == 2.5)
                         {
@@ -2450,20 +2545,28 @@ namespace i_Reader_S
                             flag1 = ">";
                             result1 = 5;
                         }
-                        exportResult(sampleNo, "HsCRP", flag1+result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy/MM/dd HH:mm:ss"));
+                        exportResult(sampleNo, "HsCRP", flag1 + result1.ToString("F2"), DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy/MM/dd HH:mm:ss"));
                     }
                 }
-
 
                 if (result1 != 0)
                 {
                     SqlData.InsertIntoNewResult(sampleNo, DateTime.Parse(createtime).AddSeconds(1).ToString("yyyy/MM/dd HH:mm:ss"), "99", result1.ToString(CultureInfo.InvariantCulture), unit,
-path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odData, flag1);
+                             path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odData, flag1);
                 }
                 SqlData.InsertIntoNewResult(sampleNo, createtime, testItemId, result.ToString(CultureInfo.InvariantCulture), unit,
                     path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odData, flag);
 
-                SqlData.DeleteFromWrokrunlist(seq);
+                if (sampleNo.IndexOf("位置") <= -1 | int.Parse(ty) < 0)
+                {
+                    SqlData.DeleteFromWorkrunlist(seq);
+                }
+                else
+                {
+                    SqlData.UpdateWorkStatusBySeq("测试完成", seq);
+                }
+
+
                 Invoke(new Action(() =>
                 {
                     if (GetResxString("Done", "ColumnText") == labelOther.Text)
@@ -2473,6 +2576,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     else
                         UpdatedataGridViewMain("Exception");
                 }));
+
                 if (ConfigRead("AutoPrint") == "1")
                 {
                     ResultPrintOut(createtime);
@@ -2494,8 +2598,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 if (result >= 0)
                 {
 
-                        exportResult(sampleNo, resultinfo.Rows[0][14].ToString(), flag + result.ToString("F" + accurancy), createtime);
-                    
+                    exportResult(sampleNo, resultinfo.Rows[0][14].ToString(), flag + result.ToString("F" + accurancy), createtime);
+
                 }
                 else
                 {
@@ -2632,7 +2736,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 var sum2 = L12 + L22;
                 var ts = int.Parse(textBoxCCDRef.Text);
 
-                var te3 = (sum2 - sum1) * (ts - lighttemp[3]) / (ty - lighttemp[3]) + sum1-sum2;
+                var te3 = (sum2 - sum1) * (ts - lighttemp[3]) / (ty - lighttemp[3]) + sum1 - sum2;
                 var dc1 = c1y - lighttemp[2];
                 var dc2 = c2y - lighttemp[4];
                 var dl1 = L12 - lighttemp[0];
@@ -2649,12 +2753,12 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 dl1 = (te3 + te4) / 2;
                 dl2 = (te3 - te4) / 2;
 
-                var L1 =(int)( L12 + dl1);
-                var L2 =(int)( L22 + dl2);
+                var L1 = (int)(L12 + dl1);
+                var L2 = (int)(L22 + dl2);
 
                 L1 = Math.Min(1020, Math.Max(0, L1));
                 L2 = Math.Min(1020, Math.Max(0, L2));
-            
+
                 if (Math.Abs(L1 - L12) + Math.Abs(L2 - L22) == 0)
                 {
                     // ReSharper disable once LocalizableElement
@@ -2880,12 +2984,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             vD[29] = int.Parse(fluoparam[23]).ToString("X2") + "00";
             vD[30] = int.Parse(fluoparam[24]).ToString("X2") + "00";
             vD[31] = int.Parse(fluoparam[25]).ToString("X2") + "00";
+
+
             for (var i = 8; i < 14; i++)
             {
                 var b = BitConverter.GetBytes(float.Parse(fluoparam[i]));
                 var a = b[3].ToString("X2") + b[2].ToString("X2") + b[1].ToString("X2") + b[0].ToString("X2");
                 vD[i * 2 - 8] = a.Substring(0, 4);
                 vD[i * 2 - 7] = a.Substring(4, 4);
+            }
+            int x = int.Parse(fluoparam[18]);
+            if (Fluo2500 == 1)
+            {
+                x = x * 1 / 2;
+                vD[24] = x.ToString("X2") + "00";
             }
             //写入反应参数
             for (var i = 0; i < 33; i++)
@@ -2947,9 +3059,9 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             if (process.Count() > 1)
             {
                 MessageBox.Show("检测到已经有i-Reader S在运行");
-                Close();  
+                Close();
             }
-
+            /*
             try
             {
                 if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
@@ -2960,13 +3072,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     
                     File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
                 }
-                /*
-                else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
-                {
-                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
-                    File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
-
-                }*/
                 else if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
                 {
                     File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
@@ -2976,21 +3081,18 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     this.Close();
                     
                 }
-                /*
-                else if (!File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
-                {
-                    File.Move(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
-                }*/
             }
             catch
             {
                 MessageBox.Show("配置文件彻底损坏，请联系工程师");
             }
+            */
+
             if (ConfigRead("FloatBallEnable") == "1")
             {
                 timerFloatCommandCheck.Start();
             }
-            
+
             _mEstr[0] = "<STX>i[ｼｰｹﾝｽ No]00<ETX>";
             _mEstr[1] = "<STX>i[ｼｰｹﾝｽ No]01<ETX>";
 
@@ -3014,7 +3116,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             tbtemp = tabPageLogin;
             Size = new Size(1024, 768);
             timerLoad.Start();
-
+            timerCursor.Start();
+            timerSleep.Start();
 
             if (File.Exists(Application.StartupPath + "/ExceptionChar.txt"))
             {
@@ -3104,125 +3207,61 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         // 信息处理模块后的后续处理
         private void OperationAfterDealMsgWithSeq(string msgType, string seq, string param)
         {
-            var msgLog = "";
-            if (msgType == "*3103")
+            try
             {
-                if (ConfigRead("ASUEnable") == "0" | tempSend == "")
+                var msgLog = "";
+                if (msgType == "*3103")
                 {
-                    var sampleNo = "";
-                    var testItemName = "";
-                    Invoke(new Action(() =>
+                    CommandCheck[4] = int.Parse(ConfigRead("SleepTime")) * 60;
+                    if (ConfigRead("ASUEnable") == "0" | tempSend == "")
                     {
-                        sampleNo = labelNextSampleNo.Text;
-                        testItemName = labelNextTestItem.Text;
-                    }));
-                    var dtTestItem = SqlData.SelectProductIdItemIdByname(testItemName);
-                    if (dtTestItem.Rows.Count == 0)
-                        Log_Add("不存在此测试项目", true);
-                    var testItemId = dtTestItem.Rows[0][1].ToString();
-                    var createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    var reactionTime = int.Parse(param.Split('$')[2]).ToString();
-                    var dilutionRatio = param.Split('$')[0];
-                    var reagentStoreId = param.Split('$')[1];
-                    // ReSharper disable once ResourceItemNotResolved
-                    var workingStatus = Resources.I3103;
-                    var tyFixData = ConfigRead(_MParam[0] == 0 ? "FluoFix" : "CMOSFix");
-                    var dtCalibDataLotno = SqlData.SelectCalibDataIdLotNoByReagentId(reagentStoreId);
-                    var lotNo = dtCalibDataLotno.Rows[0][0].ToString();
-                    var calibDataId = dtCalibDataLotno.Rows[0][1].ToString();
-                    try
-                    {
-                        SqlData.InsertIntoRunlist(seq, sampleNo, testItemId, createTime, workingStatus, tyFixData,
-        reagentStoreId, dilutionRatio, reactionTime, calibDataId);
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-
-                    // ReSharper disable once ResourceItemNotResolved
-                    msgLog = Resources.NewSampleText;
-                    Debug.Assert(msgLog != null, "msgLog != null");
-                    msgLog = msgLog.Replace("[1]", sampleNo);
-                    msgLog = msgLog.Replace("[2]", testItemName);
-                    msgLog = msgLog.Replace("[3]", lotNo);
-                    msgLog = msgLog.Replace("[4]", reactionTime);
-                    Invoke(new Action(() =>
-                    {
-                        if (GetResxString("Doing", "ColumnText") == labelOther.Text)
-                            UpdatedataGridViewMain("Doing");
-                    }));
-
-                    Invoke(new Action(() =>
-                    {
-                        if (labelNextTestItem.Text.IndexOf("QC", StringComparison.Ordinal) == -1)
+                        var sampleNo = "";
+                        var testItemName = "";
+                        Invoke(new Action(() =>
                         {
-                            int aa;
-                            var bb = int.TryParse(labelNextSampleNo.Text, out aa);
-                            if (bb)
-                                labelNextSampleNo.Text = (aa + 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
+                            sampleNo = labelNextSampleNo.Text;
+                            testItemName = labelNextTestItem.Text;
+                        }));
+                        var dtTestItem = SqlData.SelectProductIdItemIdByname(testItemName);
+                        if (dtTestItem.Rows.Count == 0)
+                            Log_Add("不存在此测试项目", true);
+                        var testItemId = dtTestItem.Rows[0][1].ToString();
+                        var createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        var reactionTime = int.Parse(param.Split('$')[2]).ToString();
+                        var dilutionRatio = param.Split('$')[0];
+                        var reagentStoreId = param.Split('$')[1];
+                        // ReSharper disable once ResourceItemNotResolved
+                        var workingStatus = Resources.I3103;
+                        var tyFixData = ConfigRead(_MParam[0] == 0 ? "FluoFix" : "CMOSFix");
+                        var dtCalibDataLotno = SqlData.SelectCalibDataIdLotNoByReagentId(reagentStoreId);
+                        var lotNo = dtCalibDataLotno.Rows[0][0].ToString();
+                        var calibDataId = dtCalibDataLotno.Rows[0][1].ToString();
+                        try
+                        {
+                            SqlData.InsertIntoRunlist(seq, sampleNo, testItemId, createTime, workingStatus, tyFixData,
+            reagentStoreId, dilutionRatio, reactionTime, calibDataId);
                         }
-                    }
-                        ));
-                    UpdateSupplyLeft(1, 1);
-                }
-                else
-                {
-                    var sampleNo = tempSend.Substring(7, 20).Replace(" ", "");
-                        sampleNo = SqlData.SelectWorkRunlistforBarcodeChangeNo(sampleNo).Rows[0][0].ToString();
-                    
-                    var testItemName = "";
-                    Invoke(new Action(() =>
-                    {
-                        //sampleNo = labelNextSampleNo.Text;
-                        testItemName = labelNextTestItem.Text;
-                    }));
-                    var dtTestItem = SqlData.SelectProductIdItemIdByname(testItemName);
-                    if (dtTestItem.Rows.Count == 0)
-                        Log_Add("不存在此测试项目", true);
-                    var testItemId = dtTestItem.Rows[0][1].ToString();
-                    var createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    var reactionTime = int.Parse(param.Split('$')[2]).ToString();
-                    var dilutionRatio = param.Split('$')[0];
-                    var reagentStoreId = param.Split('$')[1];
-                    // ReSharper disable once ResourceItemNotResolved
-                    var workingStatus = Resources.I3103;
-                    var tyFixDataId = ConfigRead(_MParam[0] == 0 ? "FluoFix" : "CMOSFix");
-                    var dtCalibDataLotno = SqlData.SelectCalibDataIdLotNoByReagentId(reagentStoreId);
-                    var lotNo = dtCalibDataLotno.Rows[0][0].ToString();
-                    var calibDataId = dtCalibDataLotno.Rows[0][1].ToString();
-                    try
-                    {
-                        var seqdel = SqlData.SelectSeq(sampleNo);
-                        SqlData.DeleteFromWrokrunlist(seqdel.Rows[0][0].ToString());
-                        createTime = seqdel.Rows[0][1].ToString();
-                        SqlData.InsertIntoRunlist(seq, sampleNo, testItemId, createTime, workingStatus, tyFixDataId,
-                            reagentStoreId, dilutionRatio, reactionTime, calibDataId);
-
-                    }
-                    catch (Exception)
-                    {
-                        // ignored
-                    }
-
-                    // ReSharper disable once ResourceItemNotResolved
-                    msgLog = Resources.NewSampleText;
-                    Debug.Assert(msgLog != null, "msgLog != null");
-                    msgLog = msgLog.Replace("[1]", sampleNo);
-                    msgLog = msgLog.Replace("[2]", testItemName);
-                    msgLog = msgLog.Replace("[3]", lotNo);
-                    msgLog = msgLog.Replace("[4]", reactionTime);
-                    Invoke(new Action(() =>
-                    {
-                        if (GetResxString("Doing", "ColumnText") == labelOther.Text)
-                            UpdatedataGridViewMain("Doing");
-                    }));
-
-                    Invoke(new Action(() =>
-                    {
-                        if (labelNextTestItem.Text.IndexOf("QC", StringComparison.Ordinal) == -1)
+                        catch (Exception)
                         {
-                            if (ConfigRead("BarcodeEnable") == "1")
+                            // ignored
+                        }
+
+                        // ReSharper disable once ResourceItemNotResolved
+                        msgLog = Resources.NewSampleText;
+                        Debug.Assert(msgLog != null, "msgLog != null");
+                        msgLog = msgLog.Replace("[1]", sampleNo);
+                        msgLog = msgLog.Replace("[2]", testItemName);
+                        msgLog = msgLog.Replace("[3]", lotNo);
+                        msgLog = msgLog.Replace("[4]", reactionTime);
+                        Invoke(new Action(() =>
+                        {
+                            if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                UpdatedataGridViewMain("Doing");
+                        }));
+
+                        Invoke(new Action(() =>
+                        {
+                            if (labelNextTestItem.Text.IndexOf("QC", StringComparison.Ordinal) == -1)
                             {
                                 int aa;
                                 var bb = int.TryParse(labelNextSampleNo.Text, out aa);
@@ -3230,78 +3269,162 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                     labelNextSampleNo.Text = (aa + 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
                             }
                         }
+                            ));
+                        UpdateSupplyLeft(1, 1);
                     }
-                        ));
-                }
-            }
-            //测试出错处理，清洗液不足、稀释液不足、取片失败
-            else if (msgType == "!3901" | msgType == "!3903" | msgType == "!3540" | msgType == "!3927" | msgType == "!3928" | msgType == "!3925" | msgType == "!3926")
-            {
-                var dtSampleNoTime = SqlData.SelectSampleNoTimeBySeq(seq);
-                if (dtSampleNoTime.Rows.Count == 0) return;
-                var sampleNo = dtSampleNoTime.Rows[0][0].ToString();
-                msgLog = _rm.GetString("E" + msgType.Substring(1));
-                var ty = "";
-                switch (msgType)
-                {
-                    case "!3901":
-                        ty = "-3";
-                        break;
-                    case "!3903":
-                        ty = "-2";
-                        break;
-                    case "!3540":
-                        ty = "-5";
-                        break;
-                    case "!3925":
-                        ty = "-12";
-                        break;
-                    case "!3926":
-                        ty = "-13";
-                        break;
-                    case "!3927":
-                        ty = "-14";
-                        break;
-                    case "!3928":
-                        ty = "-15";
-                        break;
-                }
-                DrawResult(ty, seq, "", "", "");
-                Invoke(new Action(() =>
-                {
-                    if (GetResxString("Exception", "ColumnText") == labelOther.Text)
-                        UpdatedataGridViewMain("Exception");
-                    if (msgType == "!3901" | msgType == "!3903")
+                    else
                     {
-                        MessageType[1] = "1";
-                        Log_Add(sampleNo + msgLog, true);
-                    }
-                    if (msgType == "!3540")
-                    {
-                        if (_otherInt[9] != 3)
+                        /*
+                        var sampleNo = tempSend.Substring(7, 20).Replace(" ", "");
+                        if (sampleNo.IndexOf("?") > -1)
                         {
-                            _otherInt[9] = _otherInt[9] + 1;
-                            Log_Add(sampleNo + msgLog, true);
+                            sampleNo = SqlData.SelectSeq_Other(ASU_Int[1]).Rows[0][1].ToString();
                         }
                         else
                         {
-                            _otherInt[9] = 0;
-                            Log_Add(sampleNo + msgLog + ",切换片仓", true);
-                            var dtreagentStoreId = SqlData.SwitchReagentStoreForFail();
-                            if (dtreagentStoreId.Rows.Count > 1)
+                            sampleNo = SqlData.SelectWorkRunlistforBarcodeChangeNo(sampleNo).Rows[0][0].ToString();
+                        }*/
+
+                        var sampleNo = SqlData.SelectSeq_Other(ASU_Int[1]).Rows[0][1].ToString();
+
+                        var testItemName = "";
+                        Invoke(new Action(() =>
+                        {
+                            //sampleNo = labelNextSampleNo.Text;
+                            testItemName = labelNextTestItem.Text;
+                        }));
+                        var dtTestItem = SqlData.SelectProductIdItemIdByname(testItemName);
+                        if (dtTestItem.Rows.Count == 0)
+                            Log_Add("不存在此测试项目", true);
+                        var testItemId = dtTestItem.Rows[0][1].ToString();
+                        var createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        var reactionTime = int.Parse(param.Split('$')[2]).ToString();
+                        var dilutionRatio = param.Split('$')[0];
+                        var reagentStoreId = param.Split('$')[1];
+                        // ReSharper disable once ResourceItemNotResolved
+                        var workingStatus = Resources.I3103;
+                        var tyFixDataId = ConfigRead(_MParam[0] == 0 ? "FluoFix" : "CMOSFix");
+                        var dtCalibDataLotno = SqlData.SelectCalibDataIdLotNoByReagentId(reagentStoreId);
+                        var lotNo = dtCalibDataLotno.Rows[0][0].ToString();
+                        var calibDataId = dtCalibDataLotno.Rows[0][1].ToString();
+                        try
+                        {
+                            var seqdel = SqlData.SelectSeq(sampleNo);
+                            SqlData.DeleteFromWorkrunlist(seqdel.Rows[0][0].ToString());
+                            createTime = seqdel.Rows[0][1].ToString();
+                            SqlData.InsertIntoRunlist(seq, sampleNo, testItemId, createTime, workingStatus, tyFixDataId,
+                                reagentStoreId, dilutionRatio, reactionTime, calibDataId);
+
+                            SqlData.UpdateWorkRunlistForBarcode(seq, ASU_Int[1], sampleNo);
+
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+
+                        // ReSharper disable once ResourceItemNotResolved
+                        msgLog = Resources.NewSampleText;
+                        Debug.Assert(msgLog != null, "msgLog != null");
+                        msgLog = msgLog.Replace("[1]", sampleNo);
+                        msgLog = msgLog.Replace("[2]", testItemName);
+                        msgLog = msgLog.Replace("[3]", lotNo);
+                        msgLog = msgLog.Replace("[4]", reactionTime);
+                        Invoke(new Action(() =>
+                        {
+                            if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                UpdatedataGridViewMain("Doing");
+                        }));
+
+                        Invoke(new Action(() =>
+                        {
+                            if (labelNextTestItem.Text.IndexOf("QC", StringComparison.Ordinal) == -1)
                             {
-                                if (SqlData.SelectReagentStore().Rows[0][0].ToString() == dtreagentStoreId.Rows[0][0].ToString())
-                                    serialPort_DataSend(serialPortMain, "#3002$" + dtreagentStoreId.Rows[1][0]);
+                                if (ConfigRead("BarcodeEnable") == "1")
+                                {
+                                    int aa;
+                                    var bb = int.TryParse(labelNextSampleNo.Text, out aa);
+                                    if (bb)
+                                        labelNextSampleNo.Text = (aa + 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
+                                }
+                            }
+                        }
+                            ));
+                    }
+                }
+                //测试出错处理，清洗液不足、稀释液不足、取片失败
+                else if (msgType == "!3901" | msgType == "!3903" | msgType == "!3540" | msgType == "!3927" | msgType == "!3928" | msgType == "!3925" | msgType == "!3926")
+                {
+                    var dtSampleNoTime = SqlData.SelectSampleNoTimeBySeq(seq);
+                    if (dtSampleNoTime.Rows.Count == 0) return;
+                    var sampleNo = dtSampleNoTime.Rows[0][0].ToString();
+                    msgLog = _rm.GetString("E" + msgType.Substring(1));
+                    var ty = "";
+                    switch (msgType)
+                    {
+                        case "!3901":
+                            ty = "-3";
+                            break;
+                        case "!3903":
+                            ty = "-2";
+                            break;
+                        case "!3540":
+                            ty = "-5";
+                            break;
+                        case "!3925":
+                            ty = "-12";
+                            break;
+                        case "!3926":
+                            ty = "-13";
+                            break;
+                        case "!3927":
+                            ty = "-14";
+                            break;
+                        case "!3928":
+                            ty = "-15";
+                            break;
+                    }
+                    DrawResult(ty, seq, "", "", "");
+                    Invoke(new Action(() =>
+                    {
+                        if (GetResxString("Exception", "ColumnText") == labelOther.Text)
+                            UpdatedataGridViewMain("Exception");
+                        if (msgType == "!3901" | msgType == "!3903")
+                        {
+                            MessageType[1] = "30";
+                            Log_Add(sampleNo + msgLog, true);
+                        }
+                        if (msgType == "!3540")
+                        {
+                            if (_otherInt[9] != 3)
+                            {
+                                _otherInt[9] = _otherInt[9] + 1;
+                                Log_Add(sampleNo + msgLog, true);
                             }
                             else
                             {
-                                MessageboxShow("取片失败，且无可切换片仓");
+                                _otherInt[9] = 0;
+                                Log_Add(sampleNo + msgLog + ",切换片仓", true);
+                                var dtreagentStoreId = SqlData.SwitchReagentStoreForFail();
+                                if (dtreagentStoreId.Rows.Count > 1)
+                                {
+                                    if (SqlData.SelectReagentStore().Rows[0][0].ToString() == dtreagentStoreId.Rows[0][0].ToString())
+                                        serialPort_DataSend(serialPortMain, "#3002$" + dtreagentStoreId.Rows[1][0]);
+                                }
+                                else
+                                {
+                                    MessageboxShow("提示|取片失败，且无可切换片仓");
+                                }
                             }
                         }
-                    }
-                }));
+                    }));
+                }
+                Invoke(new Action(() => Log_Add(msgType + msgLog, false, Color.FromArgb(128, 128, 128))));
             }
-            Invoke(new Action(() => Log_Add(msgType + msgLog, false, Color.FromArgb(128, 128, 128))));
+            catch (Exception ee)
+            {
+                Log_Add("6231" + ee.Message, false);
+            }
         }
 
         private void otherControl_TickorClick(object sender, EventArgs e)
@@ -3310,7 +3433,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 if (PrinterSettings.InstalledPrinters.Count == 0)
                 {
-                    MessageboxShow("打印机未安装");
+                    MessageboxShow("提示|打印机未安装");
                 }
                 else
                 {
@@ -3332,7 +3455,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     }
                     catch (Exception)
                     {
-                        MessageboxShow("打印机驱动未安装");
+                        MessageboxShow("提示|打印机驱动未安装");
                     }
                 }
             }
@@ -3352,7 +3475,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 if (engineerMode > 0)
                     engineerMode--;
-                if (tempSend != "" & sampleready == true )
+                if (tempSend != "" & sampleready == true)
                 {
                     timerSampleStart.Start();
                     sampleready = false;
@@ -3432,7 +3555,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             button4.Visible = true;
                             labelpage.Visible = true;
                         }));
-
+                        
                         buttonMenu_Click(buttonHome, null);
                     }
                     else if (_otherInt[2] == 5)
@@ -3452,6 +3575,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             button4.Visible = true;
                             labelpage.Visible = true;
 
+
+
                             labelwait.Text = "休眠中";
                             panelZZZ.BackgroundImage = Resources.sleep72;
                             panelZZZ.Visible = true;
@@ -3459,7 +3584,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             labelWaitingMessage.Visible = false;
                         }));
                         _otherInt[10] = 1;
-                        
+
                         labelMenu.Text = GetResxString("Sleep", "MenuText");
                         timerWaiting.Start();
                         tbtemp = tabPageWaiting;
@@ -3467,15 +3592,24 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     if (ConfigRead("ASUEnable") == "1")
                     {
                         serialPort_DataSend(serialPortMain, "#3024$0");
+                        Invoke(new Action(() =>
+                        {
+                            labelASUState.Visible = true;
+                            buttonASUStop.Visible = true;
+                            buttonASURecover.Visible = true;
+                        }));
                     }
                     //var reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
                     //SwitchTestItem(reagentstoreid);
                     ReagentCloseTime = DateTime.Now.AddSeconds(+10);
                     serialPort_DataSend(serialPortMain, "#3011$0");
 
+                    /*
                     string str = ConfigRead("SleepTime");
                     var time = int.Parse(str) * 60;
                     serialPort_DataSend(serialPortMain, "#3052$" + time);
+                    */
+                    
 
                     UpdateReagentStore();
 
@@ -3493,8 +3627,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         reagentstoreid = SqlData.SelectDefaultReagentStoreId().Rows[0][0].ToString();
                     }
                     SwitchTestItem(reagentstoreid);
-                    
-                    
+
+
                     labelNextSampleNo.Text = ConfigRead("StartSampleNo");
                     var dtrunlist = SqlData.SelectWorkRunlist();
                     for (var i = 0; i < dtrunlist.Rows.Count; i++)
@@ -3529,7 +3663,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             else if (sender == panelOther)
             {
                 if (buttonHome.Visible == false) return;
-                tbtemp =( ConfigRead("Debug") == "1"|engineerMode>0) ? tabPageDetail : tabPageUserMode;
+                tbtemp = (ConfigRead("Debug") == "1" | engineerMode > 0) ? tabPageDetail : tabPageUserMode;
                 button1.Text = "";
                 button2.Text = "";
                 button3.Text = "";
@@ -3539,6 +3673,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
         }
 
+        /*
         private string ConfigRead(string str)
         {
             try
@@ -3578,7 +3713,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 MessageBox.Show("配置文件完全出错" + ee.ToString());
             }
             return "";
-        }
+        }*/
 
         // 主菜单下控件按下事件
         private void panelReagent_Click(object sender, EventArgs e)
@@ -3987,13 +4122,14 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             videoSourcePlayer1.Stop();
             //关闭软件时保存日志
             button_Click(buttonSaveLog, null);
-
+            /*
             //关闭前备份日志
             if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config"))
             {
                 File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
             }
             File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
+            */
         }
 
         DateTime ReagentCloseTime = DateTime.Now.AddMinutes(10);
@@ -4003,7 +4139,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             ReagentCloseTime = DateTime.Now.AddSeconds(5);
 
-            SqlData.UpdateReagentLoadTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),reagentStoreId);
+            SqlData.UpdateReagentLoadTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), reagentStoreId);
 
             try
             {
@@ -4190,128 +4326,141 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         {
             if (sr == serialPortFluo)
             {
-                //荧光需要采集的点数从配置文件中读取
-                var fluoPointCount = int.Parse(ConfigRead("FluoParam").Split('|')[0]);
-                while (_comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal) > -1)
+                try
                 {
-                    var str = _comStr[3].Substring(0, _comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal));
-                    _comStr[3] = _comStr[3].Substring(_comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal) + 2);
-                    if (str.Length >= 17 & (str.Substring(0, 7) == ":000320" | str.Substring(0, 7) == ":000310") & LeftCheck1(str.Substring(1, str.Length - 3)) == str.Substring(str.Length - 2))
+                    //荧光需要采集的点数从配置文件中读取
+                    var fluoPointCount = int.Parse(ConfigRead("FluoParam").Split('|')[0]);
+                    while (_comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal) > -1)
                     {
-                        str = str.Substring(7);
-                        str = str.Substring(0, str.Length - 2);
-                        //对数据字符每8个提取一次作为一组数
-                        while (str.Length > 0)
+                        var str = _comStr[3].Substring(0, _comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal));
+                        _comStr[3] = _comStr[3].Substring(_comStr[3].IndexOf(Environment.NewLine, StringComparison.Ordinal) + 2);
+                        if (str.Length >= 17 & (str.Substring(0, 7) == ":000320" | str.Substring(0, 7) == ":000310") & LeftCheck1(str.Substring(1, str.Length - 3)) == str.Substring(str.Length - 2))
                         {
-                            //一个数据的字符
-                            var str1 = str.Substring(0, 8);
-                            str = str.Substring(8);
-                            //将字符依照给定规则转换成数字
-                            var dFactor = ((double)Convert.ToInt32(str1, 16)) * 2500 / 0x7fffff;
-                            //添加到荧光数据中
-                            _fluoData.Add(dFactor);
+                            str = str.Substring(7);
+                            str = str.Substring(0, str.Length - 2);
+                            //对数据字符每8个提取一次作为一组数
+                            while (str.Length > 0)
+                            {
+                                //一个数据的字符
+                                var str1 = str.Substring(0, 8);
+                                str = str.Substring(8);
+                                //将字符依照给定规则转换成数字
+                                var dFactor = ((double)Convert.ToInt32(str1, 16)) * 2500 / 0x7fffff;
+                                //添加到荧光数据中
+                                _fluoData.Add(dFactor);
+                            }
                         }
+                    }
+
+                    if (_fluoData.Count == fluoPointCount)
+                    {
+                        fluoPointCount = 180;
+                        List<double> list = new List<double>();
+                        if (_fluoData.Take(70).Max() > 400)
+                        {
+                            list = _fluoData.Take(180).ToList();
+                            _fluoData.Clear();
+                            for (int i = 0; i < 180; i++)
+                            {
+                                _fluoData.Add(list[i]);
+                            }
+                        }
+                        else
+                        {
+                            list = _fluoData.Take(_fluoData.Count).Reverse().Take(180).Reverse().ToList();
+                            _fluoData.Clear();
+                            for (int i = 0; i < 180; i++)
+                            {
+                                _fluoData.Add(list[i]);
+                            }
+                        }
+
+                        Invoke(new Action(() => { chartFluo.Series[0].Points.Clear(); }));
+                        var str = "";
+                        for (var i = 0; i < _fluoData.Count; i++)
+                        {
+                            var i1 = i;
+                            Invoke(new Action(() => { chartFluo.Series[0].Points.AddXY(i1, _fluoData[i1]); }));
+                            str += _fluoData[i] + Environment.NewLine;
+                        }
+                        var dt = SqlData.Selectresultinfo(_otherStr[0]);
+                        var sampleno = dt.Rows.Count == 0 ? _otherStr[0] : dt.Rows[0][0].ToString();
+                        str = str.Substring(0, str.Length - 2);
+                        var path = string.Format("No-{0}-{1:yyyyMMddHHmmss}.csv", sampleno, DateTime.Now);
+                        var path2 = string.Format("No-{0}-{1:yyyyMMddHHmmss}.jpg", sampleno, DateTime.Now);
+                        Invoke(new Action(() => { chartFluo.SaveImage(string.Format("{0}/FluoData/{1}.jpg", Application.StartupPath, path2), ChartImageFormat.Jpeg); }));
+                        //保存数据
+                        var sw = new StreamWriter(string.Format("{0}/FluoData/{1}", Application.StartupPath, path), true, Encoding.ASCII);
+                        sw.Write(str);
+                        sw.Flush();
+                        sw.Close();
+
+                        //提取完毕对数据进行运算，得到荧光OD详细数据
+                        var odData = CalMethods.CalFluo(_fluoData);
+                        //清空荧光数据
+                        _fluoData.Clear();
+                        //初始化荧光字符串
+                        _comStr[3] = "-1";
+                        if (odData.IndexOf("Error", StringComparison.Ordinal) > -1)
+                        {
+                            Invoke(new Action(() => Log_Add(odData, true)));
+
+                            DrawResult("-10", _otherStr[0], odData, "", "");
+                            return;
+                        }
+                        //提取cx cy tx ty sumtbase sumcbase用于计算
+                        var cy = odData.Substring(odData.IndexOf("C(", StringComparison.Ordinal) + 2);
+                        var ty = odData.Substring(odData.IndexOf("T(", StringComparison.Ordinal) + 2);
+                        var cx = cy.Substring(0, cy.IndexOf(",", StringComparison.Ordinal));
+                        var tx = ty.Substring(0, ty.IndexOf(",", StringComparison.Ordinal));
+                        var sumCBase =
+                            odData.Substring(odData.IndexOf("SumCBase(", StringComparison.Ordinal) + 9);
+                        var sumTBase =
+                            odData.Substring(odData.IndexOf("SumTBase(", StringComparison.Ordinal) + 9);
+                        cy = cy.Substring(cy.IndexOf(",", StringComparison.Ordinal) + 1);
+                        ty = ty.Substring(ty.IndexOf(",", StringComparison.Ordinal) + 1);
+                        cy = cy.Substring(0, cy.IndexOf(")", StringComparison.Ordinal));
+                        ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
+                        sumCBase = sumCBase.Substring(0, sumCBase.IndexOf(")", StringComparison.Ordinal));
+                        sumTBase = sumTBase.Substring(0, sumTBase.IndexOf(")", StringComparison.Ordinal));
+
+                        if (double.Parse(ty) >= 2500.0)
+                        {
+                            Fluo2500 = 1;
+                            FluoNewTest(_otherStr[0]);
+                            return;
+                        }
+
+                        Invoke(new Action(() =>
+                        {
+                            // ReSharper disable once LocalizableElement
+                            Log_Add(string.Format(@"{0}^{1}", odData, _otherStr[0]), false);
+                            labelResult.Text = string.Format(@"C({0},{1}),T({2},{3});TX-CX={4}", cx, cy, tx, ty, int.Parse(tx) - int.Parse(cx));
+                            if (buttonFluoFix.BackColor == Color.LightGray)
+                            {
+                                if (Math.Abs(int.Parse(cy.Substring(0, cy.Length - 3)) - int.Parse(textBoxFluoRef.Text)) > 20)
+                                {
+                                    //#4167:LED1Current
+                                    var param = ((int.Parse(textBoxFluoRef.Text) - int.Parse(cy.Substring(0, cy.Length - 3))) / 12 + int.Parse(ConfigRead("FluoParam").Split('|')[18]));
+                                    param = Math.Min(214, Math.Max(param, 24));
+                                    FluoCmd("#4167:LED1Current$" + param);
+                                    Thread.Sleep(100);
+                                    FluoNewTest("0");
+                                }
+                                else
+                                {
+                                    buttonFluoFix.BackColor = Color.Transparent;
+                                }
+                            }
+                        }));
+
+                        //进行结果计算与存储
+                        DrawFluoResult(cy, sumCBase, sumTBase, _otherStr[0], odData, path, path2);
                     }
                 }
-                
-                if (_fluoData.Count == fluoPointCount)
+                catch (Exception ee)
                 {
-                    /*
-                    fluoPointCount = 180;
-                    List<double> list = new List<double>();
-                    if (_fluoData.Take(20).Average() > 35)
-                    {
-                        list = _fluoData.Take(180).ToList();
-                        _fluoData.Clear();
-                        for (int i = 0; i < 180; i++)
-                        {
-                            _fluoData.Add(list[i]);
-                        }
-                    }
-                    else
-                    {
-                        list = _fluoData.Take(_fluoData.Count).Reverse().Take(180).Reverse().ToList();
-                        _fluoData.Clear();
-                        for (int i = 0; i < 180; i++)
-                        {
-                            _fluoData.Add(list[i]);
-                        }
-                    }*/
-
-                    Invoke(new Action(() => { chartFluo.Series[0].Points.Clear(); }));
-                    var str = "";
-                    for (var i = 0; i < _fluoData.Count; i++)
-                    {
-                        var i1 = i;
-                        Invoke(new Action(() => { chartFluo.Series[0].Points.AddXY(i1, _fluoData[i1]); }));
-                        str += _fluoData[i] + Environment.NewLine;
-                    }
-                    var dt = SqlData.Selectresultinfo(_otherStr[0]);
-                    var sampleno = dt.Rows.Count == 0 ? _otherStr[0] : dt.Rows[0][0].ToString();
-                    str = str.Substring(0, str.Length - 2);
-                    var path = string.Format("No-{0}-{1:yyyyMMddHHmmss}.csv", sampleno, DateTime.Now);
-                    var path2 = string.Format("No-{0}-{1:yyyyMMddHHmmss}.jpg", sampleno, DateTime.Now);
-                    Invoke(new Action(() => { chartFluo.SaveImage(string.Format("{0}/FluoData/{1}.jpg", Application.StartupPath, path2), ChartImageFormat.Jpeg); }));
-                    //保存数据
-                    var sw = new StreamWriter(string.Format("{0}/FluoData/{1}", Application.StartupPath, path), true, Encoding.ASCII);
-                    sw.Write(str);
-                    sw.Flush();
-                    sw.Close();
-                    
-                    //提取完毕对数据进行运算，得到荧光OD详细数据
-                    var odData = CalMethods.CalFluo(_fluoData);
-                    //清空荧光数据
-                    _fluoData.Clear();
-                    //初始化荧光字符串
-                    _comStr[3] = "-1";
-                    if (odData.IndexOf("Error", StringComparison.Ordinal) > -1)
-                    {
-                        Invoke(new Action(() => Log_Add(odData, true)));
-
-                        DrawResult("-10", _otherStr[0], odData, "", "");
-                        return;
-                    }
-                    //提取cx cy tx ty sumtbase sumcbase用于计算
-                    var cy = odData.Substring(odData.IndexOf("C(", StringComparison.Ordinal) + 2);
-                    var ty = odData.Substring(odData.IndexOf("T(", StringComparison.Ordinal) + 2);
-                    var cx = cy.Substring(0, cy.IndexOf(",", StringComparison.Ordinal));
-                    var tx = ty.Substring(0, ty.IndexOf(",", StringComparison.Ordinal));
-                    var sumCBase =
-                        odData.Substring(odData.IndexOf("SumCBase(", StringComparison.Ordinal) + 9);
-                    var sumTBase =
-                        odData.Substring(odData.IndexOf("SumTBase(", StringComparison.Ordinal) + 9);
-                    cy = cy.Substring(cy.IndexOf(",", StringComparison.Ordinal) + 1);
-                    ty = ty.Substring(ty.IndexOf(",", StringComparison.Ordinal) + 1);
-                    cy = cy.Substring(0, cy.IndexOf(")", StringComparison.Ordinal));
-                    ty = ty.Substring(0, ty.IndexOf(")", StringComparison.Ordinal));
-                    sumCBase = sumCBase.Substring(0, sumCBase.IndexOf(")", StringComparison.Ordinal));
-                    sumTBase = sumTBase.Substring(0, sumTBase.IndexOf(")", StringComparison.Ordinal));
-                    
-                    Invoke(new Action(() =>
-                    {
-                        // ReSharper disable once LocalizableElement
-                        Log_Add(string.Format(@"{0}^{1}", odData, _otherStr[0]), false);
-                        labelResult.Text = string.Format(@"C({0},{1}),T({2},{3});TX-CX={4}", cx, cy, tx, ty, int.Parse(tx) - int.Parse(cx));
-                        if (buttonFluoFix.BackColor == Color.LightGray)
-                        {
-                            if (Math.Abs(int.Parse(cy.Substring(0, cy.Length - 3)) - int.Parse(textBoxFluoRef.Text)) > 20)
-                            {
-                                //#4167:LED1Current
-                                var param = ((int.Parse(textBoxFluoRef.Text) - int.Parse(cy.Substring(0, cy.Length - 3))) / 12 + int.Parse(ConfigRead("FluoParam").Split('|')[18]));
-                                param = Math.Min(214, Math.Max(param, 24));
-                                FluoCmd("#4167:LED1Current$" + param);
-                                Thread.Sleep(100);
-                                FluoNewTest("0");
-                            }
-                            else
-                            {
-                                buttonFluoFix.BackColor = Color.Transparent;
-                            }
-                        }
-                    }));
-                    
-                    //进行结果计算与存储
-                    DrawFluoResult(cy, sumCBase, sumTBase, _otherStr[0], odData, path, path2);
+                    Log_Add("6277" + ee.Message, false);
                 }
             }
             else if (sr == serialPortFluoMotor)
@@ -4326,6 +4475,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         //采集数据完毕时需执行读取数据操作
                         if (str == "FLUOMotorRunOK")
                         {
+
                             //此时需将荧光数据字符串有-1改成空以便执行读取操作
                             _comStr[3] = "";
                             var fluoPointCount = int.Parse(ConfigRead("FluoParam").Split('|')[0]);
@@ -4595,6 +4745,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void exportResult(string sampleno, string testitem, string result, string createtime)
         {
+            if (sampleno.IndexOf("位置") > -1)
+            {
+                return;
+            }
             if (!File.Exists(Application.StartupPath + "/iReader.txt"))
             {
                 StreamWriter sw1 = new StreamWriter(Application.StartupPath + "/iReader.txt");
@@ -4745,7 +4899,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         //2016-11-02 加入显示开启判断，不开启时不报警
                         if (alertstr != "" & ConfigRead("THEnable") == "1")
                             Log_Add(alertstr, true);
-                        
+
                         if (ConfigRead("THEnable") == "1")
                             Log_Add("[R][TH]*0111" + msglog, false, Color.FromArgb(128, 128, 128));
 
@@ -4859,7 +5013,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             else if (strCmd == "EngineerMode")
                             {
                                 engineerMode = 300;
-                                Log_Add("开启工程师模式,限时5分钟",true);
+                                Log_Add("开启工程师模式,限时5分钟", true);
                             }
                             else if (CounterText != "")
                             {
@@ -5011,11 +5165,11 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         "!2907", "!2910", "!2911", "!2912", "!3911", "!3912"
                     };
                     //无参数的信息,需后续操作
-                    string[] msgnoparam2 = 
+                    string[] msgnoparam2 =
                     { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904", "!3906", "*3190",
                         "*3191", "!2550"
                     };
-                  
+
                     //无需特殊处理的含参数信息
                     string[] msgwithparam =
                     {
@@ -5118,51 +5272,54 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                             case "*2102":
                                 UpdateSupplyLeft(2, 0);
                                 break;
-                            case "*3146":
-                                if (ConfigRead("IDRead") == "1")
+
+                            /*
+                        //试剂片条码扫描
+                        case "*3146":
+                            if (ConfigRead("IDRead") == "1")
+                            {
+                                //Thread.Sleep(1000);
+                                idReadcnt = idReadcnt == '0' ? '1' : '2';
+                                Invoke(new Action(() =>
                                 {
-                                    //Thread.Sleep(1000);
-                                    idReadcnt = idReadcnt == '0' ? '1' : '2';
-                                    Invoke(new Action(() =>
+                                    Log_Add("", false);
+
+                                    Bitmap bit = videoSourcePlayer1.GetCurrentVideoFrame();
+                                    var idcode = IDReader(bit);
+                                    bit = new Grayscale(0.2125, 0.7154, 0.0721).Apply(bit);
+                                    bit.Save("img/" + (idcode == "Error" ? "Error/" : "") + idcode + "-" + DateTime.Now.ToString("yyMMddHHmmss") + ".jpg", ImageFormat.Jpeg);
+
+                                    labelIDRead.Text = idcode;
+                                    Log_Add(idcode, false);
+                                    if (idcode == "Error" & idReadcnt == '1')
                                     {
-                                        Log_Add("", false);
-
-                                        Bitmap bit = videoSourcePlayer1.GetCurrentVideoFrame();
-                                        var idcode = IDReader(bit);
-                                        bit = new Grayscale(0.2125, 0.7154, 0.0721).Apply(bit);
-                                        bit.Save("img/" + (idcode == "Error" ? "Error/" : "") + idcode + "-" + DateTime.Now.ToString("yyMMddHHmmss") + ".jpg", ImageFormat.Jpeg);
-
-                                        labelIDRead.Text = idcode;
-                                        Log_Add(idcode, false);
-                                        if (idcode == "Error" & idReadcnt == '1')
-                                        {
-                                            serialPort_DataSend(serialPortMain, "#3018");
-                                        }
-                                        //当出现2次时会出现错误bug 2016-11-04
-                                        //else if (idcode != "Error")
-                                        else
-                                        {
-                                            idReadcnt = '0';
-                                        }
-                                        Log_Add("", false);
+                                        serialPort_DataSend(serialPortMain, "#3018");
                                     }
-                                    ));
+                                    //当出现2次时会出现错误bug 2016-11-04
+                                    //else if (idcode != "Error")
+                                    else
+                                    {
+                                        idReadcnt = '0';
+                                    }
+                                    Log_Add("", false);
                                 }
-                                break;
+                                ));
+                            }
+                            break;*/
                             //清洗液灌注失败
                             case "!3902":
-                                MessageboxShow("清洗液管中有气泡\r\n请更换清洗液之后点击确定进行灌注", true);
-                                Log_Add("清洗液再次灌注",false);
+                                MessageboxShow("清洗液管中有气泡\r\n请更换清洗液之后点击确定进行灌注", false);
+                                Log_Add("清洗液再次灌注", false);
                                 serialPort_DataSend(serialPortMain, "#3051");
                                 break;
                             //稀释液灌注失败
                             case "!3904":
-                                MessageboxShow("稀释液管中有气泡\r\n请更换稀释液之后点击确定进行灌注", true);
+                                MessageboxShow("稀释液管中有气泡\r\n请更换稀释液之后点击确定进行灌注",false);
                                 Log_Add("稀释液再次灌注", false);
                                 serialPort_DataSend(serialPortMain, "#3051");
                                 break;
                             case "!3906":
-                                MessageboxShow("请关闭废片仓");
+                                MessageboxShow("警告|请关闭废片仓");
                                 break;
                             case "*3191":
                                 serialPort_DataSend(serialPortMain, "#3053$1");
@@ -5401,7 +5558,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         {
                             //状态切换
                             case "*0110":
-                                
+
                                 msgInfo = msgInfo.Substring(msgInfo.IndexOf("$", StringComparison.Ordinal) + 1);
                                 msgInfo = msgInfo.Substring(0, msgInfo.IndexOf("[", StringComparison.Ordinal));
                                 var statusId = msgInfo;
@@ -5460,7 +5617,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                                 Log_Add("仪器解锁，可以继续测试", true);
                                             }
                                         }
-                                       
+
                                     }));
 
                                     Invoke(new Action(() =>
@@ -5471,7 +5628,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                                         }
                                     }));
 
-                                        var supplyLeft = ConfigRead("SupplyLeft").Split('-');
+                                    var supplyLeft = ConfigRead("SupplyLeft").Split('-');
                                     UpdateAppConfig("SupplyLeft",
                                         string.Format("{0}-{1}-{2}-{3}", supplyLeft[0], supplyLeft[1], supplyLeft[2], "0"));
 
@@ -5638,17 +5795,29 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     {
                         try
                         {
+
                             SampleNormal = false;
                             Invoke(new Action(() => timerSampleReady.Start()));
+                            /*
                             var sampleNo = tempSend.Substring(7, 20).Replace(" ", "");
+                            var seq2 = "";
+                            if (sampleNo.IndexOf("?") > -1)
+                            {
+                                seq2 = SqlData.SelectSeq_Other(ASU_Int[1]).Rows[0][0].ToString();
+                            }
+                            else
+                            {
                                 sampleNo = SqlData.SelectWorkRunlistforBarcodeChangeNo(sampleNo).Rows[0][0].ToString();
-                            var seqdel = SqlData.SelectSeq(sampleNo);
-                            var seq2 = seqdel.Rows[0][0].ToString();
+                                seq2 = SqlData.SelectSeq(sampleNo).Rows[0][0].ToString();
+                            }*/
+
+                            var seq2 = SqlData.SelectSeq_Other(ASU_Int[1]).Rows[0][0].ToString();
+
                             OperationAfterDealMsgWithSeq(msgType, seq2, "");
                         }
-                        catch (Exception)
+                        catch (Exception ee)
                         {
-
+                            Log_Add("2337" + ee.ToString(), false);
                         }
                     }
                     //光源调整时对收到亮度指令后进行处理
@@ -6018,6 +6187,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 _otherInt[0] = 0; return;
             }
+
             if (tbx.Name == textBoxSearchSample.Name | tbx.Name == textBoxStartSample.Name)
             {
                 if (str == "") { _otherInt[0] = 0; ShowMyAlert("样本号不能为空"); return; }
@@ -6037,10 +6207,22 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             else if (tbx.Name == textBoxSleepTime.Name)
             {
-                if (str == "") { _otherInt[0] = 0; ShowMyAlert("休眠时间不能为空"); return; }
+                if (str == "")
+                {
+                    _otherInt[0] = 0;
+                    ShowMyAlert("休眠时间不能为空");
+                    return;
+                }
+                else if (int.Parse(str) <= 5 & str != "0")
+                {
+                    _otherInt[0] = 0;
+                    ShowMyAlert("休眠时间不能小余5分钟");
+                    return;
+                }
                 var time = int.Parse(str) * 60;
+                CommandCheck[4] = time;
                 UpdateAppConfig("SleepTime", str);
-                serialPort_DataSend(serialPortMain, "#3052$" + time);
+                //serialPort_DataSend(serialPortMain, "#3052$" + time);
             }
             else if (tbx.Name == textBoxBarcodeLength.Name)
             {
@@ -6243,7 +6425,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
                     if (int.Parse(count[1]) <= int.Parse(volume[1]))
                     {
-                        count[1] = (Math.Max(0,int.Parse(count[1]) - 1)).ToString();
+                        count[1] = (Math.Max(0, int.Parse(count[1]) - 1)).ToString();
                         /*
                         labelFloatBallClean.Text = "清洗液\r\n\r\n" + count[1] + "Test\r\n\r\n" + "点击灌注";
                         labelFloatBallClean.BackColor = Color.Red;*/
@@ -6318,6 +6500,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 {
                     supplyLeft[3] = (int.Parse(supplyLeft[3]) + 1).ToString();
                 }
+
                 //新的使用率
                 var dilutionUsage2 = double.Parse(supplyLeft[0]) / double.Parse(supplyVolume[0]) * 100;
                 var cleanUsage2 = double.Parse(supplyLeft[1]) / double.Parse(supplyVolume[1]) * 100;
@@ -6361,8 +6544,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         Log_Add(str, true);
                     }));
                 }
-                    //更新消耗品图示
-                    Invoke(new Action(UpdateSupplyUi));
+                //更新消耗品图示
+                Invoke(new Action(UpdateSupplyUi));
             }
             catch (Exception)
             {
@@ -6427,7 +6610,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
                         labelFloatBallDillution1.Text = "用完";
                     }
-                        labelSupplyLeft.Text = "稀释液：×";
+                    labelSupplyLeft.Text = "稀释液：×";
                 }
                 else
                 {
@@ -6448,7 +6631,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     /*
                     labelFloatBallClean.BackColor = Color.Red;
                     labelFloatBallClean.Text = "清洗液\r\n\r\n" + supplyLeft2[1] + "Test\r\n\r\n" + "点击灌注";*/
-                    
+
                     panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
                     buttonFloatBallClean.Text = "需要\r\n" + "更换";
                     labelFloatBallClean1.Text = "较少";
@@ -6502,7 +6685,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 var wasteUsage = double.Parse(supplyLeft[2]) / double.Parse(supplyVolume[2]) * 100;
                 var wasteReagentUsage = double.Parse(supplyLeft[3]) / double.Parse(supplyVolume[3]) * 100;
 
-                if(buttonModifyLeft.Text == @"更改存余"& buttonModifyVolume.Text=="更改容量")
+                if (buttonModifyLeft.Text == @"更改存余" & buttonModifyVolume.Text == "更改容量")
                 {
                     //整数表示
                     labelDilution1.Text = dilutionUsage.ToString("F0") + @"%";
@@ -6596,7 +6779,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     panelWasteReagent2.BackgroundImage = Resources.ReagentFull;
                     labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
                 }
-                
+
                 if (wasteReagentUsage >= 100)
                 {
                     serialPort_DataSend(serialPortMain, "#3053$1");
@@ -6662,6 +6845,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             panelLoding3.Location = new Point(120 - panelLoding3.Size.Width / 2, 20 - panelLoding3.Size.Width / 2);
             panelLoding4.Location = new Point(170 - panelLoding4.Size.Width / 2, 20 - panelLoding4.Size.Width / 2);
             panelLoding5.Location = new Point(220 - panelLoding5.Size.Width / 2, 20 - panelLoding5.Size.Width / 2);
+
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -6779,7 +6963,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     Log_Add("继续液路光耦校准", false);
                 }
             }
-            
+
         }
 
         private void timerLoad_Tick(object sender, EventArgs e)
@@ -6866,7 +7050,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     ShowMyAlert("条码摄像头无1280x720像素"); Close(); return;
                 }
             }
-            ShowCursor(int.Parse(ConfigRead("Cursor")));
+            ShowCursor(int.Parse(ConfigRead("CursorMode")));
             buttonAutoPrint.BackgroundImage = ConfigRead("AutoPrint") == "0"
 ? Resources.switch_off
 : Resources.switch_on;
@@ -6979,7 +7163,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             {
                 labelTH.Visible = false;
 
-                labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X,723);
+                labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 723);
                 labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 723);
                 labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
                 labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
@@ -7099,6 +7283,8 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             //切换至登录界面
             tbtemp = tabPageLogin;
             labelLoding.Visible = false;
+
+            
         }
         TabPage tbtemp;
         private string _comMeStr = "";
@@ -7422,9 +7608,69 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void timerSupplyAlert_Tick(object sender, EventArgs e)
         {
-            if (ConfigRead("FloatBallEnable") == "1")
+            try
             {
-                if (labelLock.Text != "")
+                if (ConfigRead("FloatBallEnable") == "1")
+                {
+                    if (labelLock.Text != "")
+                    {
+                        buttonSupply.Font = new Font("微软雅黑", buttonSupply.Font.Size == 24 ? 18 : 24, FontStyle.Bold);
+                        buttonSupply.ForeColor = buttonSupply.ForeColor == Color.Red ? Color.FromArgb(119, 114, 105) : Color.Red;
+                    }
+                    else
+                    {
+                        buttonSupply.Font = new Font("微软雅黑", tabControlMainRight.SelectedTab == tabPageReagent ? 18 : 15, FontStyle.Bold);
+                        buttonSupply.ForeColor = Color.FromArgb(119, 114, 105);
+                    }
+                    return;
+                }
+                else
+                {
+
+                }
+                var supplyLeft = ConfigRead("SupplyLeft").Split('-');
+                var supplyVolume = ConfigRead("SupplyVolume").Split('-');
+                var wasteMode = ConfigRead("WasteMode");
+                //当前使用率
+                var dilutionUsage = double.Parse(supplyLeft[0]) / double.Parse(supplyVolume[0]) * 100;
+                var cleanUsage = double.Parse(supplyLeft[1]) / double.Parse(supplyVolume[1]) * 100;
+                var wasteUsage = double.Parse(supplyLeft[2]) / double.Parse(supplyVolume[2]) * 100;
+                var wasteReagentUsage = double.Parse(supplyLeft[3]) / double.Parse(supplyVolume[3]) * 100;
+                if (dilutionUsage < 10)
+                {
+                    labelSupplyLeft.BackColor = labelSupplyLeft.BackColor == Color.Red ? Color.Yellow : Color.Red;
+                }
+                else
+                {
+                    labelSupplyLeft.BackColor = Color.Transparent;
+                }
+                if (cleanUsage < 10)
+                {
+                    labelSupplyLeft2.BackColor = labelSupplyLeft2.BackColor == Color.Red ? Color.Yellow : Color.Red;
+                }
+                else
+                {
+                    labelSupplyLeft2.BackColor = Color.Transparent;
+                }
+                if (wasteMode == "0" & wasteUsage > 90)
+                {
+                    labelSupplyLeft3.BackColor = labelSupplyLeft3.BackColor == Color.Red ? Color.Yellow : Color.Red;
+                }
+                else
+                {
+                    labelSupplyLeft3.BackColor = Color.Transparent;
+                }
+                if (wasteReagentUsage > 90)
+                {
+                    labelSupplyLeft4.BackColor = labelSupplyLeft4.BackColor == Color.Red ? Color.Yellow : Color.Red;
+                }
+                else
+                {
+                    labelSupplyLeft4.BackColor = Color.Transparent;
+                }
+
+
+                if ((dilutionUsage < 10 | cleanUsage < 10 | wasteReagentUsage > 90 | (wasteMode == "0" & wasteUsage > 90)) & tabControlMainRight.SelectedTab == tabPageReagent)
                 {
                     buttonSupply.Font = new Font("微软雅黑", buttonSupply.Font.Size == 24 ? 18 : 24, FontStyle.Bold);
                     buttonSupply.ForeColor = buttonSupply.ForeColor == Color.Red ? Color.FromArgb(119, 114, 105) : Color.Red;
@@ -7434,63 +7680,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     buttonSupply.Font = new Font("微软雅黑", tabControlMainRight.SelectedTab == tabPageReagent ? 18 : 15, FontStyle.Bold);
                     buttonSupply.ForeColor = Color.FromArgb(119, 114, 105);
                 }
-                return;
             }
-            else
+            catch(Exception ee)
             {
-
-            }
-
-            var supplyLeft = ConfigRead("SupplyLeft").Split('-');
-            var supplyVolume = ConfigRead("SupplyVolume").Split('-');
-            var wasteMode = ConfigRead("WasteMode");
-            //当前使用率
-            var dilutionUsage = double.Parse(supplyLeft[0]) / double.Parse(supplyVolume[0]) * 100;
-            var cleanUsage = double.Parse(supplyLeft[1]) / double.Parse(supplyVolume[1]) * 100;
-            var wasteUsage = double.Parse(supplyLeft[2]) / double.Parse(supplyVolume[2]) * 100;
-            var wasteReagentUsage = double.Parse(supplyLeft[3]) / double.Parse(supplyVolume[3]) * 100;
-            if (dilutionUsage < 10)
-            {
-                labelSupplyLeft.BackColor = labelSupplyLeft.BackColor == Color.Red ? Color.Yellow : Color.Red;
-            }
-            else
-            {
-                labelSupplyLeft.BackColor = Color.Transparent;
-            }
-            if (cleanUsage < 10)
-            {
-                labelSupplyLeft2.BackColor = labelSupplyLeft2.BackColor == Color.Red ? Color.Yellow : Color.Red;
-            }
-            else
-            {
-                labelSupplyLeft2.BackColor = Color.Transparent;
-            }
-            if (wasteMode == "0" & wasteUsage > 90)
-            {
-                labelSupplyLeft3.BackColor = labelSupplyLeft3.BackColor == Color.Red ? Color.Yellow : Color.Red;
-            }
-            else
-            {
-                labelSupplyLeft3.BackColor = Color.Transparent;
-            }
-            if (wasteReagentUsage > 90)
-            {
-                labelSupplyLeft4.BackColor = labelSupplyLeft4.BackColor == Color.Red ? Color.Yellow : Color.Red;
-            }
-            else
-            {
-                labelSupplyLeft4.BackColor = Color.Transparent;
-            }
-
-            if ((dilutionUsage < 10 | cleanUsage < 10 | wasteReagentUsage > 90 | (wasteMode == "0" & wasteUsage > 90)) & tabControlMainRight.SelectedTab == tabPageReagent)
-            {
-                buttonSupply.Font = new Font("微软雅黑", buttonSupply.Font.Size == 24 ? 18 : 24, FontStyle.Bold);
-                buttonSupply.ForeColor = buttonSupply.ForeColor == Color.Red ? Color.FromArgb(119, 114, 105) : Color.Red;
-            }
-            else
-            {
-                buttonSupply.Font = new Font("微软雅黑", tabControlMainRight.SelectedTab == tabPageReagent ? 18 : 15, FontStyle.Bold);
-                buttonSupply.ForeColor = Color.FromArgb(119, 114, 105);
+                Log_Add("2312" + ee.ToString(),false);
             }
         }
 
@@ -7603,15 +7796,16 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
         private void DealLater(string strTemp)
         {
             _mEseq = strTemp.Substring(6, 3);
+            ASU_Int[2] = int.Parse(_mEseq);
             switch (strTemp.Substring(5, 1))
             {
                 //<STX>I00101<ETX>79
                 case "I":
                     //当进入测试阶段方可判定为连接ok，可以进行后续测试
                     //要求种别
-                    if (SqlData.SelectWorkRunlistforASU().Rows.Count > 0)
+                    if (SqlData.SelectWorkRunlistforASU("ASU传送").Rows.Count > 0)
                     {
-                        SqlData.DeleteFromWrokrunlistForASU();
+                        SqlData.DeleteFromWorkrunlistForASU();
                         Invoke(new Action(() =>
                         {
                             if (GetResxString("Doing", "ColumnText") == labelOther.Text)
@@ -7629,10 +7823,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     break;
                 case "A":
                     ASUComplete = false;
-                    if (SqlData.SelectWorkRunlistforASUNum().Rows.Count == 0 & SqlData.SwitchReagentStore().Rows.Count > 0 )
+                    if (SqlData.SelectWorkRunlistforASUNum().Rows.Count == 0 & SqlData.SwitchReagentStore().Rows.Count > 0)
                     {
                         var ReagentID = SqlData.SwitchReagentStore().Rows[0][0].ToString();
-                        serialPort_DataSend(serialPortMain,"#3011$" + ReagentID);
+                        serialPort_DataSend(serialPortMain, "#3011$" + ReagentID);
                     }
                     var mestatus = "";
                     mestatus = _otherInt[2] == 3 ? "01" : "00";
@@ -7650,10 +7844,19 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var sampleid1 = strTemp.Substring(11, 20).Replace(" ", "");
                     var shelfid1 = strTemp.Substring(31, 10);
                     var locationid1 = strTemp.Substring(41, 2);
-                    if (sampleid1.Length != int.Parse(ConfigRead("BarcodeLength")) & ConfigRead("BarcodeLength") != "0"& ConfigRead("BarcodeEnable") != "1")
+                    //2017-06-07 条码？处理
+                    var sampleidSave = sampleid1;
+                    var typeSave = type1;
+                    ASU_Int[4] = int.Parse(locationid1);
+                    if (type1 == "03")
                     {
-                        type1 = "01";
+                        if (ConfigRead("BarcodeEnable") == "1")
+                        {
+                            sampleidSave = "未知条码,位置：" + locationid1;
+                        }
+                        type1 = "00";
                     }
+
                     var strO = "\x02" + "o" + _mEseq + type1 + sampleid1.PadRight(20) + "\x03";
                     strO += LeftCheck(strO.Substring(1));
                     var strbyteO = Encoding.ASCII.GetBytes(strO);
@@ -7668,70 +7871,46 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var ReactionTime = ASU.Rows[0][2].ToString();
                     var CalibDataID = ASU.Rows[0][3].ToString();
                     //写入待测列表中
-                    if (ConfigRead("BarcodeEnable") == "1")
+
+                    if (ConfigRead("BarcodeEnable") == "0")
                     {
-                        if (ConfigRead("BarcodeLength") != "0")
-                        {
-                            if (sampleid1.Length == int.Parse(ConfigRead("BarcodeLength")))
-                            {
-                                SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
-                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                                SqlData.UpdateWorkRunlistForBarcode(sampleid1, sampleid1);
-                                Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
-                                seqtemp--;
-                                Invoke(new Action(() =>
-                                {
-                                    if (GetResxString("Doing", "ColumnText") == labelOther.Text)
-                                        UpdatedataGridViewMain("Doing");
-                                }));
-                            }
-                            else
-                            {
-                                SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "条码长度错误", TyFixStr,
-                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                                var seq = SqlData.SelectBarcodeError(sampleid1).Rows[0][0].ToString();
-                                DrawResult("-16", seq, "", "", "");
-                                Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + ",样本号长度不正确", false);
-                                seqtemp--;
-                                Invoke(new Action(() =>
-                                {
-                                    if (GetResxString("Doing", "ColumnText") == labelOther.Text)
-                                        UpdatedataGridViewMain("Doing");
-                                }));
-                            }
-                        }
-                        else
-                        {
-                            SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleid1, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
-                                    ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                            SqlData.UpdateWorkRunlistForBarcode(sampleid1, sampleid1);
-                            Log_Add("接收到ASU样本信息，样本号为" + sampleid1, false);
-                            seqtemp--;
-                            Invoke(new Action(() =>
-                            {
-                                if (GetResxString("Doing", "ColumnText") == labelOther.Text)
-                                    UpdatedataGridViewMain("Doing");
-                            }));
-                        }
-                    }
-                    else
-                    {
-                        if (SqlData.SelectWorkRunlistforASU().Rows.Count == 0)
+                        if (SqlData.SelectWorkRunlistforASU("ASU传送").Rows.Count == 0)
                         {
                             NextSampleNo = labelNextSampleNo.Text;
                         }
-                        var sampleNo = (int.Parse(NextSampleNo) + int.Parse(locationid1) - 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0'); 
+                        var sampleNo = (int.Parse(NextSampleNo) + int.Parse(locationid1) - 1).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
                         SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleNo, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
                                     ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
-                        SqlData.UpdateWorkRunlistForBarcode(sampleNo, sampleid1);
-                        Log_Add("接收到ASU样本信息，样本号为" + sampleNo, false);
+                        SqlData.UpdateWorkRunlistForBarcode(seqtemp.ToString(), int.Parse(locationid1), sampleidSave);
+                        Log_Add("接收到ASU样本信息，样本号为" + sampleNo + ",位置为" + locationid1, false);
                         seqtemp--;
-                        Invoke(new Action(() => 
+                        Invoke(new Action(() =>
                         {
                             if (GetResxString("Doing", "ColumnText") == labelOther.Text)
                                 UpdatedataGridViewMain("Doing");
                         }));
-                        labelNextSampleNo.Text = (int.Parse(NextSampleNo) + int.Parse(locationid1)).ToString().PadLeft(labelNextSampleNo.Text.Length, '0'); ;
+                        labelNextSampleNo.Text = (int.Parse(NextSampleNo) + int.Parse(locationid1)).ToString().PadLeft(labelNextSampleNo.Text.Length, '0');
+                    }
+                    else
+                    {
+                        if (sampleid1.Length != int.Parse(ConfigRead("BarcodeLength")) & sampleid1.IndexOf("?") <= -1)
+                        {
+                            sampleidSave = "错误条码,位置：" + locationid1;
+                            Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + ",位置为" + locationid1 + ",样本号长度不正确", false);
+                        }
+                        else
+                        {
+                            Log_Add("接收到ASU样本信息，样本号为" + sampleid1 + ",位置为" + locationid1, false);
+                        }
+                        SqlData.InsertIntoRunlist(seqtemp.ToString(), sampleidSave, testitem, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "ASU传送", TyFixStr,
+                               ReagentStoreID, DilutionRatio, ReactionTime, CalibDataID);
+                        SqlData.UpdateWorkRunlistForBarcode(seqtemp.ToString(), int.Parse(locationid1), sampleidSave);
+                        seqtemp--;
+                        Invoke(new Action(() =>
+                        {
+                            if (GetResxString("Doing", "ColumnText") == labelOther.Text)
+                                UpdatedataGridViewMain("Doing");
+                        }));
                     }
                     break;
                 case "S":
@@ -7741,7 +7920,28 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     var locationid2 = strTemp.Substring(41, 2);
                     var strS = "\x02" + "s" + _mEseq + type2 + sampleid2.PadRight(20) + "\x03";
                     strS += LeftCheck(strS.Substring(1));
+                    ASU_Int[1] = int.Parse(locationid2);
                     tempSend = strS;
+                    break;
+                case "E":
+                    var ASU_State = strTemp.Substring(9, 1);
+                    //ASU_Int[3] = int.Parse(ASU_State);
+                    if (ASU_Int[3] == 1)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            labelASUState.Text = "ASU暂停中";
+                            buttonASUStop.Visible = false;
+                        }));
+                    }
+                    else if (ASU_Int[3] == 0)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            labelASUState.Text = "ASU暂停确认";
+                            buttonASUStop.Visible = true;
+                        }));
+                    }
                     break;
             }
         }
@@ -7760,10 +7960,18 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             //判断ASU是否已经测试完成
             if (ASUComplete == false)
             {
-                DataTable dt = SqlData.SelectWorkRunlistforASU();
+                DataTable dt = SqlData.SelectWorkRunlistforASU("ASU传送");
                 if (dt.Rows.Count == 0)
                 {
                     ASUComplete = true;
+                }
+            }
+            if (ASU_Int[1] == ASU_Int[4])
+            {
+                if (SqlData.SelectBarcodeError("位置").Rows.Count > 0)
+                {
+                    MessageboxShow("存在位置或错误条码，请确认");
+                    timerASUStop.Start();
                 }
             }
             if (!SampleNormal)
@@ -7772,60 +7980,67 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         private void 修改压积ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var rowIndex = int.Parse(CounterText);
-            var firstchar = ' ';
-            if (tabControlMain.SelectedTab == tabPageHome)
+            try
             {
-                firstchar = dataGridViewMain.Rows[rowIndex].Cells[3].Value.ToString()[0];
-            }
-            else
-            {
-                firstchar = dataGridViewSearch.Rows[rowIndex].Cells[2].Value.ToString()[0];
-            }
-            if (firstchar == '*')
-            {
-                Log_Add("样本压积修正只可进行一次", true); return;
-            }
-            else if (firstchar == '>' | firstchar == '<')
-            {
-                Log_Add("此样本不可进行压积修正", true); return;
-            }
-            else
-            {
-                DateTime time;
+                var rowIndex = int.Parse(CounterText);
+                var firstchar = ' ';
                 if (tabControlMain.SelectedTab == tabPageHome)
                 {
-                    dataGridViewMain.Rows[rowIndex].Selected = true;
-                    time = DateTime.Parse(dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString());
+                    firstchar = dataGridViewMain.Rows[rowIndex].Cells[3].Value.ToString()[0];
                 }
                 else
                 {
-                    dataGridViewSearch.Rows[rowIndex].Selected = true;
-                    time = DateTime.Parse(dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString());
+                    firstchar = dataGridViewSearch.Rows[rowIndex].Cells[2].Value.ToString()[0];
                 }
-
-                string unitratio = SqlData.SelectUnitRatio(time.ToString("yyyy-MM-dd HH:mm:ss")).Rows[0][0].ToString();
-                if (unitratio == "1")
+                if (firstchar == '*')
                 {
-                    Log_Add("非全血样本不可进行压积修正", true);
+                    Log_Add("样本压积修正只可进行一次", true); return;
+                }
+                else if (firstchar == '>' | firstchar == '<')
+                {
+                    Log_Add("此样本不可进行压积修正", true); return;
                 }
                 else
                 {
-                    string yaji = (1.0 - 1.0 / double.Parse(unitratio)).ToString("F2");
-                    CounterText = "Num|" + yaji;
-                    var str = VirtualKeyBoard();
-                    if (str != "" & str != "Cancel" & str != unitratio)
+                    DateTime time;
+                    if (tabControlMain.SelectedTab == tabPageHome)
                     {
-                        if (double.Parse(str) > 1)
+                        dataGridViewMain.Rows[rowIndex].Selected = true;
+                        time = DateTime.Parse(dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString());
+                    }
+                    else
+                    {
+                        dataGridViewSearch.Rows[rowIndex].Selected = true;
+                        time = DateTime.Parse(dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString());
+                    }
+
+                    string unitratio = SqlData.SelectUnitRatio(time.ToString("yyyy-MM-dd HH:mm:ss")).Rows[0][0].ToString();
+                    if (unitratio == "1")
+                    {
+                        Log_Add("非全血样本不可进行压积修正", true);
+                    }
+                    else
+                    {
+                        string yaji = (1.0 - 1.0 / double.Parse(unitratio)).ToString("F2");
+                        CounterText = "Num|" + yaji;
+                        var str = VirtualKeyBoard();
+                        if (str != "" & str != "Cancel" & str != unitratio)
                         {
-                            ShowMyAlert("红细胞压积不能大于1"); return;
+                            if (double.Parse(str) > 1)
+                            {
+                                ShowMyAlert("红细胞压积不能大于1"); return;
+                            }
+                            str = (1.0 / (1.0 - double.Parse(str))).ToString();
+                            SqlData.UpdateResultYaji(time.ToString("yyyy-MM-dd HH:mm:ss"), unitratio, str);
+                            UpdatedataGridViewMain("Done");
+                            UpdatedataGridViewSearch("1", "12");
                         }
-                        str = (1.0 / (1.0 - double.Parse(str))).ToString();
-                        SqlData.UpdateResultYaji(time.ToString("yyyy-MM-dd HH:mm:ss"), unitratio, str);
-                        UpdatedataGridViewMain("Done");
-                        UpdatedataGridViewSearch("1", "12");
                     }
                 }
+            }
+            catch (Exception ee)
+            {
+                Log_Add("6260" + ee.Message, false);
             }
         }
 
@@ -7863,7 +8078,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             catch (Exception ee)
             {
-                Log_Add(ee.Message, true);
+                Log_Add("3414" + ee.Message, true);
             }
         }
 
@@ -7909,14 +8124,20 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             catch (Exception ee)
             {
-                Log_Add("6224" + ee.Message, false);
+                Log_Add("6674" + ee.Message, false);
             }
         }
 
         private void MessageboxShow(string str, bool confirm)
         {
             if (confirm == true)
-                MessageType[0] = "1";
+            {
+                MessageType[0] = "OkCancel";
+            }
+            else
+            {
+                MessageType[0] = "";
+            }
             if (_myMsab != null)
             {
                 if (!_myMsab.IsDisposed)
@@ -7930,162 +8151,169 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             catch (Exception ee)
             {
-                Log_Add("6225" + ee.Message, false);
+                Log_Add("6124" + ee.Message, false);
             }
         }
 
         private void serialPortFloatBall_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             //主串口发送的信息以<STX><ETX>开头结尾
-            while (serialPortFloatBall.BytesToRead > 0)
+            try
             {
-                var ch = (char)serialPortFloatBall.ReadByte();
-                _comStr[5] += ch.ToString();
-                if (ch == '\n')
+                while (serialPortFloatBall.BytesToRead > 0)
                 {
-                    Invoke(new Action(() =>
+                    var ch = (char)serialPortFloatBall.ReadByte();
+                    _comStr[5] += ch.ToString();
+                    if (ch == '\n')
                     {
-                        while (_comStr[5].IndexOf("\r\n") > -1)
+                        Invoke(new Action(() =>
                         {
-                            var str = _comStr[5].Substring(0, _comStr[5].IndexOf("\r\n"));
-                            _comStr[5] = _comStr[5].Substring(_comStr[5].IndexOf("\r\n") + 2);
-                            if (str.IndexOf("*3301") > -1 & str.Split('$').Length == 4)
+                            while (_comStr[5].IndexOf("\r\n") > -1)
                             {
-                                if (CommandCheck[0] == 0)
-                                    CommandCheck[0] = 1;//浮球命令有无判断
-                                Invoke(new Action(() => Log_Add("FloatBall:" + str, false)));
-                                var wastestatus = str.Split('$')[1];
-                                var dilutionstatus = str.Split('$')[2];
-                                var cleanstatus = str.Split('$')[3];
-                                if (wastestatus == "1")
+                                var str = _comStr[5].Substring(0, _comStr[5].IndexOf("\r\n"));
+                                _comStr[5] = _comStr[5].Substring(_comStr[5].IndexOf("\r\n") + 2);
+                                if (str.IndexOf("*3301") > -1 & str.Split('$').Length == 4)
                                 {
-                                    /*
-                                    labelFloatBallWork.Text = "废液\r\n\r\n" + "警报";
-                                    labelFloatBallWork.BackColor = Color.Red;*/
-                                    labelWasteStatus.BackColor = Color.Red;
-
-                                    labelFloatBallWaste.Text = "需要\r\n" + "更换";
-                                    labelFloatBallWaste1.Text = "满溢";
-                                    panelFloatBallWaste.BackgroundImage = Resources.BottleFull6;
-
-                                    labelSupplyLeft3.Text = "废液：×";
-                                    if (labelLock.Text == "")
+                                    if (CommandCheck[0] == 0)
+                                        CommandCheck[0] = 1;//浮球命令有无判断
+                                    Invoke(new Action(() => Log_Add("FloatBall:" + str, false)));
+                                    var wastestatus = str.Split('$')[1];
+                                    var dilutionstatus = str.Split('$')[2];
+                                    var cleanstatus = str.Split('$')[3];
+                                    if (wastestatus == "1")
                                     {
-                                        serialPort_DataSend(serialPortMain, "#3053$1");
-                                        labelLock.Text = "仪器锁定";
-                                        Log_Add("请清空废液后继续操作，当前仪器锁定", true);
-                                        ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
-                                        MessageboxShow("请清空废液后继续操作，当前仪器锁定");
+                                        /*
+                                        labelFloatBallWork.Text = "废液\r\n\r\n" + "警报";
+                                        labelFloatBallWork.BackColor = Color.Red;*/
+                                        labelWasteStatus.BackColor = Color.Red;
+
+                                        labelFloatBallWaste.Text = "需要\r\n" + "更换";
+                                        labelFloatBallWaste1.Text = "满溢";
+                                        panelFloatBallWaste.BackgroundImage = Resources.BottleFull6;
+
+                                        labelSupplyLeft3.Text = "废液：×";
+                                        if (labelLock.Text == "")
+                                        {
+                                            serialPort_DataSend(serialPortMain, "#3053$1");
+                                            labelLock.Text = "仪器锁定";
+                                            Log_Add("请清空废液后继续操作，当前仪器锁定", true);
+                                            ShowMyAlert("请清空废液后继续操作，\r\n当前仪器锁定");
+                                            MessageboxShow("请清空废液后继续操作，当前仪器锁定");
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    /*
-                                    labelFloatBallWork.Text = "废液\r\n\r\n" + "正常";
-                                    labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
-                                    */
-                                    labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
-
-                                    labelFloatBallWaste.Text = "运行\r\n" + "正常";
-                                    labelFloatBallWaste1.Text = "正常";
-                                    panelFloatBallWaste.BackgroundImage = Resources.BottleFull4;
-
-                                    labelSupplyLeft3.Text = "废液：√";
-                                }
-                                var volume = ConfigRead("FloatBallVolume").Split('-');
-                                var count = ConfigRead("FloatBallCount").Split('-');
-
-                                if (dilutionstatus == "1")
-                                {
-                                    if (int.Parse(count[0]) > int.Parse(volume[0]))
-                                        count[0] = volume[0];
-                                    /*
-                                    labelFloatBallDilution.Text = "稀释液\r\n\r\n" + count[0] + "Test\r\n\r\n" + "点击灌注";
-                                    labelFloatBallDilution.BackColor = Color.Red;*/
-                                    
-                                    buttonFloatBallDilution.Text = "需要\r\n" + "更换";
-                                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull5;
-                                    labelFloatBallDillution1.Text = "较少";
-
-                                    if (count[0] == "0")
+                                    else
                                     {
-                                        buttonFloatBallDilution.Text = "急需\r\n" + "更换";
-                                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
-                                        labelFloatBallDillution1.Text = "用完";
+                                        /*
+                                        labelFloatBallWork.Text = "废液\r\n\r\n" + "正常";
+                                        labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
+                                        */
+                                        labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
+
+                                        labelFloatBallWaste.Text = "运行\r\n" + "正常";
+                                        labelFloatBallWaste1.Text = "正常";
+                                        panelFloatBallWaste.BackgroundImage = Resources.BottleFull4;
+
+                                        labelSupplyLeft3.Text = "废液：√";
                                     }
+                                    var volume = ConfigRead("FloatBallVolume").Split('-');
+                                    var count = ConfigRead("FloatBallCount").Split('-');
 
-                                    labelDilutionStatus.BackColor = Color.Red;
-                                    labelSupplyLeft.Text = "稀释液:×";
-                                }
-                                else
-                                {
-                                    if (int.Parse(count[0]) <= int.Parse(volume[0]))
-                                        count[0] = (int.Parse(volume[0]) + 1).ToString();
-                                    /*
-                                    labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                                    labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);*/
-                                    
-                                    buttonFloatBallDilution.Text = "点击\r\n" + "灌注";
-                                    panelFloatBallDillution.BackgroundImage = Resources.BottleFull4;
-                                    labelFloatBallDillution1.Text = "充足";
-
-                                    labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
-                                    labelSupplyLeft.Text = "稀释液:√";
-                                }
-
-                                if (cleanstatus == "1")
-                                {
-                                    if (int.Parse(count[1]) > int.Parse(volume[1]))
-                                        count[1] = volume[1];
-                                    /*
-                                    labelFloatBallClean.Text = "清洗液\r\n\r\n" + count[1] + "Test\r\n\r\n" + "点击灌注";
-                                    labelFloatBallClean.BackColor = Color.Red;*/
-
-                                    buttonFloatBallClean.Text = "需要\r\n" + "更换";
-                                    panelFloatBallClean.BackgroundImage = Resources.BottleFull5;
-                                    labelFloatBallClean1.Text = "较少";
-
-                                    if (count[1] == "0")
+                                    if (dilutionstatus == "1")
                                     {
-                                        buttonFloatBallClean.Text = "急需\r\n" + "更换";
-                                        panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
-                                        labelFloatBallClean1.Text = "用完";
+                                        if (int.Parse(count[0]) > int.Parse(volume[0]))
+                                            count[0] = volume[0];
+                                        /*
+                                        labelFloatBallDilution.Text = "稀释液\r\n\r\n" + count[0] + "Test\r\n\r\n" + "点击灌注";
+                                        labelFloatBallDilution.BackColor = Color.Red;*/
+
+                                        buttonFloatBallDilution.Text = "需要\r\n" + "更换";
+                                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull5;
+                                        labelFloatBallDillution1.Text = "较少";
+
+                                        if (count[0] == "0")
+                                        {
+                                            buttonFloatBallDilution.Text = "急需\r\n" + "更换";
+                                            panelFloatBallDillution.BackgroundImage = Resources.BottleFull6;
+                                            labelFloatBallDillution1.Text = "用完";
+                                        }
+
+                                        labelDilutionStatus.BackColor = Color.Red;
+                                        labelSupplyLeft.Text = "稀释液:×";
                                     }
-                                    
-                                    labelCleanStatus.BackColor = Color.Red;
-                                    labelSupplyLeft2.Text = "清洗液:×";
-                                }
-                                else
-                                {
-                                    if (int.Parse(count[1]) <= int.Parse(volume[1]))
-                                        count[1] = (int.Parse(volume[1]) + 1).ToString();
-                                    /*
-                                    labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
-                                    labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);*/
-                                    
-                                    buttonFloatBallClean.Text = "点击\r\n" + "灌注";
-                                    panelFloatBallClean.BackgroundImage = Resources.BottleFull4;
-                                    labelFloatBallClean1.Text = "充足";
-
-                                    labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
-                                    labelSupplyLeft2.Text = "清洗液:√";
-                                }
-
-                                if (labelLock.Text != "")
-                                {
-                                    if (wastestatus == "0" & count[0] != "0" & count[1] != "0" & int.Parse(ConfigRead("SupplyVolume").Split('-')[3]) >= int.Parse(ConfigRead("SupplyLeft").Split('-')[3]))
+                                    else
                                     {
-                                        serialPort_DataSend(serialPortMain, "#3053$0");
-                                        labelLock.Text = "";
-                                        Log_Add("仪器解锁，可以继续测试", true);
-                                    }
-                                }
+                                        if (int.Parse(count[0]) <= int.Parse(volume[0]))
+                                            count[0] = (int.Parse(volume[0]) + 1).ToString();
+                                        /*
+                                        labelFloatBallDilution.Text = "稀释液\r\n\r\n正常\r\n\r\n" + "点击灌注";
+                                        labelFloatBallDilution.BackColor = Color.FromArgb(41, 169, 223);*/
 
-                                UpdateAppConfig("FloatBallCount", count[0] + "-" + count[1]);
+                                        buttonFloatBallDilution.Text = "点击\r\n" + "灌注";
+                                        panelFloatBallDillution.BackgroundImage = Resources.BottleFull4;
+                                        labelFloatBallDillution1.Text = "充足";
+
+                                        labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
+                                        labelSupplyLeft.Text = "稀释液:√";
+                                    }
+
+                                    if (cleanstatus == "1")
+                                    {
+                                        if (int.Parse(count[1]) > int.Parse(volume[1]))
+                                            count[1] = volume[1];
+                                        /*
+                                        labelFloatBallClean.Text = "清洗液\r\n\r\n" + count[1] + "Test\r\n\r\n" + "点击灌注";
+                                        labelFloatBallClean.BackColor = Color.Red;*/
+
+                                        buttonFloatBallClean.Text = "需要\r\n" + "更换";
+                                        panelFloatBallClean.BackgroundImage = Resources.BottleFull5;
+                                        labelFloatBallClean1.Text = "较少";
+
+                                        if (count[1] == "0")
+                                        {
+                                            buttonFloatBallClean.Text = "急需\r\n" + "更换";
+                                            panelFloatBallClean.BackgroundImage = Resources.BottleFull6;
+                                            labelFloatBallClean1.Text = "用完";
+                                        }
+
+                                        labelCleanStatus.BackColor = Color.Red;
+                                        labelSupplyLeft2.Text = "清洗液:×";
+                                    }
+                                    else
+                                    {
+                                        if (int.Parse(count[1]) <= int.Parse(volume[1]))
+                                            count[1] = (int.Parse(volume[1]) + 1).ToString();
+                                        /*
+                                        labelFloatBallClean.Text = "清洗液\r\n\r\n正常\r\n\r\n" + "点击灌注";
+                                        labelFloatBallClean.BackColor = Color.FromArgb(41, 169, 223);*/
+
+                                        buttonFloatBallClean.Text = "点击\r\n" + "灌注";
+                                        panelFloatBallClean.BackgroundImage = Resources.BottleFull4;
+                                        labelFloatBallClean1.Text = "充足";
+
+                                        labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
+                                        labelSupplyLeft2.Text = "清洗液:√";
+                                    }
+
+                                    if (labelLock.Text != "")
+                                    {
+                                        if (wastestatus == "0" & count[0] != "0" & count[1] != "0" & int.Parse(ConfigRead("SupplyVolume").Split('-')[3]) >= int.Parse(ConfigRead("SupplyLeft").Split('-')[3]))
+                                        {
+                                            serialPort_DataSend(serialPortMain, "#3053$0");
+                                            labelLock.Text = "";
+                                            Log_Add("仪器解锁，可以继续测试", true);
+                                        }
+                                    }
+
+                                    UpdateAppConfig("FloatBallCount", count[0] + "-" + count[1]);
+                                }
                             }
-                        }
-                    }));
+                        }));
+                    }
                 }
+            }
+            catch (Exception ee)
+            {
+                Log_Add("6231" + ee.Message, false);
             }
         }
 
@@ -8095,17 +8323,17 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             var rowIndex = int.Parse(CounterText);
             var homeorsearch = tabControlMain.SelectedTab == tabPageHome;
 
-            var sampleNo = homeorsearch ? dataGridViewMain.Rows[rowIndex].Cells[1].Value.ToString(): dataGridViewSearch.Rows[rowIndex].Cells[0].Value.ToString();
+            var sampleNo = homeorsearch ? dataGridViewMain.Rows[rowIndex].Cells[1].Value.ToString() : dataGridViewSearch.Rows[rowIndex].Cells[0].Value.ToString();
 
             var testitemname = homeorsearch ? dataGridViewMain.Rows[rowIndex].Cells[2].Value.ToString() : dataGridViewSearch.Rows[rowIndex].Cells[1].Value.ToString();
 
             var result = homeorsearch ? dataGridViewMain.Rows[rowIndex].Cells[3].Value.ToString() : dataGridViewSearch.Rows[rowIndex].Cells[2].Value.ToString();
 
-            var createtime= homeorsearch? dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString(): dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString();
+            var createtime = homeorsearch ? dataGridViewMain.Rows[rowIndex].Cells[0].Value.ToString() : dataGridViewSearch.Rows[rowIndex].Cells[3].Value.ToString();
 
             result = result.Replace("*", "");
 
-            exportResult(sampleNo, testitemname, result.Substring(0,result.IndexOf(".")+3), createtime);
+            exportResult(sampleNo, testitemname, result.Substring(0, result.IndexOf(".") + 3), createtime);
 
             Log_Add("该条结果发送成功", true);
         }
@@ -8140,10 +8368,10 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             }
             catch (Exception ee)
             {
-                MessageBox.Show(ee.ToString());
+                Log_Add("6230" + ee.Message, false);
             }
         }
-        
+
         //点击用户列表事件
         private void dataGridViewAllUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -8177,7 +8405,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             comboBoxUserType.Enabled = true;
             comboBoxUserType.Text = "";
         }//2017-2-27
-        
+
 
         private void textBoxOpenState_TextChanged(object sender, EventArgs e)
         {
@@ -8186,7 +8414,7 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
 
         int Click_num = 0;
         private void textBoxOpenState_MouseClick(object sender, MouseEventArgs e)
-            //加载界面状态显示
+        //加载界面状态显示
         {
             if (Click_num == 0)
             {
@@ -8220,24 +8448,6 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
             serialPort_DataSend(serialPortMain, "#3051");
         }
 
-        private void timerConfigBackup_Tick(object sender, EventArgs e)
-        {
-            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config"))
-            {
-                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
-            }
-            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S.exe.config");
-        }
-
-        private void timerConfigBackup1_Tick(object sender, EventArgs e)
-        {
-            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config"))
-            {
-                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
-            }
-            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(2).exe.config");
-        }
-
         private void buttonFloatBallDilution_Click(object sender, EventArgs e)
         {
             if (buttonFloatBallDilution.Text.IndexOf("点击") > -1)
@@ -8250,16 +8460,57 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                 serialPort_DataSend(serialPortMain, "#3061");
         }
 
-        
+        //休眠动画
         private void timerWaiting_Tick(object sender, EventArgs e)
         {
-            if (labelwait.Text == "休眠中")
+            try
             {
-                if (labelWaitingMessage.Visible == true)
+                if (labelwait.Text == "休眠中")
                 {
+                    if (labelWaitingMessage.Visible == true)
+                    {
+                        var WaitMessage = labelWaitingMessage.Text;
+                        var NewMessage = Resources.Awake;
+                        if (WaitMessage.Substring(0, 1).ToString() != " ")
+                        {
+                            WaitMessage = WaitMessage.Replace(" ", "");
+                            WaitMessage = WaitMessage.Substring(1);
+                            labelWaitingMessage.Text = WaitMessage.PadRight(NewMessage.Length, ' ');
+                        }
+                        else
+                        {
+                            WaitMessage = WaitMessage.Replace(" ", "");
+                            WaitMessage = NewMessage.Substring(0, WaitMessage.Length + 1);
+                            labelWaitingMessage.Text = WaitMessage.PadLeft(NewMessage.Length, ' ');
+                        }
+                    }
+                    else
+                    {
+                        if (panelZZZ.Location.Y == 90)
+                        {
+                            panelZZZ.Size = new Size(70, 70);
+                            panelZZZ.Location = new Point(570, 170);
+                        }
+                        else if (panelZZZ.Location.Y == 170)
+                        {
+                            panelZZZ.Size = new Size(150, 150);
+                            panelZZZ.Location = new Point(570, 90);
+                        }
+                    }
+                }
+                else if (labelwait.Text == "关机中")
+                {
+                    if (buttonAwake.Visible == true)
+                        buttonAwake.Visible = false;
+                    if (panelZZZ.Location.Y == 90)
+                    {
+                        panelZZZ.Size = new Size(70, 70);
+                        panelZZZ.Location = new Point(570, 170);
+                    }
+
                     var WaitMessage = labelWaitingMessage.Text;
-                    var NewMessage = Resources.Awake;
-                    if (WaitMessage.Substring(0,1).ToString() != " ")
+                    var NewMessage = Resources.ShutDown;
+                    if (WaitMessage.Substring(0, 1).ToString() != " ")
                     {
                         WaitMessage = WaitMessage.Replace(" ", "");
                         WaitMessage = WaitMessage.Substring(1);
@@ -8272,123 +8523,131 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                         labelWaitingMessage.Text = WaitMessage.PadLeft(NewMessage.Length, ' ');
                     }
                 }
-                else
-                {
-                    if (panelZZZ.Location.Y == 90)
-                    {
-                        panelZZZ.Size = new Size(70, 70);
-                        panelZZZ.Location = new Point(570, 170);
-                    }
-                    else if (panelZZZ.Location.Y == 170)
-                    {
-                        panelZZZ.Size = new Size(150, 150);
-                        panelZZZ.Location = new Point(570, 90);
-                    }
-                }
             }
-            else if (labelwait.Text == "关机中")
+            catch (Exception ee)
             {
-                if(buttonAwake.Visible == true)
-                buttonAwake.Visible = false;
-                if (panelZZZ.Location.Y == 90)
-                {
-                    panelZZZ.Size = new Size(70, 70);
-                    panelZZZ.Location = new Point(570, 170);
-                }
-
-                var WaitMessage = labelWaitingMessage.Text;
-                var NewMessage = Resources.ShutDown;
-                if (WaitMessage.Substring(0,1).ToString() != " ")
-                {
-                    WaitMessage = WaitMessage.Replace(" ", "");
-                    WaitMessage = WaitMessage.Substring(1);
-                    labelWaitingMessage.Text = WaitMessage.PadRight(NewMessage.Length, ' ');
-                }
-                else
-                {
-                    WaitMessage = WaitMessage.Replace(" ", "");
-                    WaitMessage = NewMessage.Substring(0, WaitMessage.Length + 1);
-                    labelWaitingMessage.Text = WaitMessage.PadLeft(NewMessage.Length, ' ');
-                }
+                Log_Add("6229" + ee.Message, false);
             }
         }
-
+        //温湿度信号检测
         private void timerTHCheck_Tick(object sender, EventArgs e)
         {
-            if (!serialPortTH.IsOpen)
+            try
             {
-                try
+                if (!serialPortTH.IsOpen)
                 {
-                    serialPortTH.Open();
-                    Log_Add("温湿度串口恢复", false);
+                    try
+                    {
+                        serialPortTH.Open();
+                        Log_Add("温湿度串口恢复", false);
 
+                        Check_TH_State(labelTH.Text, false);
+
+                        CommandCheck[3] = 0;
+                        CommandCheck[1] = 0;
+
+                    }
+                    catch
+                    {
+                        Check_TH_State("温湿度信号异常", true);
+
+                        CommandCheck[3] = 0;
+                        CommandCheck[1] = 0;
+
+                        Log_Add("温湿度串口连接失败", false);
+                        MessageboxShow("温湿度端口异常");
+                    }
+                }
+
+                if (CommandCheck[1] == 1)
+                {
                     Check_TH_State(labelTH.Text, false);
 
                     CommandCheck[3] = 0;
                     CommandCheck[1] = 0;
-
                 }
-                catch
+                else if (CommandCheck[1] == 0 & CommandCheck[3] == 0)
+                {
+                    serialPortTH.Close();
+                    Thread.Sleep(1000);
+                    try
+                    {
+                        serialPortTH.Open();
+                        CommandCheck[3] = CommandCheck[3] + 1;
+                        Log_Add("温湿度串口重新连接", false);
+                    }
+                    catch (Exception ee)
+                    {
+                        Check_TH_State("温湿度信号异常", true);
+
+                        CommandCheck[3] = 0;
+                        CommandCheck[1] = 0;
+
+                        Log_Add("温湿度串口连接失败", false);
+                        MessageboxShow("温湿度端口异常");
+                    }
+                }
+                else if (CommandCheck[1] == 0 & CommandCheck[3] == 1)
                 {
                     Check_TH_State("温湿度信号异常", true);
 
-                    CommandCheck[3] = 0;
                     CommandCheck[1] = 0;
 
-                    Log_Add("温湿度串口连接失败", false);
-                    MessageboxShow("温湿度端口异常");
+                    Log_Add("温湿度串口异常", false);
+                    MessageboxShow("温湿度端口异常，请检查端口连接");
                 }
             }
-            
-            if (CommandCheck[1] == 1)
+            catch (Exception ee)
             {
-                Check_TH_State(labelTH.Text, false);
-
-                CommandCheck[3] = 0;
-                CommandCheck[1] = 0;
-            }
-            else if (CommandCheck[1] == 0 & CommandCheck[3] == 0)
-            {
-                serialPortTH.Close();
-                Thread.Sleep(1000);
-                try
-                {
-                    serialPortTH.Open();
-                    CommandCheck[3] = CommandCheck[3] + 1;
-                    Log_Add("温湿度串口重新连接", false);
-                }
-                catch (Exception ee)
-                {
-                    Check_TH_State("温湿度信号异常", true);
-
-                    CommandCheck[3] = 0;
-                    CommandCheck[1] = 0;
-
-                    Log_Add("温湿度串口连接失败", false);
-                    MessageboxShow("温湿度端口异常");
-                }
-            }
-            else if (CommandCheck[1] == 0 & CommandCheck[3] == 1)
-            {
-                Check_TH_State("温湿度信号异常", true);
-
-                CommandCheck[1] = 0;
-
-                Log_Add("温湿度串口异常", false);
-                MessageboxShow("温湿度端口异常，请检查端口连接");
+                Log_Add("6227" + ee.Message, false);
             }
         }
-
+        //浮球信号检测
         private void timerFloatCommandCheck_Tick(object sender, EventArgs e)
         {
-            if (!serialPortFloatBall.IsOpen)
+            try
             {
-                try
+                if (!serialPortFloatBall.IsOpen)
                 {
-                    serialPortFloatBall.Open();
+                    try
+                    {
+                        serialPortFloatBall.Open();
+                        labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
+                        labelFloatBallWork.Text = "浮球工作中";
+                        Log_Add("浮球串口连接成功", false);
+
+                        labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
+                        labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
+                        labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
+                        labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
+
+                        CommandCheck[2] = 0;
+                        CommandCheck[0] = 0;
+
+                        timerFloatCommandCheck.Interval = 300000;
+                        return;
+                    }
+                    catch
+                    {
+                        labelFloatBallWork.Text = "浮球信号异常";
+                        labelFloatBallWork.BackColor = Color.Red;
+
+                        labelDilutionStatus.BackColor = Color.Red;
+                        labelCleanStatus.BackColor = Color.Red;
+                        labelWasteStatus.BackColor = Color.Red;
+                        labelReagentStatus.BackColor = Color.Red;
+                        CommandCheck[2] = 0;
+                        CommandCheck[0] = 0;
+
+                        Log_Add("浮球串口连接失败", false);
+                        MessageboxShow("浮球端口异常，请检查浮球连接");
+                    }
+                }
+
+                if (CommandCheck[0] == 1)
+                {
                     labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
                     labelFloatBallWork.Text = "浮球工作中";
-                    Log_Add("浮球串口连接成功", false);
 
                     labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
                     labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
@@ -8399,9 +8658,33 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     CommandCheck[0] = 0;
 
                     timerFloatCommandCheck.Interval = 300000;
-                    return;
                 }
-                catch
+                else if (CommandCheck[0] == 0 & CommandCheck[2] == 0)
+                {
+                    serialPortFloatBall.Close();
+                    Thread.Sleep(1000);
+                    try
+                    {
+                        serialPortFloatBall.Open();
+                        CommandCheck[2] = CommandCheck[2] + 1;
+                        Log_Add("浮球串口重新连接", false);
+                    }
+                    catch (Exception ee)
+                    {
+                        labelFloatBallWork.Text = "浮球信号异常";
+                        labelFloatBallWork.BackColor = Color.Red;
+
+                        labelDilutionStatus.BackColor = Color.Red;
+                        labelCleanStatus.BackColor = Color.Red;
+                        labelWasteStatus.BackColor = Color.Red;
+                        labelReagentStatus.BackColor = Color.Red;
+
+                        Log_Add("浮球串口连接失败", false);
+                        MessageboxShow("浮球端口异常，请检查浮球连接");
+                    }
+                    timerFloatCommandCheck.Interval = 60000;
+                }
+                else if (CommandCheck[0] == 0 & CommandCheck[2] == 1)
                 {
                     labelFloatBallWork.Text = "浮球信号异常";
                     labelFloatBallWork.BackColor = Color.Red;
@@ -8410,131 +8693,210 @@ path1, path2, tyFixStr, calibDataId, reagentStoreId, turnPlateId, shelfId, odDat
                     labelCleanStatus.BackColor = Color.Red;
                     labelWasteStatus.BackColor = Color.Red;
                     labelReagentStatus.BackColor = Color.Red;
-                    CommandCheck[2] = 0;
+
                     CommandCheck[0] = 0;
-
-                    Log_Add("浮球串口连接失败", false);
-                    MessageboxShow("浮球端口异常，请检查浮球连接");
+                    MessageboxShow("浮球信号异常，请检查浮球连接");
                 }
             }
-
-            if (CommandCheck[0] == 1)
+            catch (Exception ee)
             {
-                labelFloatBallWork.BackColor = Color.FromArgb(41, 169, 223);
-                labelFloatBallWork.Text = "浮球工作中";
-
-                labelDilutionStatus.BackColor = Color.FromArgb(41, 169, 223);
-                labelCleanStatus.BackColor = Color.FromArgb(41, 169, 223);
-                labelWasteStatus.BackColor = Color.FromArgb(41, 169, 223);
-                labelReagentStatus.BackColor = Color.FromArgb(41, 169, 223);
-
-                CommandCheck[2] = 0;
-                CommandCheck[0] = 0;
-
-                timerFloatCommandCheck.Interval = 300000;
-            }
-            else if (CommandCheck[0] == 0 & CommandCheck[2] == 0)
-            {
-                serialPortFloatBall.Close();
-                Thread.Sleep(1000);
-                try
-                {
-                    serialPortFloatBall.Open();
-                    CommandCheck[2] = CommandCheck[2] + 1;
-                    Log_Add("浮球串口重新连接", false);
-                }
-                catch (Exception ee)
-                {
-                    labelFloatBallWork.Text = "浮球信号异常";
-                    labelFloatBallWork.BackColor = Color.Red;
-
-                    labelDilutionStatus.BackColor = Color.Red;
-                    labelCleanStatus.BackColor = Color.Red;
-                    labelWasteStatus.BackColor = Color.Red;
-                    labelReagentStatus.BackColor = Color.Red;
-
-                    Log_Add("浮球串口连接失败", false);
-                    MessageboxShow("浮球端口异常，请检查浮球连接");
-                }
-                timerFloatCommandCheck.Interval = 60000;
-            }
-            else if (CommandCheck[0] == 0 & CommandCheck[2] == 1)
-            {
-                labelFloatBallWork.Text = "浮球信号异常";
-                labelFloatBallWork.BackColor = Color.Red;
-
-                labelDilutionStatus.BackColor = Color.Red;
-                labelCleanStatus.BackColor = Color.Red;
-                labelWasteStatus.BackColor = Color.Red;
-                labelReagentStatus.BackColor = Color.Red;
-                
-                CommandCheck[0] = 0;
-                MessageboxShow("浮球信号异常，请检查浮球连接");
+                Log_Add("6226" + ee.Message, false);
             }
         }
-
+        //温湿度信息显示
         private void Check_TH_State(string TH_str, bool Type)
         {
-            if (ConfigRead("THEnable") == "0")
+            try
             {
-                if (Type == true)
+                if (ConfigRead("THEnable") == "0")
                 {
-                    Invoke(new Action(() =>
+                    if (Type == true)
                     {
-                        labelTH.Text = TH_str;
-                        labelTH.Visible = true;
-                        labelTH.BackColor = Color.Red;
+                        Invoke(new Action(() =>
+                        {
+                            labelTH.Text = TH_str;
+                            labelTH.Visible = true;
+                            labelTH.BackColor = Color.Red;
 
-                        labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 732);
-                        labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 732);
-                        labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 732);
-                        labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 732);
-                        labelReagentNow.Location = new Point(labelReagentNow.Location.X, 732);
-                    }));
-                    
+                            labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 732);
+                            labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 732);
+                            labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 732);
+                            labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 732);
+                            labelReagentNow.Location = new Point(labelReagentNow.Location.X, 732);
+                        }));
+
+                    }
+                    else if (Type == false)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            labelTH.Text = TH_str;
+                            labelTH.Visible = false;
+                            labelTH.BackColor = Color.Transparent;
+
+                            labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 723);
+                            labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 723);
+                            labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
+                            labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
+                            labelReagentNow.Location = new Point(labelReagentNow.Location.X, 723);
+
+                        }));
+                        return;
+                    }
                 }
-                else if (Type == false)
+                else if (ConfigRead("THEnable") == "1")
                 {
-                    Invoke(new Action(() =>
+                    if (Type == true)
                     {
-                        labelTH.Text = TH_str;
-                        labelTH.Visible = false;
-                        labelTH.BackColor = Color.Transparent;
+                        Invoke(new Action(() =>
+                        {
+                            labelTH.Text = TH_str;
+                            labelTH.Visible = true;
+                            labelTH.BackColor = Color.Red;
+                        }));
 
-                        labelSupplyLeft.Location = new Point(labelSupplyLeft.Location.X, 723);
-                        labelSupplyLeft4.Location = new Point(labelSupplyLeft4.Location.X, 723);
-                        labelSupplyLeft2.Location = new Point(labelSupplyLeft2.Location.X, 723);
-                        labelSupplyLeft3.Location = new Point(labelSupplyLeft3.Location.X, 723);
-                        labelReagentNow.Location = new Point(labelReagentNow.Location.X, 723);
-
-                    }));
-                    return;
+                    }
+                    else if (Type == false)
+                    {
+                        Invoke(new Action(() =>
+                        {
+                            labelTH.Text = TH_str;
+                            labelTH.Visible = true;
+                            labelTH.BackColor = Color.Transparent;
+                        }));
+                        return;
+                    }
                 }
             }
-            else if (ConfigRead("THEnable") == "1")
+            catch (Exception ee)
             {
-                if (Type == true)
-                {
-                    Invoke(new Action(() =>
-                    {
-                        labelTH.Text = TH_str;
-                        labelTH.Visible = true;
-                        labelTH.BackColor = Color.Red;
-                    }));
+                Log_Add("6332" + ee.Message, false);
+            }
+        }
 
-                }
-                else if (Type == false)
+        //暂停ASU按键
+        private void buttonASU_Control_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            if (btn == buttonASURecover)
+            {
+                if (SqlData.SelectBarcodeError("位置").Rows.Count > 0 & SqlData.SelectWorkRunlistforASU("ASU传送").Rows.Count == 0)
                 {
-                    Invoke(new Action(() =>
-                    {
-                        labelTH.Text = TH_str;
-                        labelTH.Visible = true;
-                        labelTH.BackColor = Color.Transparent;
-                    }));
+                    MessageboxShow("请处理错误条码后再恢复ASU");
                     return;
+                }
+                var CMD_NUM = (ASU_Int[2] + 1).ToString().PadLeft(3, '0');
+                var strE = "\x02" + "e" + CMD_NUM + "0" + "000" + "\x03";
+                strE += LeftCheck(strE.Substring(1));
+                var strbyteE = Encoding.ASCII.GetBytes(strE);
+                Invoke(new Action(() => PortLog("ASU", "S", strE)));
+
+                serialPortME.Write(strbyteE, 0, strbyteE.Length);
+
+                ASU_Int[3] = 0;
+            }
+            else if (btn == buttonASUStop)
+            {
+                var CMD_NUM = (ASU_Int[2] + 1).ToString().PadLeft(3, '0');
+                var strE = "\x02" + "e" + CMD_NUM + "1" + "000" + "\x03";
+                strE += LeftCheck(strE.Substring(1));
+                var strbyteE = Encoding.ASCII.GetBytes(strE);
+                Invoke(new Action(() => PortLog("ASU", "S", strE)));
+
+                serialPortME.Write(strbyteE, 0, strbyteE.Length);
+
+                ASU_Int[3] = 1;
+            }
+
+        }
+        //有异常结果时延时暂停ASU
+        private void timerASUStop_Tick(object sender, EventArgs e)
+        {
+            timerASUStop.Stop();
+            buttonASU_Control_Click(buttonASUStop, null);
+        }
+
+        //向数据库中写入配置文件数据
+        private void UpdateAppConfig(string newKey, string newValue)
+        {
+            try
+            {
+                SqlData.UpdateAppSetting(newKey, newValue);
+            }
+            catch (Exception ee)
+            {
+                Log_Add("2333" + ee.ToString(), false);
+            }
+
+        }
+
+        //从数据库中读取配置数据
+        private string ConfigRead(string str)
+        {
+            try
+            {
+                var key = str;
+                str = SqlData.SelectAppSetting(str).Rows[0][0].ToString();
+                if (str == "True")
+                {
+                    str = "1";
+                }
+                else if (str == "False")
+                {
+                    str = "0";
+                }
+                return str;
+            }
+            catch (Exception ee)
+            {
+                Log_Add("2334" + ee.ToString(), false);
+                return "";
+            }
+        }
+        //休眠倒计时
+        private void timerSleep_Tick(object sender, EventArgs e)
+        {
+            if (_otherInt[2] != 3)
+            {
+                return;
+            }
+            else
+            {
+                label45.Text = CommandCheck[4].ToString();
+                if (CommandCheck[4] <= 0 & int.Parse(ConfigRead("SleepTime")) != 0)
+                {
+                    timerSleep.Stop();
+                    serialPort_DataSend(serialPortMain, "#3050");
+                    return;
+                }
+                else if (CommandCheck[4] == 300)
+                {
+                    MessageboxShow("休眠警告|还有5分钟进入休眠");
+                }
+                CommandCheck[4]--;
+            }
+        }
+
+        //鼠标位置对比
+        private void timerCursor_Tick(object sender, EventArgs e)
+        {
+            POINT currentPosition = new POINT();
+            GetCursorPos(out currentPosition);
+            var cursor_x = currentPosition.X;
+            var cursor_y = currentPosition.Y;
+            if (cursor_x != Cursor_Point[0] | cursor_y != Cursor_Point[1])
+            {
+                CommandCheck[4] = int.Parse(ConfigRead("SleepTime")) * 60;
+                Cursor_Point[0] = cursor_x;
+                Cursor_Point[1] = cursor_y;
+
+                if (_otherInt[2] != 3)
+                {
+                    timerSleep.Start();
                 }
             }
         }
+
     }
 
     

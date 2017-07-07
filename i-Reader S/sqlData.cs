@@ -84,7 +84,7 @@ namespace i_Reader_S
                     ];
         }
         //删除待测
-        public static void DeleteFromWrokrunlist(string seq)
+        public static void DeleteFromWorkrunlist(string seq)
         {
             var strsql = new StringBuilder();
             strsql.Append("delete from workrunlist where sequence=");
@@ -236,9 +236,9 @@ namespace i_Reader_S
             strsql.Append(reagentstoreid);
             strsql.Append(",");
             strsql.Append(turnplateid);
-            strsql.Append(",");
-            strsql.Append(shelfid);
             strsql.Append(",'");
+            strsql.Append(shelfid);
+            strsql.Append("','");
             strsql.Append(oddata);
             strsql.Append("','");
             strsql.Append(flag);
@@ -1173,10 +1173,12 @@ namespace i_Reader_S
         }
 
         //查询是否有ASU传送
-        public static DataTable SelectWorkRunlistforASU()
+        public static DataTable SelectWorkRunlistforASU(string workstatue)
         {
             var strsql = new StringBuilder();
-            strsql.Append("select WorkingStatus from WorkRunList where WorkingStatus = 'ASU传送'");
+            strsql.Append("select WorkingStatus from WorkRunList where WorkingStatus = '");
+            strsql.Append(workstatue);
+            strsql.Append("'");
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }
@@ -1189,12 +1191,13 @@ namespace i_Reader_S
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }
+
         public static DataTable SelectBarcodeError(string SampleNo)
         {
             var strsql = new StringBuilder();
-            strsql.Append("select Sequence, SampleNo from WorkRunList where SampleNo = '");
+            strsql.Append("select Sequence, SampleNo from WorkRunList where SampleNo like '%");
             strsql.Append(SampleNo);
-            strsql.Append("'");
+            strsql.Append("%'");
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }
@@ -1230,43 +1233,88 @@ namespace i_Reader_S
                     ];
         }
 
-        public static void DeleteFromWrokrunlistForASU()
+        public static void DeleteFromWorkrunlistForASU()
         {
             var strsql = new StringBuilder();
-            strsql.Append("delete from workrunlist where  WorkingStatus = 'ASU传送'");
+            strsql.Append("delete from workrunlist where WorkingStatus = 'ASU传送'");
             ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
         }
 
-        public static void UpdateWorkRunlistForBarcode(string sampleNo,string Barcode)
+        public static void UpdateWorkRunlistForBarcode(string seqtemp,int TurnID, string Barcode)
         {
             var strsql = new StringBuilder();
             strsql.Append("update workrunlist set shelfID ='");
             strsql.Append(Barcode);
-            strsql.Append("' where sampleNo = '");
-            strsql.Append(sampleNo);
+            strsql.Append("', TurnPlateID = ");
+            strsql.Append(TurnID);
+            strsql.Append(" where sequence = ");
+            strsql.Append(seqtemp);
+            ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
+        }
+        
+
+        public static DataTable SelectWorkstatueFromWorkRunlist(string seq)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("select WorkingStatus from WorkRunList where sequence = ");
+            strsql.Append(seq);
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+        }
+
+        //利用试管位置寻找seq
+        internal static DataTable SelectSeq_Other(int Location)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append("select top 1 sequence, sampleno, createtime from workrunlist where TurnPlateID = ");
+            str.Append(Location);
+            str.Append(" and workingstatus = 'ASU传送' order by createtime desc");
+            return
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, str.ToString()).Tables[0];
+        }
+
+        //修改结果样本号
+        public static void UpdateResultlistSampleNobySeq(string Old_sampleno, string sampleno)
+        {
+            var strsql = new StringBuilder();
+            strsql.Append("update Resultlist set sampleno ='");
+            strsql.Append(sampleno);
+            strsql.Append("' where sampleno ='");
+            strsql.Append(Old_sampleno);
             strsql.Append("'");
             ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
         }
 
-        public static DataTable SelectWorkRunlistforASUwithSeq(string seq)
+        public static DataTable SelectResult_BarcodeChange(string sampleno)
         {
             var strsql = new StringBuilder();
-            strsql.Append("select WorkingStatus,sampleno from WorkRunList where sequence = '");
-            strsql.Append(seq);
-            strsql.Append("'");
+            strsql.Append("select top 1 a.sampleno, a.result, a.unit, a.flag, a.createtime, b.accurancy from ResultList a, TestItemInfo b where sampleno = '");
+            strsql.Append(sampleno);
+            strsql.Append("' and a.TestItemID = b.TestItemID order by createtime desc");
             return
                 ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
         }
         
-
-        public static DataTable SelectWorkRunlistforBarcodeChangeNo(string ShelfID)
+        //写入配置文件数据
+        public static void UpdateAppSetting(string KeyName, string KeyValue)
         {
             var strsql = new StringBuilder();
-            strsql.Append("select sampleno from WorkRunList where ShelfID = '");
-            strsql.Append(ShelfID);
-            strsql.Append("'");
+            strsql.Append("update AppSetting set ");
+            strsql.Append(KeyName);
+            strsql.Append(" = '");
+            strsql.Append(KeyValue);
+            strsql.Append("' where BaseID = 1");
+            ExecuteNonQuery(new SqlConnection(ConStr), CommandType.Text, strsql.ToString());
+        }
+
+        internal static DataTable SelectAppSetting(string Key)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append("select top 1 ");
+            str.Append(Key);
+            str.Append(" from AppSetting where BaseID = 1 ");
             return
-                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, strsql.ToString()).Tables[0];
+                ExecuteDataset(new SqlConnection(ConStr), CommandType.Text, str.ToString()).Tables[0];
         }
     }
 
