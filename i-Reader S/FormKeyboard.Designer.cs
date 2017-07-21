@@ -178,7 +178,7 @@
             this.buttonNo9.Name = "buttonNo9";
             this.buttonNo9.Size = new System.Drawing.Size(98, 78);
             this.buttonNo9.TabIndex = 9;
-            this.buttonNo9.Text = " 9\r\nyz";
+            this.buttonNo9.Text = " 9\r\nyz-";
             this.buttonNo9.UseVisualStyleBackColor = false;
             this.buttonNo9.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonNo_MouseDown);
             this.buttonNo9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonNo_MouseUp);

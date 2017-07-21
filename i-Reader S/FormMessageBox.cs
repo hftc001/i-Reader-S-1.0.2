@@ -77,7 +77,7 @@ namespace i_Reader_S
             }
             else
             {
-                label2.Text = "还有" + minute.ToString() + "分钟进入休眠";
+                label2.Text = "还有" + minute.ToString() + "分钟进入休眠\r\n点击确认退出休眠准备";
             }
         }
     }

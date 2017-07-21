@@ -71,7 +71,7 @@ namespace i_Reader_S
             var str = btn.Text.Replace(" ", "");
             textBox1.Text += str.Substring(0, 1);
             var detail = ReaderS.CounterText.Split('|');
-            if (detail[0].Substring(0, 3) == "All")
+            if (detail[0].Substring(0, 3) == "All"| detail[0].Substring(0, 3) == "CMD")
                 timer2.Start();
         }
 
@@ -183,10 +183,10 @@ namespace i_Reader_S
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            var strlist = "1ABCabc2DEFdef3GHIghi4JKLjkl5MNOmno6PQRpqr7STUstu8VWXvwx9YZyz";
+            var strlist = "1ABCabc2DEFdef3GHIghi4JKLjkl5MNOmno6PQRpqr7STUstu8VWXvwx9YZyz-";
             var str = textBox1.Text.Substring(textBox1.Text.Length - 1);
             var index = strlist.IndexOf(str, StringComparison.Ordinal);
-            if (str == "z")
+            if (str == "-")
                 textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1) + @"9";
             else
                 textBox1.Text = index % 7 == 6

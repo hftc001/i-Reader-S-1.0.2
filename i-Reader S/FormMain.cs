@@ -2118,6 +2118,7 @@ namespace i_Reader_S
                         comboBox2.Items.Add("#4032:SampSyringeCheck");
                         comboBox2.Items.Add("#4033:LiquidPhotoCheck");
                         comboBox2.Items.Add("#4034:CardStorePhotoCheck");
+                        comboBox2.Items.Add("#4036:DropHeightCheck");
                         comboBox2.Items.Add("#4050:DiluentQuantifyTest");
                         comboBox2.Items.Add("#4051:LeanerQuantifyTest");
                         comboBox2.Items.Add("#4052:SampQuantifyTest");
@@ -2433,6 +2434,8 @@ namespace i_Reader_S
             {
                 if (oddata == "-1" | oddata == "-6")
                 {
+                    if (SqlData.SelectWorkstatueFromWorkRunlist(seq).Rows.Count <= 0)
+                    { return; }
                     if (SqlData.SelectWorkstatueFromWorkRunlist(seq).Rows[0][0].ToString() == "测试完成")
                     { return; }
                 }
@@ -3061,37 +3064,15 @@ namespace i_Reader_S
                 MessageBox.Show("检测到已经有i-Reader S在运行");
                 Close();
             }
-            /*
-            try
-            {
-                if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
-                {
-                    
-                    File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
-                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
-                    
-                    File.Delete(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config");
-                }
-                else if (File.Exists(Application.StartupPath + @"/i-Reader S.exe.config") & !File.Exists(Application.StartupPath + @"/configbackup/i-Reader S(1).exe.config"))
-                {
-                    File.Delete(Application.StartupPath + @"/i-Reader S.exe.config");
-                    File.Copy(Application.StartupPath + @"/configbackup/i-Reader S.exe.config", Application.StartupPath + @"/i-Reader S.exe.config");
-                    
-                    MessageBox.Show("配置文件调整，请重新启动软件");
-                    this.Close();
-                    
-                }
-            }
-            catch
-            {
-                MessageBox.Show("配置文件彻底损坏，请联系工程师");
-            }
-            */
 
-            if (ConfigRead("FloatBallEnable") == "1")
+            //如果没有系统数据库，则需附加数据库
+            if (SqlData.Dbok() == "0")
             {
-                timerFloatCommandCheck.Start();
+                var mdfpath = Application.StartupPath + @"/database/i-Reader_S.mdf";
+                var logpath = Application.StartupPath + @"/database/i-Reader_S_1.ldf";
+                SqlData.Attachdb(mdfpath, logpath);
             }
+
 
             _mEstr[0] = "<STX>i[ｼｰｹﾝｽ No]00<ETX>";
             _mEstr[1] = "<STX>i[ｼｰｹﾝｽ No]01<ETX>";
@@ -3116,8 +3097,6 @@ namespace i_Reader_S
             tbtemp = tabPageLogin;
             Size = new Size(1024, 768);
             timerLoad.Start();
-            timerCursor.Start();
-            timerSleep.Start();
 
             if (File.Exists(Application.StartupPath + "/ExceptionChar.txt"))
             {
@@ -3636,17 +3615,23 @@ namespace i_Reader_S
                         DrawResult("-1", dtrunlist.Rows[i][0].ToString(), "", "", "");
                     }
                 }
-                //不再登陆界面时，每3小时自动保存一次日志，不断更新反应倒计时
+                //不再登陆界面时，每4小时自动保存一次日志，不断更新反应倒计时
                 else if (tabControlMain.SelectedTab != tabPageLogin)
                 {
                     if (DateTime.Now.Hour % 4 + DateTime.Now.Minute + DateTime.Now.Second == 0)
                     {
                         button_Click(buttonSaveLog, null);
-                        serialPort_DataSend(serialPortMain, "#3060");
+                        if (ConfigRead("SleepTime") == "0")
+                        {
+                            serialPort_DataSend(serialPortMain, "#3060");
+                        }
                     }
                     else if (DateTime.Now.Hour % 4 == 0 & DateTime.Now.Minute == 1 & DateTime.Now.Second == 0)
                     {
-                        serialPort_DataSend(serialPortMain, "#3061");
+                        if (ConfigRead("SleepTime") == "0")
+                        {
+                            serialPort_DataSend(serialPortMain, "#3061");
+                        }
                     }
 
                     //每秒钟更新下反应倒计时。
@@ -4814,7 +4799,7 @@ namespace i_Reader_S
                             };
                             var myProcess = new Process { StartInfo = startInfo };
                             myProcess.Start();
-                            myProcess.StandardInput.WriteLine("shutdown -s -t 0");
+                            myProcess.StandardInput.WriteLine("shutdown -s -t 0 -f");
                         }
                         catch (Exception ee)
                         {
@@ -5167,7 +5152,7 @@ namespace i_Reader_S
                     //无参数的信息,需后续操作
                     string[] msgnoparam2 =
                     { "*3101", "*3102", "*0105", "*0106", "*2101", "*2102", "*3146", "*2120", "!3902" ,"!3904", "!3906", "*3190",
-                        "*3191", "!2550"
+                        "*3191", "!2550", "!3950"
                     };
 
                     //无需特殊处理的含参数信息
@@ -5308,18 +5293,29 @@ namespace i_Reader_S
                             break;*/
                             //清洗液灌注失败
                             case "!3902":
-                                MessageboxShow("清洗液管中有气泡\r\n请更换清洗液之后点击确定进行灌注", false);
-                                Log_Add("清洗液再次灌注", false);
-                                serialPort_DataSend(serialPortMain, "#3051");
+                                if (tbtemp != tabPageLogin)
+                                {
+                                    Invoke(new Action(() =>
+                                    {
+                                        MessageboxShow("清洗液管中有气泡\r\n请更换清洗液后按下吸样键灌注");
+                                    }));
+                                }
                                 break;
                             //稀释液灌注失败
                             case "!3904":
-                                MessageboxShow("稀释液管中有气泡\r\n请更换稀释液之后点击确定进行灌注",false);
-                                Log_Add("稀释液再次灌注", false);
-                                serialPort_DataSend(serialPortMain, "#3051");
+                                if (tbtemp != tabPageLogin)
+                                {
+                                    Invoke(new Action(() =>
+                                    {
+                                        MessageboxShow("稀释液管中有气泡\r\n请更换稀释液后按下吸样键灌注");
+                                    }));
+                                }
                                 break;
                             case "!3906":
-                                MessageboxShow("警告|请关闭废片仓");
+                                Invoke(new Action(() =>
+                                {
+                                    MessageboxShow("警告|请关闭废片仓");
+                                }));
                                 break;
                             case "*3191":
                                 serialPort_DataSend(serialPortMain, "#3053$1");
@@ -5408,6 +5404,10 @@ namespace i_Reader_S
 
                                     serialPort_DataSend(serialPortMain, "#3053$0");
                                 }
+                                break;
+                            case "!3950":
+                                CommandCheck[4] = 360;
+                                timerSleep.Start();
                                 break;
                         }
                     }
@@ -5648,6 +5648,7 @@ namespace i_Reader_S
                                 break;
                             //卡片移出对未测试样本进行处理
                             case "*3116":
+                                CommandCheck[4] = int.Parse(ConfigRead("SleepTime")) * 60;
                                 UpdateSupplyLeft(0, 0);
                                 DrawResult("-6", msgInfo.Split('$')[1], "", "", "");
                                 break;
@@ -6078,22 +6079,25 @@ namespace i_Reader_S
 
         private void ShowMyAlert(string alertstr)
         {
-            if (_myAlert != null)
+            Invoke(new Action(() =>
             {
-                if (!_myAlert.IsDisposed)
-                    return;
-            }
+                if (_myAlert != null)
+                {
+                    if (!_myAlert.IsDisposed)
+                        return;
+                }
 
-            try
-            {
-                CounterText = alertstr;
-                _myAlert = new FormAlert { Owner = this };
-                _myAlert.Show();
-            }
-            catch (Exception ee)
-            {
-                Log_Add("4291" + ee.ToString(), false);
-            }
+                try
+                {
+                    CounterText = alertstr;
+                    _myAlert = new FormAlert { Owner = this };
+                    _myAlert.Show();
+                }
+                catch (Exception ee)
+                {
+                    Log_Add("4291" + ee.ToString(), false);
+                }
+            }));
         }
         char idReadcnt = '0';
 
@@ -6213,11 +6217,15 @@ namespace i_Reader_S
                     ShowMyAlert("休眠时间不能为空");
                     return;
                 }
-                else if (int.Parse(str) <= 5 & str != "0")
+                else if (int.Parse(str) <= 20 & str != "0")
                 {
                     _otherInt[0] = 0;
-                    ShowMyAlert("休眠时间不能小余5分钟");
+                    ShowMyAlert("休眠时间不能小于20分钟");
                     return;
+                }
+                else if (str == "0")
+                {
+                    ShowMyAlert("休眠模式关闭");
                 }
                 var time = int.Parse(str) * 60;
                 CommandCheck[4] = time;
@@ -6979,13 +6987,13 @@ namespace i_Reader_S
                 panelReagent4.Enabled = reagentlock[3] == "0";
                 panelReagent5.Enabled = reagentlock[4] == "0";
             }
+            
+            timerCursor.Start();
+            timerSleep.Start();
 
-            //如果没有系统数据库，则需附加数据库
-            if (SqlData.Dbok() == "0")
+            if (ConfigRead("FloatBallEnable") == "1")
             {
-                var mdfpath = Application.StartupPath + @"/database/i-Reader_S.mdf";
-                var logpath = Application.StartupPath + @"/database/i-Reader_S_1.ldf";
-                SqlData.Attachdb(mdfpath, logpath);
+                timerFloatCommandCheck.Start();
             }
 
             if (!Directory.Exists(Application.StartupPath + @"\fluodata"))
@@ -7970,7 +7978,7 @@ namespace i_Reader_S
             {
                 if (SqlData.SelectBarcodeError("位置").Rows.Count > 0)
                 {
-                    MessageboxShow("存在位置或错误条码，请确认");
+                    MessageboxShow("存在未知或错误条码，请确认");
                     timerASUStop.Start();
                 }
             }
@@ -8111,21 +8119,24 @@ namespace i_Reader_S
 
         private void MessageboxShow(string str)
         {
-            if (_myMsab != null)
+            Invoke(new Action(() =>
             {
-                if (!_myMsab.IsDisposed)
-                    return;
-            }
-            try
-            {
-                messstr = str;
-                _myMsab = new FormMessageBox { Owner = this };
-                _myMsab.Show();
-            }
-            catch (Exception ee)
-            {
-                Log_Add("6674" + ee.Message, false);
-            }
+                if (_myMsab != null)
+                {
+                    if (!_myMsab.IsDisposed)
+                        return;
+                }
+                try
+                {
+                    messstr = str;
+                    _myMsab = new FormMessageBox { Owner = this };
+                    _myMsab.Show();
+                }
+                catch (Exception ee)
+                {
+                    Log_Add("6674" + ee.Message, false);
+                }
+            }));
         }
 
         private void MessageboxShow(string str, bool confirm)
@@ -8871,7 +8882,7 @@ namespace i_Reader_S
                 }
                 else if (CommandCheck[4] == 300)
                 {
-                    MessageboxShow("休眠警告|还有5分钟进入休眠");
+                    MessageboxShow("休眠警告|还有5分钟进入休眠\r\n点击确认退出休眠准备");
                 }
                 CommandCheck[4]--;
             }
