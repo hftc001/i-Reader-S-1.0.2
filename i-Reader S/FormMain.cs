@@ -330,11 +330,11 @@ namespace i_Reader_S
                     buttonFixTestItem.Enabled = false;
                     var rowindex1 = dataGridViewTestItem.CurrentCell.RowIndex;
 
-                    SqlData.UpdateTestIteminfo(textBoxSettingTestItemName.Text, textBoxSettingUnit.Text,
-                        textBoxSettingUnitRatio.Text,
-                        textBoxSettingRatio.Text, textBoxSettingAccurancy.Text,
-                        dataGridViewTestItem[0, rowindex1].Value.ToString(),
-                        dataGridViewTestItem[1, rowindex1].Value.ToString());
+                    //SqlData.UpdateTestIteminfo(textBoxSettingTestItemName.Text, textBoxSettingUnit.Text,
+                    //    textBoxSettingUnitRatio.Text,
+                    //    textBoxSettingRatio.Text, textBoxSettingAccurancy.Text,
+                    //    dataGridViewTestItem[0, rowindex1].Value.ToString(),
+                    //    dataGridViewTestItem[1, rowindex1].Value.ToString());
 
                     if (labelNextTestItem.Text == textBoxSettingTestItemName.Text)
                         labelNextTestItem.Text = textBoxSettingTestItemName.Text;
@@ -1071,15 +1071,18 @@ namespace i_Reader_S
                     buttonReagent.Font = new Font("微软雅黑", 15, FontStyle.Bold);
                     if (tabControlMainRight.SelectedTab == tabPageSupply | tabControlMainRight.SelectedTab == tabPageSupplyFloatBall)
                     {
-                        switch (ReagentStatus)
+                        Invoke(new Action(() =>
                         {
-                            case 0: tabControlMainRight.SelectedTab = tabPageReagent; break;
-                            case 1: tabControlMainRight.SelectedTab = tabPageReagentOpen; break;
-                            case 2: tabControlMainRight.SelectedTab = tabPageQRAlert; break;
-                            default:
-                                break;
-                        }
-                        UpdateReagentStore();
+                            switch (ReagentStatus)
+                            {
+                                case 0: tabControlMainRight.SelectedTab = tabPageReagent; break;
+                                case 1: tabControlMainRight.SelectedTab = tabPageReagentOpen; break;
+                                case 2: tabControlMainRight.SelectedTab = tabPageQRAlert; break;
+                                default:
+                                    break;
+                            }
+                            UpdateReagentStore();
+                        }));
                     }
                     break;
 
@@ -2202,11 +2205,10 @@ namespace i_Reader_S
                                     SqlData.DeleteFromWorkrunlist(seq);
                                     var lis_message = SqlData.SelectResult_BarcodeChange(sampleno);
                                     var result = double.Parse(lis_message.Rows[0][1].ToString());
-                                    var unit = lis_message.Rows[0][2].ToString();
                                     var flag = lis_message.Rows[0][3].ToString();
                                     var createtime = lis_message.Rows[0][4].ToString();
                                     var accurancy = lis_message.Rows[0][5].ToString();
-                                    var resultsend = flag + result.ToString("F" + accurancy) + unit;
+                                    var resultsend = flag + result.ToString("F" + accurancy);
                                     exportResult(sampleno, Testitem, resultsend, createtime);
                                     if (SqlData.SelectBarcodeError("位置").Rows.Count == 0)
                                     {
@@ -4102,19 +4104,13 @@ namespace i_Reader_S
         //软件关闭前保存日志,关闭端口
         private void ReaderS_FormClosing(object sender, FormClosingEventArgs e)
         {
-            videoSourcePlayer1.SignalToStop();
-            videoSourcePlayer1.WaitForStop();
-            videoSourcePlayer1.Stop();
+
+            //videoSourcePlayer1.SignalToStop();
+            //videoSourcePlayer1.WaitForStop();
+            //videoSourcePlayer1.Stop();
+
             //关闭软件时保存日志
             button_Click(buttonSaveLog, null);
-            /*
-            //关闭前备份日志
-            if (File.Exists(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config"))
-            {
-                File.Delete(Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
-            }
-            File.Copy(Application.StartupPath + "\\i-Reader S.exe.config", Application.StartupPath + "\\configbackup\\i-Reader S(1).exe.config");
-            */
         }
 
         DateTime ReagentCloseTime = DateTime.Now.AddMinutes(10);
@@ -5230,6 +5226,7 @@ namespace i_Reader_S
                                     buttonStopConfirm.Visible = false;
                                     buttonStopRecovery.Visible = true;
                                     // ReSharper disable once ResourceItemNotResolved
+                                    tbtemp = tabPageStop;
                                     labelStopStatus.Text = Resources.StopTip2;
                                 }));
                                 break;
@@ -5407,7 +5404,7 @@ namespace i_Reader_S
                                 break;
                             case "!3950":
                                 CommandCheck[4] = 360;
-                                timerSleep.Start();
+                                //timerSleep.Start();
                                 break;
                         }
                     }
@@ -7029,7 +7026,7 @@ namespace i_Reader_S
                     }
                 }
             }
-
+            /*
             if (ConfigRead("IDRead") == "1")
             {
                 videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -7057,7 +7054,7 @@ namespace i_Reader_S
                 {
                     ShowMyAlert("条码摄像头无1280x720像素"); Close(); return;
                 }
-            }
+            }*/
             ShowCursor(int.Parse(ConfigRead("CursorMode")));
             buttonAutoPrint.BackgroundImage = ConfigRead("AutoPrint") == "0"
 ? Resources.switch_off
@@ -7561,9 +7558,9 @@ namespace i_Reader_S
             System.Runtime.InteropServices.Marshal.Copy(iptr, mapdata, 0, scanBytes);
             return mapdata;
         }
-
+        
         private void videoSourcePlayer1_Click(object sender, EventArgs e)
-        {
+        {/*
             if (videoSourcePlayer1.Size != new Size(233, 141))
             {
                 videoSourcePlayer1.Size = new Size(233, 141);
@@ -7574,6 +7571,7 @@ namespace i_Reader_S
                 videoSourcePlayer1.Size = new Size(648, 428);
                 videoSourcePlayer1.Location = new Point(8, 47);
             }
+            */
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -7600,7 +7598,7 @@ namespace i_Reader_S
         }
 
         private void buttonGetIDCode_Click(object sender, EventArgs e)
-        {
+        {/*
             if (ConfigRead("IDRead") == "1")
             {
                 Log_Add("", false);
@@ -7612,6 +7610,7 @@ namespace i_Reader_S
                 Log_Add(idcode, false);
                 Log_Add("", false);
             }
+            */
         }
 
         private void timerSupplyAlert_Tick(object sender, EventArgs e)
@@ -7872,7 +7871,7 @@ namespace i_Reader_S
                     serialPortME.Write(strbyteO, 0, strbyteO.Length);
 
                     var testitem = SqlData.SelectProductIdItemIdByname(labelNextTestItem.Text.ToString()).Rows[0][1].ToString();
-                    var TyFixStr = ConfigRead("COMSFix");
+                    var TyFixStr = ConfigRead("CMOSFix");
                     DataTable ASU = SqlData.SelectASUmessage();
                     var ReagentStoreID = ASU.Rows[0][0].ToString();
                     var DilutionRatio = ASU.Rows[0][1].ToString();
@@ -8874,9 +8873,9 @@ namespace i_Reader_S
             else
             {
                 label45.Text = CommandCheck[4].ToString();
-                if (CommandCheck[4] <= 0 & int.Parse(ConfigRead("SleepTime")) != 0)
+                if (CommandCheck[4] == 0 & int.Parse(ConfigRead("SleepTime")) != 0)
                 {
-                    timerSleep.Stop();
+                    //timerSleep.Stop();
                     serialPort_DataSend(serialPortMain, "#3050");
                     return;
                 }
