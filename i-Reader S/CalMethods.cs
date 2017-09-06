@@ -36,6 +36,11 @@ namespace i_Reader_S
                         data1[i] /= data.GetLength(1);
                     }
 
+                    if (data1.Min() > 2500)
+                    {
+                        return "-18";
+                    }
+
                     int UpX = 0;
                     int DownX = 0;
                     for (int i = 0; i < data1.Length; i++)
@@ -46,7 +51,7 @@ namespace i_Reader_S
                             break;
                         }
                     }
-                    if (UpX == 0) return "-9";
+                    if (UpX == 0) return "-17";
                     for (int i = data1.Length - 1; i > -1; i--)
                     {
                         if (data1[i] < data1.Min() + data1.Max() / 4 - data1.Min() / 4)
@@ -56,7 +61,7 @@ namespace i_Reader_S
                         }
                     }
                     
-                    if (DownX == 0) return "-9";
+                    if (DownX == 0) return "-17";
                     
                     midY = DownX / 2 + UpX / 2 - 80;
                 }
@@ -142,7 +147,7 @@ namespace i_Reader_S
                         }
                     }
 
-                    if (LeftX == 0) return "-9";
+                    if (LeftX == 0) return "-17";
 
                     for (int i = data2.Length - 101; i > 100; i--)
                     {
@@ -152,7 +157,7 @@ namespace i_Reader_S
                         }
                     }
 
-                    if (RightX < LeftX + 600) return "-9";
+                    if (RightX < LeftX + 600) return "-17";
 
                     for (int i = 0; i < RightX / 3 - LeftX / 3; i++)
                     {

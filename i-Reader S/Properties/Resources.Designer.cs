@@ -2044,6 +2044,24 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
+        ///   查找类似 测试区异常 的本地化字符串。
+        /// </summary>
+        internal static string ResultError17 {
+            get {
+                return ResourceManager.GetString("ResultError17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 无测试片 的本地化字符串。
+        /// </summary>
+        internal static string ResultError18 {
+            get {
+                return ResourceManager.GetString("ResultError18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 稀释管有气泡 的本地化字符串。
         /// </summary>
         internal static string ResultError2 {
@@ -2223,7 +2241,7 @@ namespace i_Reader_S.Properties {
         }
         
         /// <summary>
-        ///   查找类似于 (Icon) 的 System.Drawing.Icon 类型的本地化资源。
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon SoftWareLogo {
             get {

@@ -255,33 +255,6 @@
   <data name="&gt;&gt;buttonSearch.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="buttonHome.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonHome.Location" type="System.Drawing.Point, System.Drawing">
-    <value>344, 17</value>
-  </data>
-  <data name="buttonHome.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 100</value>
-  </data>
-  <data name="buttonHome.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="buttonHome.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;buttonHome.Name" xml:space="preserve">
-    <value>buttonHome</value>
-  </data>
-  <data name="&gt;&gt;buttonHome.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonHome.Parent" xml:space="preserve">
-    <value>panelTopBack</value>
-  </data>
-  <data name="&gt;&gt;buttonHome.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="&gt;&gt;buttonMinOpen.Name" xml:space="preserve">
     <value>buttonMinOpen</value>
   </data>
@@ -366,6 +339,93 @@
   <data name="&gt;&gt;tabPageLogin.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="buttonNewCleanSensor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonNewCleanSensor.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonNewCleanSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonNewCleanSensor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 364</value>
+  </data>
+  <data name="buttonNewCleanSensor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonNewCleanSensor.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="buttonNewCleanSensor.Text" xml:space="preserve">
+    <value>清洗液光耦校准</value>
+  </data>
+  <data name="&gt;&gt;buttonNewCleanSensor.Name" xml:space="preserve">
+    <value>buttonNewCleanSensor</value>
+  </data>
+  <data name="&gt;&gt;buttonNewCleanSensor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonNewCleanSensor.Parent" xml:space="preserve">
+    <value>tabPageUserMode</value>
+  </data>
+  <data name="&gt;&gt;buttonNewCleanSensor.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="buttonReagentCheck.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonReagentCheck.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonReagentCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonReagentCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 429</value>
+  </data>
+  <data name="buttonReagentCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonReagentCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="buttonReagentCheck.Text" xml:space="preserve">
+    <value>片仓光耦校准</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentCheck.Name" xml:space="preserve">
+    <value>buttonReagentCheck</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentCheck.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentCheck.Parent" xml:space="preserve">
+    <value>tabPageUserMode</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentCheck.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="buttonNewLiquidSensor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonNewLiquidSensor.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonNewLiquidSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonNewLiquidSensor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 299</value>
+  </data>
+  <data name="buttonNewLiquidSensor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonNewLiquidSensor.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="buttonNewLiquidSensor.Text" xml:space="preserve">
+    <value>稀释液光耦校准</value>
+  </data>
   <data name="&gt;&gt;buttonNewLiquidSensor.Name" xml:space="preserve">
     <value>buttonNewLiquidSensor</value>
   </data>
@@ -376,7 +436,22 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;buttonNewLiquidSensor.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
+  </data>
+  <data name="labelUserStep.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelUserStep.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun-ExtB, 10pt</value>
+  </data>
+  <data name="labelUserStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>139, 64</value>
+  </data>
+  <data name="labelUserStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 14</value>
+  </data>
+  <data name="labelUserStep.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
   <data name="&gt;&gt;labelUserStep.Name" xml:space="preserve">
     <value>labelUserStep</value>
@@ -388,19 +463,28 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;labelUserStep.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
+  <data name="buttonUserLiquidCheck.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
   </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="buttonUserLiquidCheck.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
+  <data name="buttonUserLiquidCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="buttonUserLiquidCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 169</value>
+  </data>
+  <data name="buttonUserLiquidCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonUserLiquidCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="buttonUserLiquidCheck.Text" xml:space="preserve">
+    <value>液路自检</value>
   </data>
   <data name="&gt;&gt;buttonUserLiquidCheck.Name" xml:space="preserve">
     <value>buttonUserLiquidCheck</value>
@@ -412,7 +496,28 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;buttonUserLiquidCheck.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
+  </data>
+  <data name="buttonUserClean2.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonUserClean2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonUserClean2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonUserClean2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 104</value>
+  </data>
+  <data name="buttonUserClean2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonUserClean2.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="buttonUserClean2.Text" xml:space="preserve">
+    <value>强力清洗</value>
   </data>
   <data name="&gt;&gt;buttonUserClean2.Name" xml:space="preserve">
     <value>buttonUserClean2</value>
@@ -424,7 +529,28 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;buttonUserClean2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
+  </data>
+  <data name="buttonUserClean1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonUserClean1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonUserClean1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonUserClean1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 39</value>
+  </data>
+  <data name="buttonUserClean1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonUserClean1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="buttonUserClean1.Text" xml:space="preserve">
+    <value>普通清洗</value>
   </data>
   <data name="&gt;&gt;buttonUserClean1.Name" xml:space="preserve">
     <value>buttonUserClean1</value>
@@ -436,7 +562,28 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;buttonUserClean1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="buttonUserTest.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonUserTest.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt, style=Bold</value>
+  </data>
+  <data name="buttonUserTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonUserTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 234</value>
+  </data>
+  <data name="buttonUserTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 59</value>
+  </data>
+  <data name="buttonUserTest.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="buttonUserTest.Text" xml:space="preserve">
+    <value>回到测试状态</value>
   </data>
   <data name="&gt;&gt;buttonUserTest.Name" xml:space="preserve">
     <value>buttonUserTest</value>
@@ -448,19 +595,31 @@
     <value>tabPageUserMode</value>
   </data>
   <data name="&gt;&gt;buttonUserTest.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
-  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
-    <value>textBox1</value>
+  <data name="textBoxUserLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>275, 39</value>
   </data>
-  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+  <data name="textBoxUserLog.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxUserLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>665, 488</value>
+  </data>
+  <data name="textBoxUserLog.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;textBoxUserLog.Name" xml:space="preserve">
+    <value>textBoxUserLog</value>
+  </data>
+  <data name="&gt;&gt;textBoxUserLog.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;textBoxUserLog.Parent" xml:space="preserve">
     <value>tabPageUserMode</value>
   </data>
-  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;textBoxUserLog.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="tabPageUserMode.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -486,20 +645,53 @@
   <data name="&gt;&gt;tabPageUserMode.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="buttonFluoTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;textBoxFluo.Name" xml:space="preserve">
+    <value>textBoxFluo</value>
   </data>
-  <data name="buttonFluoTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>131, 3</value>
+  <data name="&gt;&gt;textBoxFluo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="buttonFluoTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 40</value>
+  <data name="&gt;&gt;textBoxFluo.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
   </data>
-  <data name="buttonFluoTest.TabIndex" type="System.Int32, mscorlib">
-    <value>87</value>
+  <data name="&gt;&gt;textBoxFluo.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="buttonFluoTest.Text" xml:space="preserve">
-    <value>采集数据(荧光)</value>
+  <data name="&gt;&gt;labelLast.Name" xml:space="preserve">
+    <value>labelLast</value>
+  </data>
+  <data name="&gt;&gt;labelLast.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelLast.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labelLast.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Name" xml:space="preserve">
+    <value>labeltest</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labeltest.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Name" xml:space="preserve">
+    <value>buttonTest001</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;buttonFluoTest.Name" xml:space="preserve">
     <value>buttonFluoTest</value>
@@ -511,19 +703,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonFluoTest.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label45.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label45.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 401</value>
-  </data>
-  <data name="label45.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 12</value>
-  </data>
-  <data name="label45.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;label45.Name" xml:space="preserve">
     <value>label45</value>
@@ -535,19 +715,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;label45.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="textBoxASU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>246, 47</value>
-  </data>
-  <data name="textBoxASU.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxASU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>659, 516</value>
-  </data>
-  <data name="textBoxASU.TabIndex" type="System.Int32, mscorlib">
-    <value>86</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;textBoxASU.Name" xml:space="preserve">
     <value>textBoxASU</value>
@@ -559,19 +727,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxASU.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="buttonGetIDCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 392</value>
-  </data>
-  <data name="buttonGetIDCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 31</value>
-  </data>
-  <data name="buttonGetIDCode.TabIndex" type="System.Int32, mscorlib">
-    <value>85</value>
-  </data>
-  <data name="buttonGetIDCode.Text" xml:space="preserve">
-    <value>条码采集</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;buttonGetIDCode.Name" xml:space="preserve">
     <value>buttonGetIDCode</value>
@@ -583,22 +739,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonGetIDCode.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="buttonStartTH.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonStartTH.Location" type="System.Drawing.Point, System.Drawing">
-    <value>914, 517</value>
-  </data>
-  <data name="buttonStartTH.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonStartTH.TabIndex" type="System.Int32, mscorlib">
-    <value>84</value>
-  </data>
-  <data name="buttonStartTH.Text" xml:space="preserve">
-    <value>重启除湿</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;buttonStartTH.Name" xml:space="preserve">
     <value>buttonStartTH</value>
@@ -610,25 +751,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonStartTH.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="labelIDRead.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelIDRead.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 10.5pt</value>
-  </data>
-  <data name="labelIDRead.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="labelIDRead.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 398</value>
-  </data>
-  <data name="labelIDRead.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
-  </data>
-  <data name="labelIDRead.TabIndex" type="System.Int32, mscorlib">
-    <value>83</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;labelIDRead.Name" xml:space="preserve">
     <value>labelIDRead</value>
@@ -640,19 +763,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;labelIDRead.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 47</value>
-  </data>
-  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 160</value>
-  </data>
-  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
     <value>pictureBox1</value>
@@ -664,19 +775,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="videoSourcePlayer1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 422</value>
-  </data>
-  <data name="videoSourcePlayer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 141</value>
-  </data>
-  <data name="videoSourcePlayer1.TabIndex" type="System.Int32, mscorlib">
-    <value>82</value>
-  </data>
-  <data name="videoSourcePlayer1.Text" xml:space="preserve">
-    <value>videoSourcePlayer1</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;videoSourcePlayer1.Name" xml:space="preserve">
     <value>videoSourcePlayer1</value>
@@ -688,22 +787,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;videoSourcePlayer1.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="buttonCCDTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonCCDTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 3</value>
-  </data>
-  <data name="buttonCCDTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 40</value>
-  </data>
-  <data name="buttonCCDTest.TabIndex" type="System.Int32, mscorlib">
-    <value>81</value>
-  </data>
-  <data name="buttonCCDTest.Text" xml:space="preserve">
-    <value>采集数据(胶体金)</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;buttonCCDTest.Name" xml:space="preserve">
     <value>buttonCCDTest</value>
@@ -715,22 +799,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonCCDTest.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="buttonLiquidSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonLiquidSensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>911, 385</value>
-  </data>
-  <data name="buttonLiquidSensor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonLiquidSensor.TabIndex" type="System.Int32, mscorlib">
-    <value>80</value>
-  </data>
-  <data name="buttonLiquidSensor.Text" xml:space="preserve">
-    <value>液路光耦校准</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;buttonLiquidSensor.Name" xml:space="preserve">
     <value>buttonLiquidSensor</value>
@@ -742,22 +811,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonLiquidSensor.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="buttonReagentSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonReagentSensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>912, 342</value>
-  </data>
-  <data name="buttonReagentSensor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonReagentSensor.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
-  </data>
-  <data name="buttonReagentSensor.Text" xml:space="preserve">
-    <value>试剂片仓光耦校准</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;buttonReagentSensor.Name" xml:space="preserve">
     <value>buttonReagentSensor</value>
@@ -769,58 +823,19 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonReagentSensor.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>14</value>
   </data>
-  <data name="comboBox3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 20pt</value>
+  <data name="&gt;&gt;comboBoxLogName.Name" xml:space="preserve">
+    <value>comboBoxLogName</value>
   </data>
-  <data name="comboBox3.Items" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="comboBox3.Items1" xml:space="preserve">
-    <value>Main</value>
-  </data>
-  <data name="comboBox3.Items2" xml:space="preserve">
-    <value>TH</value>
-  </data>
-  <data name="comboBox3.Items3" xml:space="preserve">
-    <value>QR</value>
-  </data>
-  <data name="comboBox3.Items4" xml:space="preserve">
-    <value>ASU</value>
-  </data>
-  <data name="comboBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 44</value>
-  </data>
-  <data name="comboBox3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 35</value>
-  </data>
-  <data name="comboBox3.TabIndex" type="System.Int32, mscorlib">
-    <value>78</value>
-  </data>
-  <data name="&gt;&gt;comboBox3.Name" xml:space="preserve">
-    <value>comboBox3</value>
-  </data>
-  <data name="&gt;&gt;comboBox3.Type" xml:space="preserve">
+  <data name="&gt;&gt;comboBoxLogName.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;comboBox3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;comboBoxLogName.Parent" xml:space="preserve">
     <value>tabPageDetail</value>
   </data>
-  <data name="&gt;&gt;comboBox3.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="textBoxQR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 47</value>
-  </data>
-  <data name="textBoxQR.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxQR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>659, 516</value>
-  </data>
-  <data name="textBoxQR.TabIndex" type="System.Int32, mscorlib">
-    <value>75</value>
+  <data name="&gt;&gt;comboBoxLogName.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="&gt;&gt;textBoxQR.Name" xml:space="preserve">
     <value>textBoxQR</value>
@@ -832,19 +847,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxQR.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="textBoxTH.Location" type="System.Drawing.Point, System.Drawing">
-    <value>246, 47</value>
-  </data>
-  <data name="textBoxTH.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxTH.Size" type="System.Drawing.Size, System.Drawing">
-    <value>659, 516</value>
-  </data>
-  <data name="textBoxTH.TabIndex" type="System.Int32, mscorlib">
-    <value>74</value>
+    <value>16</value>
   </data>
   <data name="&gt;&gt;textBoxTH.Name" xml:space="preserve">
     <value>textBoxTH</value>
@@ -856,19 +859,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxTH.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="textBoxMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 47</value>
-  </data>
-  <data name="textBoxMain.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>659, 516</value>
-  </data>
-  <data name="textBoxMain.TabIndex" type="System.Int32, mscorlib">
-    <value>73</value>
+    <value>17</value>
   </data>
   <data name="&gt;&gt;textBoxMain.Name" xml:space="preserve">
     <value>textBoxMain</value>
@@ -880,25 +871,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxMain.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 214</value>
-  </data>
-  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label29.TabIndex" type="System.Int32, mscorlib">
-    <value>72</value>
-  </data>
-  <data name="label29.Text" xml:space="preserve">
-    <value>CRef</value>
+    <value>18</value>
   </data>
   <data name="&gt;&gt;label29.Name" xml:space="preserve">
     <value>label29</value>
@@ -910,19 +883,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="textBoxCCDRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>947, 209</value>
-  </data>
-  <data name="textBoxCCDRef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 19</value>
-  </data>
-  <data name="textBoxCCDRef.TabIndex" type="System.Int32, mscorlib">
-    <value>71</value>
-  </data>
-  <data name="textBoxCCDRef.Text" xml:space="preserve">
-    <value>2200</value>
+    <value>19</value>
   </data>
   <data name="&gt;&gt;textBoxCCDRef.Name" xml:space="preserve">
     <value>textBoxCCDRef</value>
@@ -934,19 +895,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxCCDRef.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="buttonFluoFix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 301</value>
-  </data>
-  <data name="buttonFluoFix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonFluoFix.TabIndex" type="System.Int32, mscorlib">
-    <value>70</value>
-  </data>
-  <data name="buttonFluoFix.Text" xml:space="preserve">
-    <value>荧光校准</value>
+    <value>20</value>
   </data>
   <data name="&gt;&gt;buttonFluoFix.Name" xml:space="preserve">
     <value>buttonFluoFix</value>
@@ -958,22 +907,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonFluoFix.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="label16.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>914, 284</value>
-  </data>
-  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label16.TabIndex" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="label16.Text" xml:space="preserve">
-    <value>FRef</value>
+    <value>21</value>
   </data>
   <data name="&gt;&gt;label16.Name" xml:space="preserve">
     <value>label16</value>
@@ -985,19 +919,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="textBoxFluoRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>948, 279</value>
-  </data>
-  <data name="textBoxFluoRef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 19</value>
-  </data>
-  <data name="textBoxFluoRef.TabIndex" type="System.Int32, mscorlib">
-    <value>68</value>
-  </data>
-  <data name="textBoxFluoRef.Text" xml:space="preserve">
-    <value>1800</value>
+    <value>22</value>
   </data>
   <data name="&gt;&gt;textBoxFluoRef.Name" xml:space="preserve">
     <value>textBoxFluoRef</value>
@@ -1009,22 +931,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxFluoRef.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="textBoxCMD.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 16pt</value>
-  </data>
-  <data name="textBoxCMD.Location" type="System.Drawing.Point, System.Drawing">
-    <value>810, 9</value>
-  </data>
-  <data name="textBoxCMD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 29</value>
-  </data>
-  <data name="textBoxCMD.TabIndex" type="System.Int32, mscorlib">
-    <value>66</value>
-  </data>
-  <data name="textBoxCMD.Text" xml:space="preserve">
-    <value>$0</value>
+    <value>23</value>
   </data>
   <data name="&gt;&gt;textBoxCMD.Name" xml:space="preserve">
     <value>textBoxCMD</value>
@@ -1036,19 +943,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxCMD.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="buttonCMDSend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>935, 5</value>
-  </data>
-  <data name="buttonCMDSend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 36</value>
-  </data>
-  <data name="buttonCMDSend.TabIndex" type="System.Int32, mscorlib">
-    <value>65</value>
-  </data>
-  <data name="buttonCMDSend.Text" xml:space="preserve">
-    <value>执行</value>
+    <value>24</value>
   </data>
   <data name="&gt;&gt;buttonCMDSend.Name" xml:space="preserve">
     <value>buttonCMDSend</value>
@@ -1060,19 +955,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonCMDSend.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="comboBox2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 20pt</value>
-  </data>
-  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>554, 6</value>
-  </data>
-  <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 35</value>
-  </data>
-  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>63</value>
+    <value>25</value>
   </data>
   <data name="&gt;&gt;comboBox2.Name" xml:space="preserve">
     <value>comboBox2</value>
@@ -1084,37 +967,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="comboBox1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 20pt</value>
-  </data>
-  <data name="comboBox1.Items" xml:space="preserve">
-    <value>启动</value>
-  </data>
-  <data name="comboBox1.Items1" xml:space="preserve">
-    <value>机械自检</value>
-  </data>
-  <data name="comboBox1.Items2" xml:space="preserve">
-    <value>液路自检</value>
-  </data>
-  <data name="comboBox1.Items3" xml:space="preserve">
-    <value>测试</value>
-  </data>
-  <data name="comboBox1.Items4" xml:space="preserve">
-    <value>维护</value>
-  </data>
-  <data name="comboBox1.Items5" xml:space="preserve">
-    <value>内部命令</value>
-  </data>
-  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>399, 6</value>
-  </data>
-  <data name="comboBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 35</value>
-  </data>
-  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>61</value>
+    <value>26</value>
   </data>
   <data name="&gt;&gt;comboBox1.Name" xml:space="preserve">
     <value>comboBox1</value>
@@ -1126,22 +979,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="label35.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label35.Location" type="System.Drawing.Point, System.Drawing">
-    <value>340, 17</value>
-  </data>
-  <data name="label35.Size" type="System.Drawing.Size, System.Drawing">
-    <value>473, 12</value>
-  </data>
-  <data name="label35.TabIndex" type="System.Int32, mscorlib">
-    <value>62</value>
-  </data>
-  <data name="label35.Text" xml:space="preserve">
-    <value>命令分类                      命令                                        参数</value>
+    <value>27</value>
   </data>
   <data name="&gt;&gt;label35.Name" xml:space="preserve">
     <value>label35</value>
@@ -1153,22 +991,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;label35.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
-  <data name="labelResult.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="labelResult.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 10.5pt</value>
-  </data>
-  <data name="labelResult.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 209</value>
-  </data>
-  <data name="labelResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 20</value>
-  </data>
-  <data name="labelResult.TabIndex" type="System.Int32, mscorlib">
-    <value>55</value>
+    <value>28</value>
   </data>
   <data name="&gt;&gt;labelResult.Name" xml:space="preserve">
     <value>labelResult</value>
@@ -1180,22 +1003,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;labelResult.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
-  <data name="buttonTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 428</value>
-  </data>
-  <data name="buttonTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonTest.TabIndex" type="System.Int32, mscorlib">
-    <value>53</value>
-  </data>
-  <data name="buttonTest.Text" xml:space="preserve">
-    <value>进入测试</value>
+    <value>29</value>
   </data>
   <data name="&gt;&gt;buttonTest.Name" xml:space="preserve">
     <value>buttonTest</value>
@@ -1207,22 +1015,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonTest.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="buttonMaintain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonMaintain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>912, 125</value>
-  </data>
-  <data name="buttonMaintain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonMaintain.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="buttonMaintain.Text" xml:space="preserve">
-    <value>进入维护</value>
+    <value>30</value>
   </data>
   <data name="&gt;&gt;buttonMaintain.Name" xml:space="preserve">
     <value>buttonMaintain</value>
@@ -1234,22 +1027,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonMaintain.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
-  <data name="buttonMidFix.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonMidFix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 166</value>
-  </data>
-  <data name="buttonMidFix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonMidFix.TabIndex" type="System.Int32, mscorlib">
-    <value>51</value>
-  </data>
-  <data name="buttonMidFix.Text" xml:space="preserve">
-    <value>中心位置校准</value>
+    <value>31</value>
   </data>
   <data name="&gt;&gt;buttonMidFix.Name" xml:space="preserve">
     <value>buttonMidFix</value>
@@ -1261,22 +1039,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonMidFix.ZOrder" xml:space="preserve">
-    <value>28</value>
-  </data>
-  <data name="buttonDilutionMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonDilutionMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>913, 471</value>
-  </data>
-  <data name="buttonDilutionMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonDilutionMode.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
-  </data>
-  <data name="buttonDilutionMode.Text" xml:space="preserve">
-    <value>混匀测试</value>
+    <value>32</value>
   </data>
   <data name="&gt;&gt;buttonDilutionMode.Name" xml:space="preserve">
     <value>buttonDilutionMode</value>
@@ -1288,22 +1051,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonDilutionMode.ZOrder" xml:space="preserve">
-    <value>29</value>
-  </data>
-  <data name="buttonLigthFix.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonLigthFix.Location" type="System.Drawing.Point, System.Drawing">
-    <value>912, 230</value>
-  </data>
-  <data name="buttonLigthFix.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonLigthFix.TabIndex" type="System.Int32, mscorlib">
-    <value>46</value>
-  </data>
-  <data name="buttonLigthFix.Text" xml:space="preserve">
-    <value>光源校准</value>
+    <value>33</value>
   </data>
   <data name="&gt;&gt;buttonLigthFix.Name" xml:space="preserve">
     <value>buttonLigthFix</value>
@@ -1315,19 +1063,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonLigthFix.ZOrder" xml:space="preserve">
-    <value>30</value>
-  </data>
-  <data name="chartFluo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 236</value>
-  </data>
-  <data name="chartFluo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 156</value>
-  </data>
-  <data name="chartFluo.TabIndex" type="System.Int32, mscorlib">
-    <value>45</value>
-  </data>
-  <data name="chartFluo.Text" xml:space="preserve">
-    <value>chart3</value>
+    <value>34</value>
   </data>
   <data name="&gt;&gt;chartFluo.Name" xml:space="preserve">
     <value>chartFluo</value>
@@ -1339,22 +1075,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;chartFluo.ZOrder" xml:space="preserve">
-    <value>31</value>
-  </data>
-  <data name="buttonSaveLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonSaveLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>912, 82</value>
-  </data>
-  <data name="buttonSaveLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 40</value>
-  </data>
-  <data name="buttonSaveLog.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
-  </data>
-  <data name="buttonSaveLog.Text" xml:space="preserve">
-    <value>保存日志</value>
+    <value>35</value>
   </data>
   <data name="&gt;&gt;buttonSaveLog.Name" xml:space="preserve">
     <value>buttonSaveLog</value>
@@ -1366,19 +1087,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;buttonSaveLog.ZOrder" xml:space="preserve">
-    <value>32</value>
-  </data>
-  <data name="textBoxLog.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 47</value>
-  </data>
-  <data name="textBoxLog.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBoxLog.Size" type="System.Drawing.Size, System.Drawing">
-    <value>659, 516</value>
-  </data>
-  <data name="textBoxLog.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+    <value>36</value>
   </data>
   <data name="&gt;&gt;textBoxLog.Name" xml:space="preserve">
     <value>textBoxLog</value>
@@ -1390,7 +1099,7 @@
     <value>tabPageDetail</value>
   </data>
   <data name="&gt;&gt;textBoxLog.ZOrder" xml:space="preserve">
-    <value>33</value>
+    <value>37</value>
   </data>
   <data name="tabPageDetail.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1416,75 +1125,6 @@
   <data name="&gt;&gt;tabPageDetail.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="buttonPicClose.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Stretch</value>
-  </data>
-  <data name="buttonPicClose.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonPicClose.Font" type="System.Drawing.Font, System.Drawing">
-    <value>黑体, 21pt, style=Bold</value>
-  </data>
-  <data name="buttonPicClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 17</value>
-  </data>
-  <data name="buttonPicClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 71</value>
-  </data>
-  <data name="buttonPicClose.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="buttonPicClose.Text" xml:space="preserve">
-    <value>关闭照片</value>
-  </data>
-  <data name="&gt;&gt;buttonPicClose.Name" xml:space="preserve">
-    <value>buttonPicClose</value>
-  </data>
-  <data name="&gt;&gt;buttonPicClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonPicClose.Parent" xml:space="preserve">
-    <value>panelPic</value>
-  </data>
-  <data name="&gt;&gt;buttonPicClose.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pictureBoxResult.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 102</value>
-  </data>
-  <data name="pictureBoxResult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>485, 291</value>
-  </data>
-  <data name="pictureBoxResult.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="pictureBoxResult.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pictureBoxResult.Name" xml:space="preserve">
-    <value>pictureBoxResult</value>
-  </data>
-  <data name="&gt;&gt;pictureBoxResult.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBoxResult.Parent" xml:space="preserve">
-    <value>panelPic</value>
-  </data>
-  <data name="&gt;&gt;pictureBoxResult.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="panelPic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 6</value>
-  </data>
-  <data name="panelPic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>513, 557</value>
-  </data>
-  <data name="panelPic.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="panelPic.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;panelPic.Name" xml:space="preserve">
     <value>panelPic</value>
   </data>
@@ -1497,102 +1137,6 @@
   <data name="&gt;&gt;panelPic.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="panel3.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Stretch</value>
-  </data>
-  <data name="&gt;&gt;labelCleanStatus.Name" xml:space="preserve">
-    <value>labelCleanStatus</value>
-  </data>
-  <data name="&gt;&gt;labelCleanStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelCleanStatus.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;labelCleanStatus.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;labelDilutionStatus.Name" xml:space="preserve">
-    <value>labelDilutionStatus</value>
-  </data>
-  <data name="&gt;&gt;labelDilutionStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelDilutionStatus.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;labelDilutionStatus.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;labelReagentStatus.Name" xml:space="preserve">
-    <value>labelReagentStatus</value>
-  </data>
-  <data name="&gt;&gt;labelReagentStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelReagentStatus.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;labelReagentStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;labelWasteStatus.Name" xml:space="preserve">
-    <value>labelWasteStatus</value>
-  </data>
-  <data name="&gt;&gt;labelWasteStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelWasteStatus.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;labelWasteStatus.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;buttonSupply.Name" xml:space="preserve">
-    <value>buttonSupply</value>
-  </data>
-  <data name="&gt;&gt;buttonSupply.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonSupply.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;buttonSupply.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;buttonReagent.Name" xml:space="preserve">
-    <value>buttonReagent</value>
-  </data>
-  <data name="&gt;&gt;buttonReagent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonReagent.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;buttonReagent.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;tabControlMainRight.Name" xml:space="preserve">
-    <value>tabControlMainRight</value>
-  </data>
-  <data name="&gt;&gt;tabControlMainRight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControlMainRight.Parent" xml:space="preserve">
-    <value>panel3</value>
-  </data>
-  <data name="&gt;&gt;tabControlMainRight.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>505, 7</value>
-  </data>
-  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>503, 556</value>
-  </data>
-  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;panel3.Name" xml:space="preserve">
     <value>panel3</value>
   </data>
@@ -1604,135 +1148,6 @@
   </data>
   <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;labelExceptionNo.Name" xml:space="preserve">
-    <value>labelExceptionNo</value>
-  </data>
-  <data name="&gt;&gt;labelExceptionNo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelExceptionNo.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;labelExceptionNo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewMain.Name" xml:space="preserve">
-    <value>dataGridViewMain</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewMain.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;dataGridViewMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;labelNextTestItem.Name" xml:space="preserve">
-    <value>labelNextTestItem</value>
-  </data>
-  <data name="&gt;&gt;labelNextTestItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelNextTestItem.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;labelNextTestItem.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;labelNextSampleNo.Name" xml:space="preserve">
-    <value>labelNextSampleNo</value>
-  </data>
-  <data name="&gt;&gt;labelNextSampleNo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelNextSampleNo.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;labelNextSampleNo.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
-    <value>panel2</value>
-  </data>
-  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;buttonException.Name" xml:space="preserve">
-    <value>buttonException</value>
-  </data>
-  <data name="&gt;&gt;buttonException.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonException.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;buttonException.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;buttonDone.Name" xml:space="preserve">
-    <value>buttonDone</value>
-  </data>
-  <data name="&gt;&gt;buttonDone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonDone.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;buttonDone.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;buttonDoing.Name" xml:space="preserve">
-    <value>buttonDoing</value>
-  </data>
-  <data name="&gt;&gt;buttonDoing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonDoing.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;buttonDoing.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;labelhuman.Name" xml:space="preserve">
-    <value>labelhuman</value>
-  </data>
-  <data name="&gt;&gt;labelhuman.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelhuman.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;labelhuman.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 7</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>481, 559</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
@@ -3255,290 +2670,1253 @@
   <data name="&gt;&gt;labelStep.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="buttonNewLiquidSensor.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
+  <data name="textBoxFluo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>246, 47</value>
   </data>
-  <data name="buttonNewLiquidSensor.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 12pt</value>
-  </data>
-  <data name="buttonNewLiquidSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonNewLiquidSensor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 299</value>
-  </data>
-  <data name="buttonNewLiquidSensor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 59</value>
-  </data>
-  <data name="buttonNewLiquidSensor.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="buttonNewLiquidSensor.Text" xml:space="preserve">
-    <value>液路光耦定标</value>
-  </data>
-  <data name="&gt;&gt;buttonNewLiquidSensor.Name" xml:space="preserve">
-    <value>buttonNewLiquidSensor</value>
-  </data>
-  <data name="&gt;&gt;buttonNewLiquidSensor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonNewLiquidSensor.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;buttonNewLiquidSensor.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="labelUserStep.AutoSize" type="System.Boolean, mscorlib">
+  <data name="textBoxFluo.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="labelUserStep.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 10pt</value>
+  <data name="textBoxFluo.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
-  <data name="labelUserStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 64</value>
+  <data name="textBoxFluo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
   </data>
-  <data name="labelUserStep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 14</value>
+  <data name="textBoxFluo.TabIndex" type="System.Int32, mscorlib">
+    <value>91</value>
   </data>
-  <data name="labelUserStep.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="&gt;&gt;textBoxFluo.Name" xml:space="preserve">
+    <value>textBoxFluo</value>
   </data>
-  <data name="&gt;&gt;labelUserStep.Name" xml:space="preserve">
-    <value>labelUserStep</value>
-  </data>
-  <data name="&gt;&gt;labelUserStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;labelUserStep.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;labelUserStep.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>SimSun-ExtB, 15pt</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>336, 16</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 20</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>错误列表</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="buttonUserLiquidCheck.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonUserLiquidCheck.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 12pt</value>
-  </data>
-  <data name="buttonUserLiquidCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonUserLiquidCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 169</value>
-  </data>
-  <data name="buttonUserLiquidCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 59</value>
-  </data>
-  <data name="buttonUserLiquidCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="buttonUserLiquidCheck.Text" xml:space="preserve">
-    <value>液路自检</value>
-  </data>
-  <data name="&gt;&gt;buttonUserLiquidCheck.Name" xml:space="preserve">
-    <value>buttonUserLiquidCheck</value>
-  </data>
-  <data name="&gt;&gt;buttonUserLiquidCheck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonUserLiquidCheck.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;buttonUserLiquidCheck.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="buttonUserClean2.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonUserClean2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 12pt</value>
-  </data>
-  <data name="buttonUserClean2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonUserClean2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 104</value>
-  </data>
-  <data name="buttonUserClean2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 59</value>
-  </data>
-  <data name="buttonUserClean2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="buttonUserClean2.Text" xml:space="preserve">
-    <value>强力清洗</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean2.Name" xml:space="preserve">
-    <value>buttonUserClean2</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean2.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean2.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="buttonUserClean1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonUserClean1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 12pt</value>
-  </data>
-  <data name="buttonUserClean1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonUserClean1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 39</value>
-  </data>
-  <data name="buttonUserClean1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 59</value>
-  </data>
-  <data name="buttonUserClean1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="buttonUserClean1.Text" xml:space="preserve">
-    <value>普通清洗</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean1.Name" xml:space="preserve">
-    <value>buttonUserClean1</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean1.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;buttonUserClean1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="buttonUserTest.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Flat</value>
-  </data>
-  <data name="buttonUserTest.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft YaHei UI, 12pt</value>
-  </data>
-  <data name="buttonUserTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonUserTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 234</value>
-  </data>
-  <data name="buttonUserTest.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 59</value>
-  </data>
-  <data name="buttonUserTest.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="buttonUserTest.Text" xml:space="preserve">
-    <value>回到测试状态</value>
-  </data>
-  <data name="&gt;&gt;buttonUserTest.Name" xml:space="preserve">
-    <value>buttonUserTest</value>
-  </data>
-  <data name="&gt;&gt;buttonUserTest.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;buttonUserTest.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
-  </data>
-  <data name="&gt;&gt;buttonUserTest.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>345, 39</value>
-  </data>
-  <data name="textBox1.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>665, 513</value>
-  </data>
-  <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>E2501	开始液路自检，在进行液面探测功能检验时发生错误	
-E2502	开始液路自检，在检查混匀池时发现混匀池中有残留水，请检查废液泵以及排液管道	
-E2510	开始准备清洗液泵流量检查时，液面探测功能自检出现错误	
-E2511	清洗液泵流量检查时，出现清洗液供应中断，请更换清洗液后重新运行液路自检程序	
-E2512	清洗液泵流量检查时，未检测到清洗液注入，请检查清洗液泵后重新运行液路自检程序	
-E2513	清洗液泵流量检查时，液面探测功能自检出现错误	
-E2514	清洗液泵流量检查在检测流量时，未检测到液体注入，请检查稀释液泵后重新运行液路自检程序	
-E2520	开始废液泵流量检查时，液面探测功能自检出现错误	
-E2521	在废液泵流量检测时，取样针未探测到液体，请检查液面探测功能后重新运行液路自检程序	
-E2530	开始准备稀释液流量定标时，液面探测功能自检出现错误	
-E2531	在稀释液流量定标起始液面高度测量时，检测出液面高度超高，请检重新调整取样针高度后重新运行液路自检程序	
-E2532	在稀释液流量定标起始液面高度测量时，未探测到液面，请检查稀释液泵后重新运行液路自检程序	
-E2533	在稀释液流量定标时，稀释液供应中断，请检查和更换稀释液后重新运行液路自检程序	
-E2534	在稀释液流量定标液面高度测量时，液面探测功能自检出现错误	
-E2535	在稀释液流量定标液面高度测量时，未探测到液面，请检查稀释液泵后重新运行液路自检程序	
-E2550	液路自检失败退出	
-E2901	液体探测电极未连接, 请检查液体探测电极连接是否完好	
-E2902	液体探测电极受影响，请检查取样针接头处以及清洗头处是否有污染物	
-E2905	清洗液灌注失败， 请检查清洗液供给，如果供给正常则请重新调试清洗液传感器（1号液路传感器）后重新运行液路自检程序	
-E2906	在进行稀释液灌注时，液面探测自检出现异常	
-E2907	清洗液灌注过程中检测到混匀池中液体水位超高，请检查废液泵排液状态	
-E2910	稀释液灌注失败， 请检查稀释液供给，如果供给正常则请重新调试稀释液传感器（0号液路传感器）后重新运行液路自检程序	
-E2911	在进行稀释液灌注时，液面探测自检出现异常	
-E2912	稀释液灌注过程中检测到混匀池中液体水位超高，请检查废液泵排液状态	
-E3501	稀释过程中液体容量异常, 请重试一次, 如果故障还在需要进行液路维护	
-E3520	片仓#[n]已空, 请添加测试卡后再继续测试	
-E3521	片仓#[n]打开, 请关闭后再继续测试	
-E3522	片仓#[n]状态异常不能继续工作, 需要重新维护调试	
-E3525	取片小车向片仓方向移动时, 片仓异常打开, 请关闭好片仓	
-E3526	取片小车从片仓提取试剂片时, 片仓异常打开, 请关闭好片仓	
-E3527	取片小车从片仓提取试剂片完成离开时, 片仓异常打开, 请关闭好片仓	
-E3540	取片失败	
-E3901	清洗液不足	
-E3902	自动灌注清洗液失败, 请检查清洗液供给后按开始键继续	
-E3903	稀释液不足	
-E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续	
-</value>
-  </data>
-  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
-    <value>textBox1</value>
-  </data>
-  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;textBoxFluo.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
-    <value>tabPageUserMode</value>
+  <data name="&gt;&gt;textBoxFluo.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
   </data>
-  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;textBoxFluo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="labelLast.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelLast.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelLast.Location" type="System.Drawing.Point, System.Drawing">
+    <value>89, 471</value>
+  </data>
+  <data name="labelLast.Size" type="System.Drawing.Size, System.Drawing">
+    <value>11, 12</value>
+  </data>
+  <data name="labelLast.TabIndex" type="System.Int32, mscorlib">
+    <value>90</value>
+  </data>
+  <data name="labelLast.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labelLast.Name" xml:space="preserve">
+    <value>labelLast</value>
+  </data>
+  <data name="&gt;&gt;labelLast.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelLast.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labelLast.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="labeltest.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labeltest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>89, 442</value>
+  </data>
+  <data name="labeltest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>11, 12</value>
+  </data>
+  <data name="labeltest.TabIndex" type="System.Int32, mscorlib">
+    <value>89</value>
+  </data>
+  <data name="labeltest.Text" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Name" xml:space="preserve">
+    <value>labeltest</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labeltest.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labeltest.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="buttonTest001.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonTest001.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 392</value>
+  </data>
+  <data name="buttonTest001.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 31</value>
+  </data>
+  <data name="buttonTest001.TabIndex" type="System.Int32, mscorlib">
+    <value>88</value>
+  </data>
+  <data name="buttonTest001.Text" xml:space="preserve">
+    <value>开始测试</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Name" xml:space="preserve">
+    <value>buttonTest001</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonTest001.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="buttonFluoTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonFluoTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>131, 3</value>
+  </data>
+  <data name="buttonFluoTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 40</value>
+  </data>
+  <data name="buttonFluoTest.TabIndex" type="System.Int32, mscorlib">
+    <value>87</value>
+  </data>
+  <data name="buttonFluoTest.Text" xml:space="preserve">
+    <value>采集数据(荧光)</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoTest.Name" xml:space="preserve">
+    <value>buttonFluoTest</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoTest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoTest.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoTest.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label45.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label45.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 401</value>
+  </data>
+  <data name="label45.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 12</value>
+  </data>
+  <data name="label45.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label45.Name" xml:space="preserve">
+    <value>label45</value>
+  </data>
+  <data name="&gt;&gt;label45.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label45.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;label45.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="textBoxASU.Location" type="System.Drawing.Point, System.Drawing">
+    <value>246, 47</value>
+  </data>
+  <data name="textBoxASU.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxASU.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxASU.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
+  </data>
+  <data name="textBoxASU.TabIndex" type="System.Int32, mscorlib">
+    <value>86</value>
+  </data>
+  <data name="&gt;&gt;textBoxASU.Name" xml:space="preserve">
+    <value>textBoxASU</value>
+  </data>
+  <data name="&gt;&gt;textBoxASU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxASU.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxASU.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="buttonGetIDCode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>166, 392</value>
+  </data>
+  <data name="buttonGetIDCode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 31</value>
+  </data>
+  <data name="buttonGetIDCode.TabIndex" type="System.Int32, mscorlib">
+    <value>85</value>
+  </data>
+  <data name="buttonGetIDCode.Text" xml:space="preserve">
+    <value>条码采集</value>
+  </data>
+  <data name="&gt;&gt;buttonGetIDCode.Name" xml:space="preserve">
+    <value>buttonGetIDCode</value>
+  </data>
+  <data name="&gt;&gt;buttonGetIDCode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonGetIDCode.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonGetIDCode.ZOrder" xml:space="preserve">
     <value>7</value>
+  </data>
+  <data name="buttonStartTH.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonStartTH.Location" type="System.Drawing.Point, System.Drawing">
+    <value>914, 517</value>
+  </data>
+  <data name="buttonStartTH.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonStartTH.TabIndex" type="System.Int32, mscorlib">
+    <value>84</value>
+  </data>
+  <data name="buttonStartTH.Text" xml:space="preserve">
+    <value>重启除湿</value>
+  </data>
+  <data name="&gt;&gt;buttonStartTH.Name" xml:space="preserve">
+    <value>buttonStartTH</value>
+  </data>
+  <data name="&gt;&gt;buttonStartTH.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonStartTH.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonStartTH.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="labelIDRead.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelIDRead.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 10.5pt</value>
+  </data>
+  <data name="labelIDRead.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelIDRead.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 398</value>
+  </data>
+  <data name="labelIDRead.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 20</value>
+  </data>
+  <data name="labelIDRead.TabIndex" type="System.Int32, mscorlib">
+    <value>83</value>
+  </data>
+  <data name="&gt;&gt;labelIDRead.Name" xml:space="preserve">
+    <value>labelIDRead</value>
+  </data>
+  <data name="&gt;&gt;labelIDRead.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelIDRead.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labelIDRead.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 47</value>
+  </data>
+  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 160</value>
+  </data>
+  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="videoSourcePlayer1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 422</value>
+  </data>
+  <data name="videoSourcePlayer1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 141</value>
+  </data>
+  <data name="videoSourcePlayer1.TabIndex" type="System.Int32, mscorlib">
+    <value>82</value>
+  </data>
+  <data name="videoSourcePlayer1.Text" xml:space="preserve">
+    <value>videoSourcePlayer1</value>
+  </data>
+  <data name="&gt;&gt;videoSourcePlayer1.Name" xml:space="preserve">
+    <value>videoSourcePlayer1</value>
+  </data>
+  <data name="&gt;&gt;videoSourcePlayer1.Type" xml:space="preserve">
+    <value>AForge.Controls.VideoSourcePlayer, AForge.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9</value>
+  </data>
+  <data name="&gt;&gt;videoSourcePlayer1.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;videoSourcePlayer1.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="buttonCCDTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonCCDTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 3</value>
+  </data>
+  <data name="buttonCCDTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 40</value>
+  </data>
+  <data name="buttonCCDTest.TabIndex" type="System.Int32, mscorlib">
+    <value>81</value>
+  </data>
+  <data name="buttonCCDTest.Text" xml:space="preserve">
+    <value>采集数据(胶体金)</value>
+  </data>
+  <data name="&gt;&gt;buttonCCDTest.Name" xml:space="preserve">
+    <value>buttonCCDTest</value>
+  </data>
+  <data name="&gt;&gt;buttonCCDTest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonCCDTest.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonCCDTest.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="buttonLiquidSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonLiquidSensor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>911, 385</value>
+  </data>
+  <data name="buttonLiquidSensor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonLiquidSensor.TabIndex" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="buttonLiquidSensor.Text" xml:space="preserve">
+    <value>液路光耦校准</value>
+  </data>
+  <data name="&gt;&gt;buttonLiquidSensor.Name" xml:space="preserve">
+    <value>buttonLiquidSensor</value>
+  </data>
+  <data name="&gt;&gt;buttonLiquidSensor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonLiquidSensor.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonLiquidSensor.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="buttonReagentSensor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonReagentSensor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>912, 342</value>
+  </data>
+  <data name="buttonReagentSensor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonReagentSensor.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="buttonReagentSensor.Text" xml:space="preserve">
+    <value>片仓光耦校准</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentSensor.Name" xml:space="preserve">
+    <value>buttonReagentSensor</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentSensor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentSensor.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonReagentSensor.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="comboBoxLogName.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun-ExtB, 20pt</value>
+  </data>
+  <data name="comboBoxLogName.Items" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="comboBoxLogName.Items1" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="comboBoxLogName.Items2" xml:space="preserve">
+    <value>TH</value>
+  </data>
+  <data name="comboBoxLogName.Items3" xml:space="preserve">
+    <value>QR</value>
+  </data>
+  <data name="comboBoxLogName.Items4" xml:space="preserve">
+    <value>ASU</value>
+  </data>
+  <data name="comboBoxLogName.Items5" xml:space="preserve">
+    <value>Fluo</value>
+  </data>
+  <data name="comboBoxLogName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 44</value>
+  </data>
+  <data name="comboBoxLogName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 35</value>
+  </data>
+  <data name="comboBoxLogName.TabIndex" type="System.Int32, mscorlib">
+    <value>78</value>
+  </data>
+  <data name="&gt;&gt;comboBoxLogName.Name" xml:space="preserve">
+    <value>comboBoxLogName</value>
+  </data>
+  <data name="&gt;&gt;comboBoxLogName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBoxLogName.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;comboBoxLogName.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="textBoxQR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 47</value>
+  </data>
+  <data name="textBoxQR.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxQR.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxQR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
+  </data>
+  <data name="textBoxQR.TabIndex" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="&gt;&gt;textBoxQR.Name" xml:space="preserve">
+    <value>textBoxQR</value>
+  </data>
+  <data name="&gt;&gt;textBoxQR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxQR.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxQR.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="textBoxTH.Location" type="System.Drawing.Point, System.Drawing">
+    <value>246, 47</value>
+  </data>
+  <data name="textBoxTH.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxTH.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxTH.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
+  </data>
+  <data name="textBoxTH.TabIndex" type="System.Int32, mscorlib">
+    <value>74</value>
+  </data>
+  <data name="&gt;&gt;textBoxTH.Name" xml:space="preserve">
+    <value>textBoxTH</value>
+  </data>
+  <data name="&gt;&gt;textBoxTH.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxTH.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxTH.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="textBoxMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 47</value>
+  </data>
+  <data name="textBoxMain.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxMain.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
+  </data>
+  <data name="textBoxMain.TabIndex" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="&gt;&gt;textBoxMain.Name" xml:space="preserve">
+    <value>textBoxMain</value>
+  </data>
+  <data name="&gt;&gt;textBoxMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxMain.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxMain.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="label29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 214</value>
+  </data>
+  <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label29.TabIndex" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
+  <data name="label29.Text" xml:space="preserve">
+    <value>CRef</value>
+  </data>
+  <data name="&gt;&gt;label29.Name" xml:space="preserve">
+    <value>label29</value>
+  </data>
+  <data name="&gt;&gt;label29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label29.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="textBoxCCDRef.Location" type="System.Drawing.Point, System.Drawing">
+    <value>947, 209</value>
+  </data>
+  <data name="textBoxCCDRef.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 19</value>
+  </data>
+  <data name="textBoxCCDRef.TabIndex" type="System.Int32, mscorlib">
+    <value>71</value>
+  </data>
+  <data name="textBoxCCDRef.Text" xml:space="preserve">
+    <value>2200</value>
+  </data>
+  <data name="&gt;&gt;textBoxCCDRef.Name" xml:space="preserve">
+    <value>textBoxCCDRef</value>
+  </data>
+  <data name="&gt;&gt;textBoxCCDRef.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxCCDRef.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxCCDRef.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="buttonFluoFix.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 301</value>
+  </data>
+  <data name="buttonFluoFix.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonFluoFix.TabIndex" type="System.Int32, mscorlib">
+    <value>70</value>
+  </data>
+  <data name="buttonFluoFix.Text" xml:space="preserve">
+    <value>荧光校准</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoFix.Name" xml:space="preserve">
+    <value>buttonFluoFix</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoFix.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoFix.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonFluoFix.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="label16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>914, 284</value>
+  </data>
+  <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label16.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="label16.Text" xml:space="preserve">
+    <value>FRef</value>
+  </data>
+  <data name="&gt;&gt;label16.Name" xml:space="preserve">
+    <value>label16</value>
+  </data>
+  <data name="&gt;&gt;label16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label16.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;label16.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="textBoxFluoRef.Location" type="System.Drawing.Point, System.Drawing">
+    <value>948, 279</value>
+  </data>
+  <data name="textBoxFluoRef.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 19</value>
+  </data>
+  <data name="textBoxFluoRef.TabIndex" type="System.Int32, mscorlib">
+    <value>68</value>
+  </data>
+  <data name="textBoxFluoRef.Text" xml:space="preserve">
+    <value>1800</value>
+  </data>
+  <data name="&gt;&gt;textBoxFluoRef.Name" xml:space="preserve">
+    <value>textBoxFluoRef</value>
+  </data>
+  <data name="&gt;&gt;textBoxFluoRef.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxFluoRef.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxFluoRef.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="textBoxCMD.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun-ExtB, 16pt</value>
+  </data>
+  <data name="textBoxCMD.Location" type="System.Drawing.Point, System.Drawing">
+    <value>810, 9</value>
+  </data>
+  <data name="textBoxCMD.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 29</value>
+  </data>
+  <data name="textBoxCMD.TabIndex" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="textBoxCMD.Text" xml:space="preserve">
+    <value>$0</value>
+  </data>
+  <data name="&gt;&gt;textBoxCMD.Name" xml:space="preserve">
+    <value>textBoxCMD</value>
+  </data>
+  <data name="&gt;&gt;textBoxCMD.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxCMD.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxCMD.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="buttonCMDSend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>935, 5</value>
+  </data>
+  <data name="buttonCMDSend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 36</value>
+  </data>
+  <data name="buttonCMDSend.TabIndex" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="buttonCMDSend.Text" xml:space="preserve">
+    <value>执行</value>
+  </data>
+  <data name="&gt;&gt;buttonCMDSend.Name" xml:space="preserve">
+    <value>buttonCMDSend</value>
+  </data>
+  <data name="&gt;&gt;buttonCMDSend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonCMDSend.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonCMDSend.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="comboBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun-ExtB, 20pt</value>
+  </data>
+  <data name="comboBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>554, 6</value>
+  </data>
+  <data name="comboBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 35</value>
+  </data>
+  <data name="comboBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>63</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Name" xml:space="preserve">
+    <value>comboBox2</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;comboBox2.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="comboBox1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun-ExtB, 20pt</value>
+  </data>
+  <data name="comboBox1.Items" xml:space="preserve">
+    <value>启动</value>
+  </data>
+  <data name="comboBox1.Items1" xml:space="preserve">
+    <value>机械自检</value>
+  </data>
+  <data name="comboBox1.Items2" xml:space="preserve">
+    <value>液路自检</value>
+  </data>
+  <data name="comboBox1.Items3" xml:space="preserve">
+    <value>测试</value>
+  </data>
+  <data name="comboBox1.Items4" xml:space="preserve">
+    <value>维护</value>
+  </data>
+  <data name="comboBox1.Items5" xml:space="preserve">
+    <value>内部命令</value>
+  </data>
+  <data name="comboBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>399, 6</value>
+  </data>
+  <data name="comboBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 35</value>
+  </data>
+  <data name="comboBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>61</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Name" xml:space="preserve">
+    <value>comboBox1</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;comboBox1.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="label35.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label35.Location" type="System.Drawing.Point, System.Drawing">
+    <value>340, 17</value>
+  </data>
+  <data name="label35.Size" type="System.Drawing.Size, System.Drawing">
+    <value>473, 12</value>
+  </data>
+  <data name="label35.TabIndex" type="System.Int32, mscorlib">
+    <value>62</value>
+  </data>
+  <data name="label35.Text" xml:space="preserve">
+    <value>命令分类                      命令                                        参数</value>
+  </data>
+  <data name="&gt;&gt;label35.Name" xml:space="preserve">
+    <value>label35</value>
+  </data>
+  <data name="&gt;&gt;label35.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label35.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;label35.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="labelResult.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelResult.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft YaHei UI, 10.5pt</value>
+  </data>
+  <data name="labelResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 209</value>
+  </data>
+  <data name="labelResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 20</value>
+  </data>
+  <data name="labelResult.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="&gt;&gt;labelResult.Name" xml:space="preserve">
+    <value>labelResult</value>
+  </data>
+  <data name="&gt;&gt;labelResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelResult.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;labelResult.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="buttonTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 428</value>
+  </data>
+  <data name="buttonTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonTest.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="buttonTest.Text" xml:space="preserve">
+    <value>进入测试</value>
+  </data>
+  <data name="&gt;&gt;buttonTest.Name" xml:space="preserve">
+    <value>buttonTest</value>
+  </data>
+  <data name="&gt;&gt;buttonTest.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonTest.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonTest.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="buttonMaintain.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonMaintain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>912, 125</value>
+  </data>
+  <data name="buttonMaintain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonMaintain.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="buttonMaintain.Text" xml:space="preserve">
+    <value>进入维护</value>
+  </data>
+  <data name="&gt;&gt;buttonMaintain.Name" xml:space="preserve">
+    <value>buttonMaintain</value>
+  </data>
+  <data name="&gt;&gt;buttonMaintain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonMaintain.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonMaintain.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
+  <data name="buttonMidFix.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonMidFix.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 166</value>
+  </data>
+  <data name="buttonMidFix.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonMidFix.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="buttonMidFix.Text" xml:space="preserve">
+    <value>中心位置校准</value>
+  </data>
+  <data name="&gt;&gt;buttonMidFix.Name" xml:space="preserve">
+    <value>buttonMidFix</value>
+  </data>
+  <data name="&gt;&gt;buttonMidFix.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonMidFix.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonMidFix.ZOrder" xml:space="preserve">
+    <value>32</value>
+  </data>
+  <data name="buttonDilutionMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonDilutionMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>913, 471</value>
+  </data>
+  <data name="buttonDilutionMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonDilutionMode.TabIndex" type="System.Int32, mscorlib">
+    <value>49</value>
+  </data>
+  <data name="buttonDilutionMode.Text" xml:space="preserve">
+    <value>混匀测试</value>
+  </data>
+  <data name="&gt;&gt;buttonDilutionMode.Name" xml:space="preserve">
+    <value>buttonDilutionMode</value>
+  </data>
+  <data name="&gt;&gt;buttonDilutionMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonDilutionMode.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonDilutionMode.ZOrder" xml:space="preserve">
+    <value>33</value>
+  </data>
+  <data name="buttonLigthFix.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonLigthFix.Location" type="System.Drawing.Point, System.Drawing">
+    <value>912, 230</value>
+  </data>
+  <data name="buttonLigthFix.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonLigthFix.TabIndex" type="System.Int32, mscorlib">
+    <value>46</value>
+  </data>
+  <data name="buttonLigthFix.Text" xml:space="preserve">
+    <value>光源校准</value>
+  </data>
+  <data name="&gt;&gt;buttonLigthFix.Name" xml:space="preserve">
+    <value>buttonLigthFix</value>
+  </data>
+  <data name="&gt;&gt;buttonLigthFix.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonLigthFix.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonLigthFix.ZOrder" xml:space="preserve">
+    <value>34</value>
+  </data>
+  <data name="chartFluo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 236</value>
+  </data>
+  <data name="chartFluo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>233, 156</value>
+  </data>
+  <data name="chartFluo.TabIndex" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="chartFluo.Text" xml:space="preserve">
+    <value>chart3</value>
+  </data>
+  <data name="&gt;&gt;chartFluo.Name" xml:space="preserve">
+    <value>chartFluo</value>
+  </data>
+  <data name="&gt;&gt;chartFluo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataVisualization.Charting.Chart, System.Windows.Forms.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</value>
+  </data>
+  <data name="&gt;&gt;chartFluo.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;chartFluo.ZOrder" xml:space="preserve">
+    <value>35</value>
+  </data>
+  <data name="buttonSaveLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="buttonSaveLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>912, 82</value>
+  </data>
+  <data name="buttonSaveLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 40</value>
+  </data>
+  <data name="buttonSaveLog.TabIndex" type="System.Int32, mscorlib">
+    <value>44</value>
+  </data>
+  <data name="buttonSaveLog.Text" xml:space="preserve">
+    <value>保存日志</value>
+  </data>
+  <data name="&gt;&gt;buttonSaveLog.Name" xml:space="preserve">
+    <value>buttonSaveLog</value>
+  </data>
+  <data name="&gt;&gt;buttonSaveLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonSaveLog.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;buttonSaveLog.ZOrder" xml:space="preserve">
+    <value>36</value>
+  </data>
+  <data name="textBoxLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 47</value>
+  </data>
+  <data name="textBoxLog.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="textBoxLog.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="textBoxLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>659, 516</value>
+  </data>
+  <data name="textBoxLog.TabIndex" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="&gt;&gt;textBoxLog.Name" xml:space="preserve">
+    <value>textBoxLog</value>
+  </data>
+  <data name="&gt;&gt;textBoxLog.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;textBoxLog.Parent" xml:space="preserve">
+    <value>tabPageDetail</value>
+  </data>
+  <data name="&gt;&gt;textBoxLog.ZOrder" xml:space="preserve">
+    <value>37</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Name" xml:space="preserve">
+    <value>buttonPicClose</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Parent" xml:space="preserve">
+    <value>panelPic</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Name" xml:space="preserve">
+    <value>pictureBoxResult</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Parent" xml:space="preserve">
+    <value>panelPic</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="panelPic.Location" type="System.Drawing.Point, System.Drawing">
+    <value>505, 6</value>
+  </data>
+  <data name="panelPic.Size" type="System.Drawing.Size, System.Drawing">
+    <value>513, 557</value>
+  </data>
+  <data name="panelPic.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="panelPic.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;panelPic.Name" xml:space="preserve">
+    <value>panelPic</value>
+  </data>
+  <data name="&gt;&gt;panelPic.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelPic.Parent" xml:space="preserve">
+    <value>tabPageHome</value>
+  </data>
+  <data name="&gt;&gt;panelPic.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="buttonPicClose.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
+  <data name="buttonPicClose.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
+  </data>
+  <data name="buttonPicClose.Font" type="System.Drawing.Font, System.Drawing">
+    <value>黑体, 21pt, style=Bold</value>
+  </data>
+  <data name="buttonPicClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 17</value>
+  </data>
+  <data name="buttonPicClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 71</value>
+  </data>
+  <data name="buttonPicClose.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="buttonPicClose.Text" xml:space="preserve">
+    <value>关闭照片</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Name" xml:space="preserve">
+    <value>buttonPicClose</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.Parent" xml:space="preserve">
+    <value>panelPic</value>
+  </data>
+  <data name="&gt;&gt;buttonPicClose.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pictureBoxResult.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 102</value>
+  </data>
+  <data name="pictureBoxResult.Size" type="System.Drawing.Size, System.Drawing">
+    <value>485, 291</value>
+  </data>
+  <data name="pictureBoxResult.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="pictureBoxResult.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Name" xml:space="preserve">
+    <value>pictureBoxResult</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.Parent" xml:space="preserve">
+    <value>panelPic</value>
+  </data>
+  <data name="&gt;&gt;pictureBoxResult.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="panel3.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
+  <data name="&gt;&gt;labelCleanStatus.Name" xml:space="preserve">
+    <value>labelCleanStatus</value>
+  </data>
+  <data name="&gt;&gt;labelCleanStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelCleanStatus.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;labelCleanStatus.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;labelDilutionStatus.Name" xml:space="preserve">
+    <value>labelDilutionStatus</value>
+  </data>
+  <data name="&gt;&gt;labelDilutionStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelDilutionStatus.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;labelDilutionStatus.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labelReagentStatus.Name" xml:space="preserve">
+    <value>labelReagentStatus</value>
+  </data>
+  <data name="&gt;&gt;labelReagentStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelReagentStatus.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;labelReagentStatus.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;labelWasteStatus.Name" xml:space="preserve">
+    <value>labelWasteStatus</value>
+  </data>
+  <data name="&gt;&gt;labelWasteStatus.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelWasteStatus.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;labelWasteStatus.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;buttonSupply.Name" xml:space="preserve">
+    <value>buttonSupply</value>
+  </data>
+  <data name="&gt;&gt;buttonSupply.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonSupply.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;buttonSupply.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;buttonReagent.Name" xml:space="preserve">
+    <value>buttonReagent</value>
+  </data>
+  <data name="&gt;&gt;buttonReagent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonReagent.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;buttonReagent.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tabControlMainRight.Name" xml:space="preserve">
+    <value>tabControlMainRight</value>
+  </data>
+  <data name="&gt;&gt;tabControlMainRight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControlMainRight.Parent" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;tabControlMainRight.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="panel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>505, 7</value>
+  </data>
+  <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>503, 556</value>
+  </data>
+  <data name="panel3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;panel3.Name" xml:space="preserve">
+    <value>panel3</value>
+  </data>
+  <data name="&gt;&gt;panel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel3.Parent" xml:space="preserve">
+    <value>tabPageHome</value>
+  </data>
+  <data name="&gt;&gt;panel3.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="labelCleanStatus.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -7968,6 +8346,147 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
   <data name="&gt;&gt;buttonFloatBallClean.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;labelExceptionNo.Name" xml:space="preserve">
+    <value>labelExceptionNo</value>
+  </data>
+  <data name="&gt;&gt;labelExceptionNo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelExceptionNo.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;labelExceptionNo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewMain.Name" xml:space="preserve">
+    <value>dataGridViewMain</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewMain.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;dataGridViewMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labelNextTestItem.Name" xml:space="preserve">
+    <value>labelNextTestItem</value>
+  </data>
+  <data name="&gt;&gt;labelNextTestItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelNextTestItem.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;labelNextTestItem.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;labelNextSampleNo.Name" xml:space="preserve">
+    <value>labelNextSampleNo</value>
+  </data>
+  <data name="&gt;&gt;labelNextSampleNo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelNextSampleNo.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;labelNextSampleNo.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;panel2.Name" xml:space="preserve">
+    <value>panel2</value>
+  </data>
+  <data name="&gt;&gt;panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel2.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel2.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;buttonException.Name" xml:space="preserve">
+    <value>buttonException</value>
+  </data>
+  <data name="&gt;&gt;buttonException.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonException.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;buttonException.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;buttonDone.Name" xml:space="preserve">
+    <value>buttonDone</value>
+  </data>
+  <data name="&gt;&gt;buttonDone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonDone.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;buttonDone.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;buttonDoing.Name" xml:space="preserve">
+    <value>buttonDoing</value>
+  </data>
+  <data name="&gt;&gt;buttonDoing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonDoing.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;buttonDoing.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;labelhuman.Name" xml:space="preserve">
+    <value>labelhuman</value>
+  </data>
+  <data name="&gt;&gt;labelhuman.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelhuman.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;labelhuman.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 7</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>481, 559</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>tabPageHome</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="labelExceptionNo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -12047,7 +12566,7 @@ E3904	自动灌注稀释液失败, 请检查稀释液供给后按开始键继续
   </data>
   <data name="label19.Text" xml:space="preserve">
     <value>软件名称：i-Reader S干式免疫分析系统
-版本号：V1.0.6
+版本号：V1.0.8 α
 
 所属公司：上海艾瑞德生物科技有限公司
 联系地址：上海市闵行区新骏环路188号5号楼301室
@@ -13463,6 +13982,75 @@ Copyright © 2016 SIBT All Rights Reserved
   <data name="&gt;&gt;panel10.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="&gt;&gt;labelLock.Name" xml:space="preserve">
+    <value>labelLock</value>
+  </data>
+  <data name="&gt;&gt;labelLock.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelLock.Parent" xml:space="preserve">
+    <value>panelTopBack</value>
+  </data>
+  <data name="&gt;&gt;labelLock.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelOther.Name" xml:space="preserve">
+    <value>panelOther</value>
+  </data>
+  <data name="&gt;&gt;panelOther.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelOther.Parent" xml:space="preserve">
+    <value>panelTopBack</value>
+  </data>
+  <data name="&gt;&gt;panelOther.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;labelMenu.Name" xml:space="preserve">
+    <value>labelMenu</value>
+  </data>
+  <data name="&gt;&gt;labelMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelMenu.Parent" xml:space="preserve">
+    <value>panelTopBack</value>
+  </data>
+  <data name="&gt;&gt;labelMenu.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Name" xml:space="preserve">
+    <value>buttonHome</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Parent" xml:space="preserve">
+    <value>panelTopBack</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="panelTopBack.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="panelTopBack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1024, 134</value>
+  </data>
+  <data name="panelTopBack.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;panelTopBack.Name" xml:space="preserve">
+    <value>panelTopBack</value>
+  </data>
+  <data name="&gt;&gt;panelTopBack.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panelTopBack.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;panelTopBack.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
   <data name="labelLock.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -13541,26 +14129,35 @@ Copyright © 2016 SIBT All Rights Reserved
   <data name="&gt;&gt;labelMenu.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="panelTopBack.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="buttonHome.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>Flat</value>
   </data>
-  <data name="panelTopBack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1024, 134</value>
+  <data name="buttonHome.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="panelTopBack.TabIndex" type="System.Int32, mscorlib">
+  <data name="buttonHome.Location" type="System.Drawing.Point, System.Drawing">
+    <value>344, 17</value>
+  </data>
+  <data name="buttonHome.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 100</value>
+  </data>
+  <data name="buttonHome.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;panelTopBack.Name" xml:space="preserve">
+  <data name="buttonHome.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Name" xml:space="preserve">
+    <value>buttonHome</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;buttonHome.Parent" xml:space="preserve">
     <value>panelTopBack</value>
   </data>
-  <data name="&gt;&gt;panelTopBack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panelTopBack.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panelTopBack.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;buttonHome.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="button1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Flat</value>
@@ -13830,7 +14427,7 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>8</value>
   </data>
   <metadata name="timerLoding.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>139, 131</value>
+    <value>244, 131</value>
   </metadata>
   <data name="labelSupplyLeft.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -13863,10 +14460,10 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>7</value>
   </data>
   <metadata name="timerLoad.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>263, 131</value>
+    <value>368, 131</value>
   </metadata>
   <metadata name="timerPageAdjust.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>375, 131</value>
+    <value>480, 131</value>
   </metadata>
   <data name="labelReagentNow.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -13989,22 +14586,22 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>3</value>
   </data>
   <metadata name="timerSupplyAlert.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 169</value>
+    <value>154, 169</value>
   </metadata>
   <metadata name="serialPortME.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>331, 169</value>
+    <value>468, 169</value>
   </metadata>
   <metadata name="timerSampleReady.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>168, 169</value>
+    <value>305, 169</value>
   </metadata>
   <metadata name="timerMainPort.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>660, 131</value>
+    <value>17, 169</value>
   </metadata>
   <metadata name="serialPortFloatBall.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 93</value>
   </metadata>
   <metadata name="contextMenuStrip2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>457, 169</value>
+    <value>594, 169</value>
   </metadata>
   <data name="contextMenuStrip2.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 4</value>
@@ -14058,7 +14655,7 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>306, 93</value>
   </metadata>
   <metadata name="timerTHCheck.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>525, 131</value>
+    <value>630, 131</value>
   </metadata>
   <metadata name="timerASUStop.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 55</value>
@@ -14067,7 +14664,7 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>17, 55</value>
   </metadata>
   <metadata name="timerCursor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 131</value>
+    <value>122, 131</value>
   </metadata>
   <metadata name="serialPortFluo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>174, 93</value>
@@ -14076,7 +14673,7 @@ Copyright © 2016 SIBT All Rights Reserved
     <value>True</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>138</value>
+    <value>55</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>

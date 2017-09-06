@@ -12,6 +12,8 @@ namespace i_Reader_S
 {
     public class SqlData
     {
+        
+
         public  static ResourceManager Rm =new ResourceManager("i_Reader_S.Properties.Resources", Assembly.GetExecutingAssembly());
         public static readonly string ConStr = "server ="+Dns.GetHostName()+ @"\sqlexpress;database=i-Reader_S;integrated security = true; min pool size=1;max pool size=100;Connection Lifetime = 30; Enlist=true"; //ConfigurationManager.ConnectionStrings["SQLConnString"].ConnectionString;
         public static readonly string ConStrMaster = ConStr.Replace("i-Reader_S", "master");
@@ -21,7 +23,7 @@ namespace i_Reader_S
         {
             var strsql = new StringBuilder();
             strsql.Append("select b.SensorID,a.Sampleno,d.TestItemName, a.flag+case ");
-            for (int i = -1; i > -17; i--)
+            for (int i = -1; i > -19; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -345,7 +347,7 @@ namespace i_Reader_S
         {
             var strsql = new StringBuilder();
             strsql.Append("select createtime, sampleno,c.TestItemName,a.flag+ case ");
-            for (int i = -1; i > -17; i--)
+            for (int i = -1; i > -19; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -581,7 +583,7 @@ namespace i_Reader_S
             strsql.Append(",TestItemName as ");
             strsql.Append(headerstr?[1]);
             strsql.Append(",w.flag+ case  ");
-            for (int i = -1; i > -17; i--)
+            for (int i = -1; i > -19; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);
@@ -614,7 +616,7 @@ namespace i_Reader_S
             //
             var strsql = new StringBuilder();
             strsql.Append("select createtime, sampleno,c.TestItemName,a.flag+ case ");
-            for (int i = -1; i > -17; i--)
+            for (int i = -1; i > -19; i--)
             {
                 strsql.Append(" when Result = ");
                 strsql.Append(i);

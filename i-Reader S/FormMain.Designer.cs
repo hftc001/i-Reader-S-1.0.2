@@ -71,7 +71,6 @@
             this.buttonSetting = new System.Windows.Forms.Button();
             this.buttonQC = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
-            this.buttonHome = new System.Windows.Forms.Button();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageLogin = new System.Windows.Forms.TabPage();
             this.buttonMinOpen = new System.Windows.Forms.Button();
@@ -94,16 +93,21 @@
             this.panelLoding1 = new System.Windows.Forms.Panel();
             this.labelStep = new System.Windows.Forms.Label();
             this.tabPageUserMode = new System.Windows.Forms.TabPage();
+            this.buttonReagentCheck = new System.Windows.Forms.Button();
             this.buttonNewLiquidSensor = new System.Windows.Forms.Button();
             this.labelUserStep = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.buttonUserLiquidCheck = new System.Windows.Forms.Button();
             this.buttonUserClean2 = new System.Windows.Forms.Button();
             this.buttonUserClean1 = new System.Windows.Forms.Button();
             this.buttonUserTest = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxUserLog = new System.Windows.Forms.TextBox();
             this.tabPageDetail = new System.Windows.Forms.TabPage();
+            this.textBoxFluo = new System.Windows.Forms.TextBox();
+            this.labelLast = new System.Windows.Forms.Label();
+            this.labeltest = new System.Windows.Forms.Label();
+            this.buttonTest001 = new System.Windows.Forms.Button();
             this.buttonFluoTest = new System.Windows.Forms.Button();
+            this.label45 = new System.Windows.Forms.Label();
             this.textBoxASU = new System.Windows.Forms.TextBox();
             this.buttonGetIDCode = new System.Windows.Forms.Button();
             this.buttonStartTH = new System.Windows.Forms.Button();
@@ -113,7 +117,7 @@
             this.buttonCCDTest = new System.Windows.Forms.Button();
             this.buttonLiquidSensor = new System.Windows.Forms.Button();
             this.buttonReagentSensor = new System.Windows.Forms.Button();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBoxLogName = new System.Windows.Forms.ComboBox();
             this.textBoxQR = new System.Windows.Forms.TextBox();
             this.textBoxTH = new System.Windows.Forms.TextBox();
             this.textBoxMain = new System.Windows.Forms.TextBox();
@@ -417,10 +421,10 @@
             this.panelZZZ = new System.Windows.Forms.Panel();
             this.panel10 = new System.Windows.Forms.Panel();
             this.panelTopBack = new System.Windows.Forms.Panel();
-            this.label45 = new System.Windows.Forms.Label();
             this.labelLock = new System.Windows.Forms.Label();
             this.panelOther = new System.Windows.Forms.Panel();
             this.labelMenu = new System.Windows.Forms.Label();
+            this.buttonHome = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -459,6 +463,7 @@
             this.timerSleep = new System.Windows.Forms.Timer(this.components);
             this.timerCursor = new System.Windows.Forms.Timer(this.components);
             this.serialPortFluo = new System.IO.Ports.SerialPort(this.components);
+            this.buttonNewCleanSensor = new System.Windows.Forms.Button();
             this.tabControlMain.SuspendLayout();
             this.tabPageLogin.SuspendLayout();
             this.panelLogin.SuspendLayout();
@@ -600,18 +605,6 @@
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.UseVisualStyleBackColor = true;
             this.buttonSearch.Click += new System.EventHandler(this.buttonMenu_Click);
-            // 
-            // buttonHome
-            // 
-            this.buttonHome.BackgroundImage = global::i_Reader_S.Properties.Resources.Home_Normal;
-            this.buttonHome.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
-            this.buttonHome.FlatAppearance.BorderSize = 0;
-            this.buttonHome.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
-            this.buttonHome.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
-            resources.ApplyResources(this.buttonHome, "buttonHome");
-            this.buttonHome.Name = "buttonHome";
-            this.buttonHome.UseVisualStyleBackColor = true;
-            this.buttonHome.Click += new System.EventHandler(this.buttonMenu_Click);
             // 
             // tabControlMain
             // 
@@ -790,34 +783,37 @@
             // 
             // tabPageUserMode
             // 
+            this.tabPageUserMode.Controls.Add(this.buttonNewCleanSensor);
+            this.tabPageUserMode.Controls.Add(this.buttonReagentCheck);
             this.tabPageUserMode.Controls.Add(this.buttonNewLiquidSensor);
             this.tabPageUserMode.Controls.Add(this.labelUserStep);
-            this.tabPageUserMode.Controls.Add(this.label6);
             this.tabPageUserMode.Controls.Add(this.buttonUserLiquidCheck);
             this.tabPageUserMode.Controls.Add(this.buttonUserClean2);
             this.tabPageUserMode.Controls.Add(this.buttonUserClean1);
             this.tabPageUserMode.Controls.Add(this.buttonUserTest);
-            this.tabPageUserMode.Controls.Add(this.textBox1);
+            this.tabPageUserMode.Controls.Add(this.textBoxUserLog);
             resources.ApplyResources(this.tabPageUserMode, "tabPageUserMode");
             this.tabPageUserMode.Name = "tabPageUserMode";
             this.tabPageUserMode.UseVisualStyleBackColor = true;
+            // 
+            // buttonReagentCheck
+            // 
+            resources.ApplyResources(this.buttonReagentCheck, "buttonReagentCheck");
+            this.buttonReagentCheck.Name = "buttonReagentCheck";
+            this.buttonReagentCheck.UseVisualStyleBackColor = true;
+            this.buttonReagentCheck.Click += new System.EventHandler(this.buttonReagentSensor_Click);
             // 
             // buttonNewLiquidSensor
             // 
             resources.ApplyResources(this.buttonNewLiquidSensor, "buttonNewLiquidSensor");
             this.buttonNewLiquidSensor.Name = "buttonNewLiquidSensor";
             this.buttonNewLiquidSensor.UseVisualStyleBackColor = true;
-            this.buttonNewLiquidSensor.Click += new System.EventHandler(this.buttonLiquidSensor_Click);
+            this.buttonNewLiquidSensor.Click += new System.EventHandler(this.buttonNewLiquidSensor_Click);
             // 
             // labelUserStep
             // 
             resources.ApplyResources(this.labelUserStep, "labelUserStep");
             this.labelUserStep.Name = "labelUserStep";
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
             // 
             // buttonUserLiquidCheck
             // 
@@ -847,13 +843,17 @@
             this.buttonUserTest.UseVisualStyleBackColor = true;
             this.buttonUserTest.Click += new System.EventHandler(this.buttonUserTest_Click);
             // 
-            // textBox1
+            // textBoxUserLog
             // 
-            resources.ApplyResources(this.textBox1, "textBox1");
-            this.textBox1.Name = "textBox1";
+            resources.ApplyResources(this.textBoxUserLog, "textBoxUserLog");
+            this.textBoxUserLog.Name = "textBoxUserLog";
             // 
             // tabPageDetail
             // 
+            this.tabPageDetail.Controls.Add(this.textBoxFluo);
+            this.tabPageDetail.Controls.Add(this.labelLast);
+            this.tabPageDetail.Controls.Add(this.labeltest);
+            this.tabPageDetail.Controls.Add(this.buttonTest001);
             this.tabPageDetail.Controls.Add(this.buttonFluoTest);
             this.tabPageDetail.Controls.Add(this.label45);
             this.tabPageDetail.Controls.Add(this.textBoxASU);
@@ -865,7 +865,7 @@
             this.tabPageDetail.Controls.Add(this.buttonCCDTest);
             this.tabPageDetail.Controls.Add(this.buttonLiquidSensor);
             this.tabPageDetail.Controls.Add(this.buttonReagentSensor);
-            this.tabPageDetail.Controls.Add(this.comboBox3);
+            this.tabPageDetail.Controls.Add(this.comboBoxLogName);
             this.tabPageDetail.Controls.Add(this.textBoxQR);
             this.tabPageDetail.Controls.Add(this.textBoxTH);
             this.tabPageDetail.Controls.Add(this.textBoxMain);
@@ -892,12 +892,40 @@
             this.tabPageDetail.Name = "tabPageDetail";
             this.tabPageDetail.UseVisualStyleBackColor = true;
             // 
+            // textBoxFluo
+            // 
+            resources.ApplyResources(this.textBoxFluo, "textBoxFluo");
+            this.textBoxFluo.Name = "textBoxFluo";
+            this.textBoxFluo.ReadOnly = true;
+            // 
+            // labelLast
+            // 
+            resources.ApplyResources(this.labelLast, "labelLast");
+            this.labelLast.Name = "labelLast";
+            // 
+            // labeltest
+            // 
+            resources.ApplyResources(this.labeltest, "labeltest");
+            this.labeltest.Name = "labeltest";
+            // 
+            // buttonTest001
+            // 
+            resources.ApplyResources(this.buttonTest001, "buttonTest001");
+            this.buttonTest001.Name = "buttonTest001";
+            this.buttonTest001.UseVisualStyleBackColor = true;
+            this.buttonTest001.Click += new System.EventHandler(this.buttonTest001_Click);
+            // 
             // buttonFluoTest
             // 
             resources.ApplyResources(this.buttonFluoTest, "buttonFluoTest");
             this.buttonFluoTest.Name = "buttonFluoTest";
             this.buttonFluoTest.UseVisualStyleBackColor = true;
             this.buttonFluoTest.Click += new System.EventHandler(this.buttonFluoTest_Click);
+            // 
+            // label45
+            // 
+            resources.ApplyResources(this.label45, "label45");
+            this.label45.Name = "label45";
             // 
             // textBoxASU
             // 
@@ -960,19 +988,20 @@
             this.buttonReagentSensor.UseVisualStyleBackColor = true;
             this.buttonReagentSensor.Click += new System.EventHandler(this.buttonReagentSensor_Click);
             // 
-            // comboBox3
+            // comboBoxLogName
             // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            resources.ApplyResources(this.comboBox3, "comboBox3");
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            resources.GetString("comboBox3.Items"),
-            resources.GetString("comboBox3.Items1"),
-            resources.GetString("comboBox3.Items2"),
-            resources.GetString("comboBox3.Items3"),
-            resources.GetString("comboBox3.Items4")});
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            this.comboBoxLogName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.comboBoxLogName, "comboBoxLogName");
+            this.comboBoxLogName.FormattingEnabled = true;
+            this.comboBoxLogName.Items.AddRange(new object[] {
+            resources.GetString("comboBoxLogName.Items"),
+            resources.GetString("comboBoxLogName.Items1"),
+            resources.GetString("comboBoxLogName.Items2"),
+            resources.GetString("comboBoxLogName.Items3"),
+            resources.GetString("comboBoxLogName.Items4"),
+            resources.GetString("comboBoxLogName.Items5")});
+            this.comboBoxLogName.Name = "comboBoxLogName";
+            this.comboBoxLogName.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // textBoxQR
             // 
@@ -3563,11 +3592,6 @@
             resources.ApplyResources(this.panelTopBack, "panelTopBack");
             this.panelTopBack.Name = "panelTopBack";
             // 
-            // label45
-            // 
-            resources.ApplyResources(this.label45, "label45");
-            this.label45.Name = "label45";
-            // 
             // labelLock
             // 
             resources.ApplyResources(this.labelLock, "labelLock");
@@ -3585,6 +3609,18 @@
             resources.ApplyResources(this.labelMenu, "labelMenu");
             this.labelMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(119)))), ((int)(((byte)(114)))), ((int)(((byte)(105)))));
             this.labelMenu.Name = "labelMenu";
+            // 
+            // buttonHome
+            // 
+            this.buttonHome.BackgroundImage = global::i_Reader_S.Properties.Resources.Home_Normal;
+            this.buttonHome.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
+            this.buttonHome.FlatAppearance.BorderSize = 0;
+            this.buttonHome.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
+            this.buttonHome.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(127)))), ((int)(((byte)(191)))));
+            resources.ApplyResources(this.buttonHome, "buttonHome");
+            this.buttonHome.Name = "buttonHome";
+            this.buttonHome.UseVisualStyleBackColor = true;
+            this.buttonHome.Click += new System.EventHandler(this.buttonMenu_Click);
             // 
             // button1
             // 
@@ -3674,7 +3710,6 @@
             // 
             // serialPortMain
             // 
-            this.serialPortMain.BaudRate = 57600;
             this.serialPortMain.DiscardNull = true;
             this.serialPortMain.PortName = "COM2";
             this.serialPortMain.WriteBufferSize = 4096;
@@ -3768,7 +3803,7 @@
             // timerMainPort
             // 
             this.timerMainPort.Enabled = true;
-            this.timerMainPort.Interval = 700;
+            this.timerMainPort.Interval = 50;
             this.timerMainPort.Tick += new System.EventHandler(this.timerMainPort_Tick);
             // 
             // serialPortFloatBall
@@ -3830,6 +3865,13 @@
             this.serialPortFluo.BaudRate = 57600;
             this.serialPortFluo.PortName = "COM6";
             this.serialPortFluo.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPortFluo_DataReceived);
+            // 
+            // buttonNewCleanSensor
+            // 
+            resources.ApplyResources(this.buttonNewCleanSensor, "buttonNewCleanSensor");
+            this.buttonNewCleanSensor.Name = "buttonNewCleanSensor";
+            this.buttonNewCleanSensor.UseVisualStyleBackColor = true;
+            this.buttonNewCleanSensor.Click += new System.EventHandler(this.buttonNewCleanSensor_Click);
             // 
             // ReaderS
             // 
@@ -3991,7 +4033,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button buttonHome;
         private System.Windows.Forms.Button buttonStop;
         private System.Windows.Forms.Button buttonMessage;
         private System.Windows.Forms.Button buttonSetting;
@@ -4204,7 +4245,7 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox textBoxFluoRef;
         private System.Windows.Forms.TabPage tabPageUserMode;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxUserLog;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox textBoxCCDRef;
         private System.Windows.Forms.Panel panelLoding;
@@ -4231,7 +4272,7 @@
         private System.Windows.Forms.TextBox textBoxMain;
         private System.Windows.Forms.TextBox textBoxQR;
         private System.Windows.Forms.TextBox textBoxTH;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBoxLogName;
         private System.Windows.Forms.Label labelExceptionNo;
         private System.Windows.Forms.Label labelCleanStatus;
         private System.Windows.Forms.Label labelDilutionStatus;
@@ -4241,7 +4282,6 @@
         private System.Windows.Forms.Button buttonUserClean1;
         private System.Windows.Forms.Button buttonUserClean2;
         private System.Windows.Forms.Button buttonUserLiquidCheck;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonReagentSensor;
         private System.Windows.Forms.Button buttonLiquidSensor;
         private System.Windows.Forms.Timer timerLoad;
@@ -4384,6 +4424,13 @@
         private System.Windows.Forms.Timer timerCursor;
         private System.IO.Ports.SerialPort serialPortFluo;
         private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Button buttonHome;
+        private System.Windows.Forms.Button buttonTest001;
+        private System.Windows.Forms.Label labeltest;
+        private System.Windows.Forms.Label labelLast;
+        private System.Windows.Forms.TextBox textBoxFluo;
+        private System.Windows.Forms.Button buttonReagentCheck;
+        private System.Windows.Forms.Button buttonNewCleanSensor;
     }
 }
 

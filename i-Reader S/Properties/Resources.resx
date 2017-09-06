@@ -875,4 +875,10 @@
   <data name="shutdown1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shutdown.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ResultError17" xml:space="preserve">
+    <value>测试区异常</value>
+  </data>
+  <data name="ResultError18" xml:space="preserve">
+    <value>无测试片</value>
+  </data>
 </root>
